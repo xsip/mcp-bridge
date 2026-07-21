@@ -56,7 +56,8 @@ const NAV_LINKS: MobileNavLink[] = [
           <ui-dark-mode-toggle />
 
           <a
-            routerLink="/dashboard"
+            href="https://github.com/xsip/mcp-bridge"
+            target="_blank"
             class="hidden rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white shadow-depth-sm hover-lift md:inline-flex"
           >
             {{ 'nav.goToDashboard' | translate }}

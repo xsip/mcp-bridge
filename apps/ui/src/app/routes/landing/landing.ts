@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, inject} from '@angular/core';
-import {RouterLink} from '@angular/router';
 import {TranslatePipe} from '@ngx-translate/core';
 import {NgIconComponent, provideIcons} from '@ng-icons/core';
 import {
@@ -69,7 +68,7 @@ const FAQ: FaqItem[] = [
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterLink, TranslatePipe, NgIconComponent, AnimateOnScrollDirective],
+  imports: [TranslatePipe, NgIconComponent, AnimateOnScrollDirective],
   viewProviders: [
     provideIcons({
       heroArrowRight,
@@ -119,7 +118,8 @@ const FAQ: FaqItem[] = [
 
         <div class="mt-10 flex flex-col items-center gap-3 sm:flex-row animate-slide-up">
           <a
-            routerLink="/dashboard"
+            href="https://github.com/xsip/mcp-bridge"
+            target="_blank"
             class="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-white shadow-glow-accent hover-lift"
           >
             {{ 'landing.hero.primaryCta' | translate }}
@@ -288,7 +288,8 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
         <h2 class="text-3xl font-semibold tracking-tight text-text-primary">{{ 'landing.finalCta.title' | translate }}</h2>
         <p class="max-w-xl text-text-secondary">{{ 'landing.finalCta.subtitle' | translate }}</p>
         <a
-          routerLink="/dashboard"
+          target="_blank"
+          href="https://github.com/xsip/mcp-bridge"
           class="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-white shadow-glow-accent hover-lift"
         >
           {{ 'landing.finalCta.button' | translate }}
