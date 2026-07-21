@@ -1,0 +1,997 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getData",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "operationId": "getMe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns public user profile data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid JWT"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get the currently authenticated user",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns an access token and a refresh token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenPairDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong username or password"
+          }
+        },
+        "summary": "Log in and receive an access + refresh token pair",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "description": "Requires a valid `REGISTER_SECRET` env value in the request body to prevent open registration. Returns the generated activation hash (to be sent via email in a real deployment).",
+        "operationId": "register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created — returns the activation hash in dev mode"
+          },
+          "401": {
+            "description": "Invalid register secret"
+          },
+          "409": {
+            "description": "Username or email already taken"
+          }
+        },
+        "summary": "Register a new user",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/activate": {
+      "get": {
+        "description": "Verifies the activation hash and marks the account as active. Returns an access + refresh token pair so the user is immediately logged in after activation.",
+        "operationId": "activateAccount",
+        "parameters": [
+          {
+            "name": "hash",
+            "required": true,
+            "in": "query",
+            "description": "The MD5 activation hash from the registration response",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account activated — returns an access + refresh token pair",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenPairDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid or already-used activation hash"
+          }
+        },
+        "summary": "Activate a user account",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "description": "Refresh tokens are single-use — every call rotates in a new one, invalidating the old one.",
+        "operationId": "refresh",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns a new access + refresh token pair",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenPairDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid, expired, or already-used refresh token"
+          }
+        },
+        "summary": "Exchange a refresh token for a new access + refresh token pair",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/api-keys": {
+      "get": {
+        "operationId": "listApiKeys",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiKeyDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "List the current user's API keys",
+        "tags": [
+          "api-keys"
+        ]
+      },
+      "post": {
+        "description": "The raw key is only ever returned in this response — store it now, it cannot be retrieved again.",
+        "operationId": "createApiKey",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApiKeyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedApiKeyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Generate a new API key",
+        "tags": [
+          "api-keys"
+        ]
+      }
+    },
+    "/auth/api-keys/{id}": {
+      "delete": {
+        "operationId": "revokeApiKey",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Revoke an API key",
+        "tags": [
+          "api-keys"
+        ]
+      }
+    },
+    "/mcps": {
+      "get": {
+        "operationId": "listMcps",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomMcpDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "List the current user's configured MCPs",
+        "tags": [
+          "mcps"
+        ]
+      },
+      "post": {
+        "operationId": "addMcp",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCustomMcpDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomMcpDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Register a new local MCP for the current user",
+        "tags": [
+          "mcps"
+        ]
+      }
+    },
+    "/mcps/{id}": {
+      "patch": {
+        "operationId": "updateMcp",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCustomMcpDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomMcpDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an existing MCP (port, active, headers)",
+        "tags": [
+          "mcps"
+        ]
+      },
+      "delete": {
+        "operationId": "removeMcp",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Remove an MCP from the current user account",
+        "tags": [
+          "mcps"
+        ]
+      }
+    },
+    "/mcp/logs": {
+      "get": {
+        "operationId": "listAllMcpLogs",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "1-based page number",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/McpLogPageDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "List (paginated) proxied request/response logs for every MCP the current user owns",
+        "tags": [
+          "mcp-logs"
+        ]
+      },
+      "delete": {
+        "operationId": "deleteMcpLogs",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteMcpLogsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Number of deleted entries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Bulk-delete log entries: by id, by mcpId, or every log the caller owns if neither is given",
+        "tags": [
+          "mcp-logs"
+        ]
+      }
+    },
+    "/mcp/{mcpId}/logs": {
+      "get": {
+        "operationId": "listMcpLogs",
+        "parameters": [
+          {
+            "name": "mcpId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "1-based page number",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/McpLogPageDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "List (paginated) proxied request/response logs for a single owned MCP",
+        "tags": [
+          "mcp-logs"
+        ]
+      }
+    },
+    "/mcp/logs/{id}": {
+      "delete": {
+        "operationId": "deleteMcpLog",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a single log entry",
+        "tags": [
+          "mcp-logs"
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "HealthController_check",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Health"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "MCP Bridge API",
+    "description": "Relay backend exposing desktop-agent MCP servers over HTTP",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "MeDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "subscription": {
+            "type": "string"
+          },
+          "isActivated": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "username",
+          "role",
+          "subscription",
+          "isActivated"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "string",
+            "example": "admin"
+          },
+          "password": {
+            "type": "string",
+            "example": "hunter2"
+          }
+        },
+        "required": [
+          "user",
+          "password"
+        ]
+      },
+      "TokenPairDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "Short-lived JWT used to authenticate API requests"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "Long-lived opaque token used to obtain a new access token via /auth/refresh"
+          }
+        },
+        "required": [
+          "accessToken",
+          "refreshToken"
+        ]
+      },
+      "RegisterDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "admin",
+            "description": "Unique username (lowercase alphanumeric / underscore, no hyphens)"
+          },
+          "password": {
+            "type": "string",
+            "example": "hunter2",
+            "description": "Password (min 8 chars)"
+          },
+          "registerSecret": {
+            "type": "string",
+            "example": "SUPER_SECRET_REGISTER_KEY",
+            "description": "Server-side registration secret from env REGISTER_SECRET"
+          }
+        },
+        "required": [
+          "username",
+          "password",
+          "registerSecret"
+        ]
+      },
+      "RefreshDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "admin"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "The refresh token issued at login/activation"
+          }
+        },
+        "required": [
+          "username",
+          "refreshToken"
+        ]
+      },
+      "ApiKeyDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "prefix": {
+            "type": "string",
+            "description": "First few characters of the key, for identification — the rest is never shown again"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "lastUsedAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "revokedAt": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "prefix",
+          "createdAt",
+          "lastUsedAt",
+          "revokedAt"
+        ]
+      },
+      "CreateApiKeyDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "CI server",
+            "description": "A label to tell this key apart from others in the list"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "CreatedApiKeyDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "prefix": {
+            "type": "string",
+            "description": "First few characters of the key, for identification — the rest is never shown again"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "lastUsedAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "revokedAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "description": "The full raw API key — shown once, at creation time, and never retrievable again"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "prefix",
+          "createdAt",
+          "lastUsedAt",
+          "revokedAt",
+          "key"
+        ]
+      },
+      "CustomMcpDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "example": "notes",
+            "description": "Unique (per user) name — the public id becomes \"<username>-<name>\""
+          },
+          "port": {
+            "type": "number",
+            "example": 3333,
+            "description": "Port the local MCP server listens on (on the user's machine)"
+          },
+          "subPath": {
+            "type": "string",
+            "example": "/api/mcp",
+            "description": "Optional sub-path on the local server, e.g. \"/api/mcp\" reaches http://localhost:<port>/api/mcp"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "headers": {
+            "type": "object",
+            "description": "Custom HTTP headers the agent should attach when calling the local MCP server"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "port",
+          "active"
+        ]
+      },
+      "AddCustomMcpDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "notes"
+          },
+          "port": {
+            "type": "number",
+            "example": 3333
+          },
+          "subPath": {
+            "type": "string",
+            "example": "/api/mcp",
+            "description": "Optional sub-path on the local server"
+          },
+          "headers": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "name",
+          "port"
+        ]
+      },
+      "UpdateCustomMcpDto": {
+        "type": "object",
+        "properties": {
+          "port": {
+            "type": "number",
+            "example": 3333
+          },
+          "subPath": {
+            "type": "string",
+            "example": "/api/mcp",
+            "description": "Optional sub-path on the local server — send \"\" to clear it"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "headers": {
+            "type": "object"
+          }
+        }
+      },
+      "McpLogWithContextDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string",
+            "description": "Correlation id for this proxied request, distinct per attempt"
+          },
+          "method": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "status": {
+            "type": "number",
+            "description": "HTTP status returned by the agent — absent if the request failed before a response arrived"
+          },
+          "ok": {
+            "type": "boolean",
+            "description": "Whether the request completed with a response, regardless of status code"
+          },
+          "errorMessage": {
+            "type": "string",
+            "description": "Set when the request failed (agent offline, timeout, ...)"
+          },
+          "durationMs": {
+            "type": "number"
+          },
+          "requestBody": {
+            "type": "object",
+            "description": "Body sent to the local MCP server, if any"
+          },
+          "responseBody": {
+            "type": "object",
+            "description": "Body returned by the local MCP server — absent if the request failed before a response arrived"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "ISO 8601 timestamp"
+          },
+          "mcpId": {
+            "type": "string"
+          },
+          "mcpName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "requestId",
+          "method",
+          "path",
+          "ok",
+          "durationMs",
+          "timestamp",
+          "mcpId",
+          "mcpName"
+        ]
+      },
+      "McpLogPageDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/McpLogWithContextDto"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "Total number of matching log entries across all pages"
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "pageSize"
+        ]
+      },
+      "DeleteMcpLogsDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "Delete exactly these log entries (bulk-select in the UI)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "mcpId": {
+            "type": "string",
+            "description": "Delete every log entry for this one MCP"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "common": {
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen"
+  },
+  "darkMode": {
+    "switchToLight": "Zum hellen Modus wechseln",
+    "switchToDark": "Zum dunklen Modus wechseln"
+  },
+  "language": {
+    "switch": "Sprache wechseln"
+  },
+  "auth": {
+    "username": "Benutzername",
+    "password": "Passwort",
+    "registerNow": "Jetzt registrieren",
+    "backToLogin": "Zurück zum Login",
+    "login": {
+      "title": "Anmelden",
+      "subtitle": "Melde dich an, um deine MCPs zu verwalten.",
+      "submit": "Anmelden",
+      "submitting": "Anmeldung läuft…",
+      "noAccount": "Noch kein Konto?"
+    },
+    "register": {
+      "title": "Konto erstellen",
+      "subtitle": "Registriere dich, um deine lokalen MCPs freizugeben.",
+      "usernameHint": "Nur Kleinbuchstaben, Zahlen und Unterstrich.",
+      "secret": "Registrierungs-Secret",
+      "secretHint": "Das im Backend konfigurierte REGISTER_SECRET.",
+      "submit": "Registrieren",
+      "submitting": "Registrierung läuft…",
+      "haveAccount": "Bereits ein Konto?",
+      "checkEmailTitle": "E-Mail prüfen",
+      "checkEmailBody": "Wir haben dir einen Aktivierungslink geschickt, um dein Konto abzuschließen."
+    }
+  },
+  "sidenav": {
+    "mcps": "MCPS",
+    "logs": "Logs",
+    "apiKeys": "API-Schlüssel",
+    "logout": "Abmelden",
+    "darkModeToggle": "Darkmode Toggeln",
+    "notElectron": "Der Agent läuft nur in der Desktop-App",
+    "agentStatus": {
+      "connected": "Agent verbunden",
+      "connecting": "Verbindung wird aufgebaut…",
+      "disconnected": "Agent getrennt",
+      "error": "Verbindungsfehler"
+    }
+  },
+  "mcps": {
+    "title": "MCPs",
+    "subtitle": "Konfiguriere die lokalen MCP-Server deines Desktop-Agenten.",
+    "name": "Name",
+    "port": "Port",
+    "subPath": "Unterpfad (optional)",
+    "add": "Hinzufügen",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "viewLogs": "Logs ansehen",
+    "edit": "Bearbeiten",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "remove": "Entfernen",
+    "empty": "Noch keine MCPs — oben hinzufügen."
+  },
+  "logs": {
+    "title": "Logs",
+    "subtitle": "Anfragen und Antworten deiner MCPs.",
+    "subtitleFiltered": "Anfragen und Antworten dieses MCPs.",
+    "clearFilter": "Alle MCPs anzeigen",
+    "time": "Zeit",
+    "mcp": "MCP",
+    "request": "Anfrage",
+    "status": "Status",
+    "duration": "Dauer",
+    "failed": "Fehlgeschlagen",
+    "empty": "Noch keine Anfragen protokolliert.",
+    "requestBody": "Anfrage-Body",
+    "data": "Req/Res Daten",
+    "responseBody": "Antwort-Body",
+    "noBody": "(leer)",
+    "selectAll": "Alle auf dieser Seite auswählen",
+    "selectedCount": "{{count}} ausgewählt",
+    "deleteSelected": "Auswahl löschen",
+    "deleteEntry": "Eintrag löschen",
+    "deleteAll": "Alle löschen",
+    "deleteAllFiltered": "Alle für dieses MCP löschen",
+    "confirmDeleteTitle": "Log-Einträge löschen?",
+    "confirmDeleteSelected": "{{count}} ausgewählte Log-Einträge löschen? Das kann nicht rückgängig gemacht werden.",
+    "confirmDeleteAll": "Alle Log-Einträge für alle MCPs löschen? Das kann nicht rückgängig gemacht werden.",
+    "confirmDeleteAllFiltered": "Alle Log-Einträge für dieses MCP löschen? Das kann nicht rückgängig gemacht werden.",
+    "totalCount": "{{count}} insgesamt",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "pageOf": "Seite {{page}} von {{pageCount}}"
+  },
+  "apiKeys": {
+    "title": "API-Schlüssel",
+    "subtitle": "Erzeuge langlebige Schlüssel, um MCP-Aufrufe außerhalb der Desktop-App zu authentifizieren.",
+    "name": "Name",
+    "generate": "Erzeugen",
+    "createdTitle": "API-Schlüssel erzeugt",
+    "createdHint": "Jetzt kopieren — er wird nicht erneut angezeigt.",
+    "copy": "Kopieren",
+    "dismiss": "Schließen",
+    "created": "Erstellt",
+    "lastUsed": "Zuletzt verwendet",
+    "revoked": "Widerrufen",
+    "revoke": "Widerrufen",
+    "confirmRevokeTitle": "API-Schlüssel widerrufen?",
+    "confirmRevoke": "Diesen API-Schlüssel widerrufen? Alles, was ihn verwendet, funktioniert danach sofort nicht mehr.",
+    "empty": "Noch keine API-Schlüssel — oben einen erzeugen."
+  }
+}

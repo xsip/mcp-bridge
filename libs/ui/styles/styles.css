@@ -1,0 +1,749 @@
+/* ── Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap');
+
+@import "tailwindcss";
+
+/*
+ * This file is shared by every app (apps/ui, apps/desktop, ...), so it can't
+ * declare an app-relative `@source` glob. Each consuming app's own
+ * postcss.config.json sets `base` to its own `src` directory instead —
+ * that's what makes Tailwind's class-candidate scanning find that app's
+ * component files.
+ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Base font ── */
+:root {
+  font-family: 'Geist', system-ui, -apple-system, sans-serif;
+}
+
+pre, code, kbd, .font-mono {
+  font-family: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+/* ─────────────────────────────────────────────────────
+   Light theme tokens
+───────────────────────────────────────────────────── */
+:root {
+  --color-surface-base:     #fafaf9;
+  --color-surface-raised:   #f4f3f0;
+  --color-surface-overlay:  #eeece8;
+  --color-surface-sunken:   #e5e2db;
+  --color-surface-glass:    rgba(255, 255, 255, 0.72);
+  --color-surface-glass-border: rgba(255, 255, 255, 0.88);
+
+  --color-border-subtle:    rgba(0, 0, 0, 0.06);
+  --color-border-default:   rgba(0, 0, 0, 0.10);
+  --color-border-strong:    rgba(0, 0, 0, 0.18);
+  --color-border-glass:     rgba(255, 255, 255, 0.55);
+
+  --color-text-primary:     #1b1916;
+  --color-text-secondary:   #524f47;
+  --color-text-muted:       #9b9890;
+  --color-text-disabled:    #cac7bf;
+
+  --color-accent:           #5b4fe9;
+  --color-accent-hover:     #4a3fd4;
+  --color-accent-subtle:    rgba(91, 79, 233, 0.09);
+  --color-accent-text:      #3f30c0;
+  --color-accent-glow:      rgba(91, 79, 233, 0.22);
+
+  --color-secondary-accent:        #0d9488;
+  --color-secondary-accent-hover:  #0b8276;
+  --color-secondary-accent-subtle: rgba(13, 148, 136, 0.09);
+  --color-secondary-accent-text:   #0a7068;
+
+  --color-tertiary-accent:        #d97706;
+  --color-tertiary-accent-subtle: rgba(217, 119, 6, 0.09);
+  --color-tertiary-accent-text:   #b45309;
+
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md:    0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.07);
+  --shadow-lg:    0 8px 28px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.08);
+  --shadow-xl:    0 20px 56px rgba(0,0,0,0.14), 0 8px 20px rgba(0,0,0,0.09);
+  --shadow-glow:  0 0 0 3px var(--color-accent-glow);
+  --shadow-inset: inset 0 1px 3px rgba(0,0,0,0.07), inset 0 1px 1px rgba(0,0,0,0.04);
+
+  --color-reasoning-bg:     rgba(109, 40, 217, 0.07);
+  --color-reasoning-border: rgba(109, 40, 217, 0.22);
+  --color-reasoning-text:   #6d28d9;
+  --color-reasoning-muted:  #8b5cf6;
+
+  --color-tool-bg:          rgba(8, 145, 178, 0.07);
+  --color-tool-border:      rgba(8, 145, 178, 0.22);
+  --color-tool-text:        #0e7490;
+  --color-tool-muted:       #22d3ee;
+
+  --color-error-bg:         rgba(220, 38, 38, 0.07);
+  --color-error-border:     rgba(220, 38, 38, 0.22);
+  --color-error-text:       #b91c1c;
+  --color-error-muted:      #f87171;
+
+  --color-success-bg:       rgba(5, 150, 105, 0.07);
+  --color-success-border:   rgba(5, 150, 105, 0.22);
+  --color-success-text:     #047857;
+  --color-success-muted:    #34d399;
+
+  --color-warn-bg:          rgba(217, 119, 6, 0.08);
+  --color-warn-border:      rgba(217, 119, 6, 0.22);
+  --color-warn-text:        #b45309;
+  --color-warn-muted:       #fbbf24;
+
+  --color-info-bg:          rgba(37, 99, 235, 0.07);
+  --color-info-border:      rgba(37, 99, 235, 0.22);
+  --color-info-text:        #1d4ed8;
+  --color-info-muted:       #60a5fa;
+
+  --color-scrollbar-bg:     #e6e3db;
+  --color-scrollbar-thumb:  #c0bcb3;
+
+  --color-primary:          var(--color-surface-base);
+  --color-primary-2:        var(--color-surface-raised);
+  --color-secondary:        var(--color-text-primary);
+  --color-error:            #b91c1c;
+}
+
+/* ─────────────────────────────────────────────────────
+   Dark theme tokens
+───────────────────────────────────────────────────── */
+.dark {
+  /* ── Surfaces: lifted slate — dark but not oppressive ── */
+  --color-surface-base:     #161618;
+  --color-surface-raised:   #1e1e21;
+  --color-surface-overlay:  #26262a;
+  --color-surface-sunken:   #0f0f11;
+  --color-surface-glass:    rgba(30, 30, 33, 0.90);
+  --color-surface-glass-border: rgba(255, 255, 255, 0.07);
+
+  /* ── Borders: soft, barely-there ── */
+  --color-border-subtle:    rgba(255, 255, 255, 0.05);
+  --color-border-default:   rgba(255, 255, 255, 0.10);
+  --color-border-strong:    rgba(255, 255, 255, 0.18);
+  --color-border-glass:     rgba(255, 255, 255, 0.06);
+
+  /* ── Text: soft white — easy on the eyes ── */
+  --color-text-primary:     #e4e4e7;
+  --color-text-secondary:   #8f8f99;
+  --color-text-muted:       #4e4e58;
+  --color-text-disabled:    #2e2e33;
+
+  /* ── Accent: muted indigo — present but not glaring ── */
+  --color-accent:           #6d62d4;
+  --color-accent-hover:     #7e74dc;
+  --color-accent-subtle:    rgba(109, 98, 212, 0.10);
+  --color-accent-text:      #a89ef0;
+  --color-accent-glow:      rgba(109, 98, 212, 0.18);
+
+  /* ── Secondary: muted steel blue ── */
+  --color-secondary-accent:        #5b8fb9;
+  --color-secondary-accent-hover:  #72a3cc;
+  --color-secondary-accent-subtle: rgba(91, 143, 185, 0.09);
+  --color-secondary-accent-text:   #93bdd6;
+
+  /* ── Tertiary: muted amber ── */
+  --color-tertiary-accent:        #c2890a;
+  --color-tertiary-accent-subtle: rgba(194, 137, 10, 0.09);
+  --color-tertiary-accent-text:   #e4af4e;
+
+  /* ── Shadows: strong depth without glow bleed ── */
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.30);
+  --shadow-md:    0 4px 14px rgba(0,0,0,0.55), 0 2px 5px rgba(0,0,0,0.36);
+  --shadow-lg:    0 8px 30px rgba(0,0,0,0.65), 0 4px 10px rgba(0,0,0,0.42);
+  --shadow-xl:    0 20px 60px rgba(0,0,0,0.76), 0 8px 22px rgba(0,0,0,0.48);
+  --shadow-glow:  0 0 0 2px var(--color-accent-glow);
+  --shadow-inset: inset 0 1px 3px rgba(0,0,0,0.50), inset 0 1px 1px rgba(0,0,0,0.30);
+
+  /* ── Semantic: reasoning — muted violet ── */
+  --color-reasoning-bg:     rgba(109, 98, 212, 0.08);
+  --color-reasoning-border: rgba(109, 98, 212, 0.16);
+  --color-reasoning-text:   #a89ef0;
+  --color-reasoning-muted:  #6d62d4;
+
+  /* ── Semantic: tool — muted steel ── */
+  --color-tool-bg:          rgba(91, 143, 185, 0.07);
+  --color-tool-border:      rgba(91, 143, 185, 0.15);
+  --color-tool-text:        #93bdd6;
+  --color-tool-muted:       #5b8fb9;
+
+  /* ── Semantic: error — muted red ── */
+  --color-error-bg:         rgba(220, 80, 80, 0.07);
+  --color-error-border:     rgba(220, 80, 80, 0.16);
+  --color-error-text:       #e8a0a0;
+  --color-error-muted:      #c05050;
+
+  /* ── Semantic: success — muted green ── */
+  --color-success-bg:       rgba(60, 170, 110, 0.07);
+  --color-success-border:   rgba(60, 170, 110, 0.16);
+  --color-success-text:     #80c8a0;
+  --color-success-muted:    #3caa6e;
+
+  /* ── Semantic: warn — muted amber ── */
+  --color-warn-bg:          rgba(194, 137, 10, 0.08);
+  --color-warn-border:      rgba(194, 137, 10, 0.18);
+  --color-warn-text:        #e4af4e;
+  --color-warn-muted:       #c2890a;
+
+  /* ── Semantic: info — muted indigo ── */
+  --color-info-bg:          rgba(109, 98, 212, 0.07);
+  --color-info-border:      rgba(109, 98, 212, 0.15);
+  --color-info-text:        #a89ef0;
+  --color-info-muted:       #6d62d4;
+
+  /* ── Scrollbar ── */
+  --color-scrollbar-bg:     #1e1e21;
+  --color-scrollbar-thumb:  #3a3a40;
+
+  --color-primary:          var(--color-surface-base);
+  --color-primary-2:        var(--color-surface-raised);
+  --color-secondary:        var(--color-text-primary);
+  --color-error:            #e8a0a0;
+}
+
+
+/* ─────────────────────────────────────────────────────
+   Code block syntax tokens — light
+───────────────────────────────────────────────────── */
+:root {
+  --color-code-bg:          #f0eee8;
+  --color-code-header:      #e8e5de;
+  --color-code-border:      rgba(0, 0, 0, 0.08);
+
+  --color-code-keyword:     #7c3aed;   /* purple  — if, return, const */
+  --color-code-string:      #0f766e;   /* teal    — "hello" */
+  --color-code-number:      #b45309;   /* amber   — 42, 3.14 */
+  --color-code-comment:     #9b9890;   /* muted   — // ... */
+  --color-code-function:    #1d4ed8;   /* blue    — fn names */
+  --color-code-operator:    #be185d;   /* pink    — = + => */
+  --color-code-punctuation: #524f47;   /* secondary */
+  --color-code-class:       #b45309;   /* amber   — MyClass */
+  --color-code-variable:    #1b1916;   /* primary */
+  --color-code-property:    #0e7490;   /* cyan    — obj.prop */
+  --color-code-tag:         #7c3aed;   /* purple  — <div> */
+  --color-code-attr:        #0f766e;   /* teal    — class= */
+  --color-code-regex:       #be185d;   /* pink    — /regex/ */
+  --color-code-deleted:     #b91c1c;
+  --color-code-inserted:    #047857;
+}
+
+/* ─────────────────────────────────────────────────────
+   Code block syntax tokens — dark
+───────────────────────────────────────────────────── */
+.dark {
+  --color-code-bg:          #111113;
+  --color-code-header:      #1a1a1e;
+  --color-code-border:      rgba(255, 255, 255, 0.07);
+
+  --color-code-keyword:     #a78bfa;   /* soft violet */
+  --color-code-string:      #34d399;   /* emerald     */
+  --color-code-number:      #fbbf24;   /* amber       */
+  --color-code-comment:     #4e4e58;   /* muted       */
+  --color-code-function:    #60a5fa;   /* sky blue    */
+  --color-code-operator:    #f472b6;   /* pink        */
+  --color-code-punctuation: #8f8f99;   /* secondary   */
+  --color-code-class:       #fbbf24;   /* amber       */
+  --color-code-variable:    #e4e4e7;   /* primary     */
+  --color-code-property:    #22d3ee;   /* cyan        */
+  --color-code-tag:         #a78bfa;   /* soft violet */
+  --color-code-attr:        #34d399;   /* emerald     */
+  --color-code-regex:       #f472b6;   /* pink        */
+  --color-code-deleted:     #e8a0a0;
+  --color-code-inserted:    #80c8a0;
+}
+
+/* ─────────────────────────────────────────────────────
+   Tailwind theme registration
+───────────────────────────────────────────────────── */
+@theme {
+  --color-primary:           var(--color-primary);
+  --color-primary-2:         var(--color-primary-2);
+  --color-secondary:         var(--color-secondary);
+  --color-error:             var(--color-error);
+
+  --color-surface-base:      var(--color-surface-base);
+  --color-surface-raised:    var(--color-surface-raised);
+  --color-surface-overlay:   var(--color-surface-overlay);
+  --color-surface-sunken:    var(--color-surface-sunken);
+  --color-surface-glass:     var(--color-surface-glass);
+
+  --color-border-subtle:     var(--color-border-subtle);
+  --color-border-default:    var(--color-border-default);
+  --color-border-strong:     var(--color-border-strong);
+  --color-border-glass:      var(--color-border-glass);
+
+  --color-text-primary:      var(--color-text-primary);
+  --color-text-secondary:    var(--color-text-secondary);
+  --color-text-muted:        var(--color-text-muted);
+  --color-text-disabled:     var(--color-text-disabled);
+
+  --color-accent:            var(--color-accent);
+  --color-accent-hover:      var(--color-accent-hover);
+  --color-accent-subtle:     var(--color-accent-subtle);
+  --color-accent-text:       var(--color-accent-text);
+  --color-accent-glow:       var(--color-accent-glow);
+
+  --color-secondary-accent:        var(--color-secondary-accent);
+  --color-secondary-accent-hover:  var(--color-secondary-accent-hover);
+  --color-secondary-accent-subtle: var(--color-secondary-accent-subtle);
+  --color-secondary-accent-text:   var(--color-secondary-accent-text);
+
+  --color-tertiary-accent:        var(--color-tertiary-accent);
+  --color-tertiary-accent-subtle: var(--color-tertiary-accent-subtle);
+  --color-tertiary-accent-text:   var(--color-tertiary-accent-text);
+
+  --color-reasoning-bg:      var(--color-reasoning-bg);
+  --color-reasoning-border:  var(--color-reasoning-border);
+  --color-reasoning-text:    var(--color-reasoning-text);
+  --color-reasoning-muted:   var(--color-reasoning-muted);
+
+  --color-tool-bg:           var(--color-tool-bg);
+  --color-tool-border:       var(--color-tool-border);
+  --color-tool-text:         var(--color-tool-text);
+  --color-tool-muted:        var(--color-tool-muted);
+
+  --color-error-bg:          var(--color-error-bg);
+  --color-error-border:      var(--color-error-border);
+  --color-error-text:        var(--color-error-text);
+  --color-error-muted:       var(--color-error-muted);
+
+  --color-success-bg:        var(--color-success-bg);
+  --color-success-border:    var(--color-success-border);
+  --color-success-text:      var(--color-success-text);
+  --color-success-muted:     var(--color-success-muted);
+
+  --color-warn-bg:           var(--color-warn-bg);
+  --color-warn-border:       var(--color-warn-border);
+  --color-warn-text:         var(--color-warn-text);
+  --color-warn-muted:        var(--color-warn-muted);
+
+  --color-info-bg:           var(--color-info-bg);
+  --color-info-border:       var(--color-info-border);
+  --color-info-text:         var(--color-info-text);
+  --color-info-muted:        var(--color-info-muted);
+
+  --color-scrollbar-track:   var(--color-scrollbar-bg);
+  --color-scrollbar-thumb:   var(--color-scrollbar-thumb);
+
+  --animate-marquee:        marquee 250s linear infinite;
+  --animate-marquee2:       marquee2 250s linear infinite;
+  --animate-marquee-slow:   marquee 2500s linear infinite;
+  --animate-marquee-slow2:  marquee2 2500s linear infinite;
+  --animate-spin-slow:      spin 10s linear infinite;
+  --animate-spin-slower:    spin 18s linear infinite;
+
+  --color-code-bg:          var(--color-code-bg);
+  --color-code-header:      var(--color-code-header);
+  --color-code-border:      var(--color-code-border);
+  --color-code-keyword:     var(--color-code-keyword);
+  --color-code-string:      var(--color-code-string);
+  --color-code-number:      var(--color-code-number);
+  --color-code-comment:     var(--color-code-comment);
+  --color-code-function:    var(--color-code-function);
+  --color-code-operator:    var(--color-code-operator);
+  --color-code-punctuation: var(--color-code-punctuation);
+  --color-code-class:       var(--color-code-class);
+  --color-code-variable:    var(--color-code-variable);
+  --color-code-property:    var(--color-code-property);
+  --color-code-tag:         var(--color-code-tag);
+  --color-code-attr:        var(--color-code-attr);
+  --color-code-regex:       var(--color-code-regex);
+  --color-code-deleted:     var(--color-code-deleted);
+  --color-code-inserted:    var(--color-code-inserted);
+
+  @keyframes marquee {
+    0%, 100% { transform: translateX(0%); }
+    100%      { transform: translateX(-100%); }
+  }
+  @keyframes marquee2 {
+    0%, 100% { transform: translateX(100%); }
+    100%      { transform: translateX(0%); }
+  }
+}
+
+/* ─────────────────────────────────────────────────────
+   Scrollbar
+───────────────────────────────────────────────────── */
+::-webkit-scrollbar        { @apply w-1.5 h-1.5; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-corner { background: transparent; }
+::-webkit-scrollbar-thumb  { @apply bg-scrollbar-thumb rounded-full; }
+::-webkit-scrollbar-thumb:hover { opacity: 0.8; }
+
+/* ─────────────────────────────────────────────────────
+   Utilities
+───────────────────────────────────────────────────── */
+@utility animation-pause {
+  animation-play-state: paused !important;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Glass morphism surface */
+  .glass {
+    background: var(--color-surface-glass);
+    border: 1px solid var(--color-surface-glass-border);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  }
+
+  /* Depth shadows */
+  .shadow-depth-sm  { box-shadow: var(--shadow-sm); }
+  .shadow-depth-md  { box-shadow: var(--shadow-md); }
+  .shadow-depth-lg  { box-shadow: var(--shadow-lg); }
+  .shadow-depth-xl  { box-shadow: var(--shadow-xl); }
+  .shadow-glow-accent { box-shadow: var(--shadow-glow); }
+  .shadow-inset-depth { box-shadow: var(--shadow-inset); }
+}
+
+/* ─────────────────────────────────────────────────────
+   Extended animations & utilities
+───────────────────────────────────────────────────── */
+@theme {
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth:   cubic-bezier(0.4, 0, 0.2, 1);
+
+  --animate-fade-in:         fade-in 0.2s var(--ease-smooth) both;
+  --animate-fade-out:        fade-out 0.15s var(--ease-smooth) both;
+  --animate-slide-up:        slide-up 0.3s var(--ease-out-expo) both;
+  --animate-slide-down:      slide-down 0.3s var(--ease-out-expo) both;
+  --animate-slide-in-left:   slide-in-left 0.3s var(--ease-out-expo) both;
+  --animate-slide-in-right:  slide-in-right 0.3s var(--ease-out-expo) both;
+  --animate-pop-in:          pop-in 0.22s var(--ease-spring) both;
+  --animate-pop-out:         pop-out 0.15s var(--ease-smooth) both;
+  --animate-bounce-in:       bounce-in 0.4s var(--ease-spring) both;
+  --animate-scale-in:        scale-in 0.2s var(--ease-spring) both;
+  --animate-glow-pulse:      glow-pulse 2.4s ease-in-out infinite;
+  --animate-shimmer:         shimmer 1.8s ease-in-out infinite;
+  --animate-typing-blink:    typing-blink 1s step-end infinite;
+  --animate-float:           float 3s ease-in-out infinite;
+  --animate-orbit:           orbit 8s linear infinite;
+  --animate-accordion-open:  accordion-open 0.25s var(--ease-out-expo) both;
+  --animate-accordion-close: accordion-close 0.2s var(--ease-smooth) both;
+  --animate-shake:           shake 0.4s var(--ease-spring) both;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-down {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-in-left {
+    from { opacity: 0; transform: translateX(-14px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slide-in-right {
+    from { opacity: 0; transform: translateX(14px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes pop-in {
+    from { opacity: 0; transform: scale(0.90); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes pop-out {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(0.92); }
+  }
+  @keyframes bounce-in {
+    0%   { opacity: 0; transform: scale(0.75) translateY(8px); }
+    60%  { opacity: 1; transform: scale(1.04) translateY(-2px); }
+    100% { transform: scale(1) translateY(0); }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.94); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 6px var(--color-accent-glow); }
+    50%       { box-shadow: 0 0 18px var(--color-accent-glow), 0 0 36px var(--color-accent-glow); }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position:  200% center; }
+  }
+  @keyframes typing-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-6px); }
+  }
+  @keyframes orbit {
+    from { transform: rotate(0deg) translateX(24px) rotate(0deg); }
+    to   { transform: rotate(360deg) translateX(24px) rotate(-360deg); }
+  }
+  @keyframes accordion-open {
+    from { opacity: 0; transform: scaleY(0.85); transform-origin: top; }
+    to   { opacity: 1; transform: scaleY(1);    transform-origin: top; }
+  }
+  @keyframes accordion-close {
+    from { opacity: 1; transform: scaleY(1);    transform-origin: top; }
+    to   { opacity: 0; transform: scaleY(0.85); transform-origin: top; }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%       { transform: translateX(-4px); }
+    40%       { transform: translateX(4px); }
+    60%       { transform: translateX(-3px); }
+    80%       { transform: translateX(3px); }
+  }
+}
+
+@layer utilities {
+  /* Message entrance */
+  .msg-enter { animation: var(--animate-slide-up); }
+
+  /* Staggered children — add to parent, children get --delay-N */
+  .stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+  .stagger-children > *:nth-child(2) { animation-delay: 40ms; }
+  .stagger-children > *:nth-child(3) { animation-delay: 80ms; }
+  .stagger-children > *:nth-child(4) { animation-delay: 120ms; }
+  .stagger-children > *:nth-child(5) { animation-delay: 160ms; }
+  .stagger-children > *:nth-child(n+6) { animation-delay: 200ms; }
+
+  /* Shimmer skeleton */
+  .shimmer-bg {
+    background: linear-gradient(
+        90deg,
+        var(--color-surface-raised) 25%,
+        var(--color-surface-overlay) 50%,
+        var(--color-surface-raised) 75%
+    );
+    background-size: 200% 100%;
+    animation: var(--animate-shimmer);
+  }
+
+  /* Glow rings */
+  .glow-ring       { box-shadow: 0 0 0 2px var(--color-accent-glow), 0 0 14px var(--color-accent-glow); }
+  .glow-ring-sm    { box-shadow: 0 0 0 1px var(--color-accent-glow), 0 0 8px  var(--color-accent-glow); }
+  .glow-ring-error { box-shadow: 0 0 0 2px var(--color-error-border), 0 0 10px var(--color-error-bg); }
+
+  /* Glass surfaces */
+  .glass {
+    background: var(--color-surface-glass);
+    border: 1px solid var(--color-surface-glass-border);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  }
+  .glass-strong {
+    background: var(--color-surface-glass);
+    border: 1px solid var(--color-surface-glass-border);
+    backdrop-filter: blur(24px) saturate(1.6);
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  }
+
+  /* Smooth hover lift */
+  .hover-lift {
+    transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 200ms ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  .hover-lift:active {
+    transform: translateY(0);
+    transition-duration: 80ms;
+  }
+
+  /* Subtle press feedback */
+  .press-feedback:active {
+    transform: scale(0.97);
+    transition: transform 80ms ease;
+  }
+
+  /* Gradient text */
+  .text-gradient-accent {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-secondary-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Dot grid background */
+  .bg-dot-grid {
+    background-image: radial-gradient(circle, var(--color-border-subtle) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────
+   Global smooth transitions
+───────────────────────────────────────────────────── */
+/* All interactive elements get a base transition */
+button, a, [role="button"], [role="switch"] {
+  transition-property: color, background-color, border-color, box-shadow, opacity, transform, filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 160ms;
+}
+
+/* Inputs and textareas */
+input, textarea, select {
+  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 200ms ease;
+}
+
+/* Focused inputs */
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-accent) !important;
+  box-shadow: 0 0 0 3px var(--color-accent-glow), var(--shadow-inset);
+}
+
+/* Input error state */
+input.input-error, textarea.input-error {
+  border-color: var(--color-error-border) !important;
+  animation: var(--animate-shake);
+}
+
+/* Selection */
+::selection {
+  background: var(--color-accent-subtle);
+  color: var(--color-accent-text);
+}
+
+
+/* ─────────────────────────────────────────────────────
+   Markdown body — overflow containment
+───────────────────────────────────────────────────── */
+.markdown-body {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Code blocks scroll horizontally, never expand the bubble */
+.markdown-body pre {
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: pre;
+}
+
+/* Inline code wraps rather than pushing layout */
+.markdown-body code:not(pre > code) {
+  word-break: break-all;
+}
+
+/* Prism*/
+/* ─────────────────────────────────────────────────────
+Prism syntax highlighting — mapped to code tokens
+───────────────────────────────────────────────────── */
+.token.keyword,
+.token.bold             { color: var(--color-code-keyword); font-weight: 500; }
+
+.token.string,
+.token.char,
+.token.template-string,
+.token.attr-value       { color: var(--color-code-string); }
+
+.token.number,
+.token.boolean,
+.token.constant         { color: var(--color-code-number); }
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata            { color: var(--color-code-comment); font-style: italic; }
+
+.token.function,
+.token.function-name    { color: var(--color-code-function); }
+
+.token.operator,
+.token.arrow            { color: var(--color-code-operator); }
+
+.token.punctuation      { color: var(--color-code-punctuation); }
+
+.token.class-name,
+.token.maybe-class-name { color: var(--color-code-class); }
+
+.token.variable,
+.token.parameter        { color: var(--color-code-variable); }
+
+.token.property,
+.token.method           { color: var(--color-code-property); }
+
+.token.tag              { color: var(--color-code-tag); }
+.token.attr-name        { color: var(--color-code-attr); }
+
+.token.regex,
+.token.important        { color: var(--color-code-regex); }
+
+.token.deleted          { color: var(--color-code-deleted); background: rgba(185, 28, 28, 0.08); }
+.token.inserted         { color: var(--color-code-inserted); background: rgba(4, 120, 87, 0.08); }
+
+.token.url,
+.token.entity,
+.token.symbol           { color: var(--color-code-property); }
+
+/* Strip any background/shadow Prism themes inject */
+code[class*="language-"],
+pre[class*="language-"] { background: transparent !important; text-shadow: none !important; }
+
+/* ── Animate-on-scroll ──────────────────────────────────────────────
+ * .ui-aos-init is only ever added by AnimateOnScrollDirective from a
+ * real browser with JS running — never present in SSR output or when
+ * JS is disabled, so the element's default (no-class) state is simply
+ * "visible, no transform", which is exactly what we want as the
+ * no-animation fallback. */
+.ui-aos-init {
+  opacity: 0;
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.ui-aos-init.ui-aos--up {
+  transform: translateY(28px);
+}
+.ui-aos-init.ui-aos--down {
+  transform: translateY(-28px);
+}
+.ui-aos-init.ui-aos--left {
+  transform: translateX(-36px);
+}
+.ui-aos-init.ui-aos--right {
+  transform: translateX(36px);
+}
+.ui-aos-init.ui-aos--zoom {
+  transform: scale(0.92);
+}
+.ui-aos-init.ui-aos--fade {
+  transform: none;
+}
+.ui-aos-init.ui-aos-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .ui-aos-init.ui-aos--left,
+  .ui-aos-init.ui-aos--right {
+    transform: translateY(16px);
+  }
+}
+
+
+.drag {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}

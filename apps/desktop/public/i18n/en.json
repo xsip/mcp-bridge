@@ -1,0 +1,116 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "darkMode": {
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  },
+  "language": {
+    "switch": "Switch language"
+  },
+  "auth": {
+    "username": "Username",
+    "password": "Password",
+    "registerNow": "Register now",
+    "backToLogin": "Back to login",
+    "login": {
+      "title": "Log in",
+      "subtitle": "Sign in to manage your MCPs.",
+      "submit": "Log in",
+      "submitting": "Logging in…",
+      "noAccount": "Don't have an account?"
+    },
+    "register": {
+      "title": "Create an account",
+      "subtitle": "Register to start exposing your local MCPs.",
+      "usernameHint": "Lowercase letters, numbers, underscore only.",
+      "secret": "Registration secret",
+      "secretHint": "The REGISTER_SECRET configured on the backend.",
+      "submit": "Register",
+      "submitting": "Registering…",
+      "haveAccount": "Already have an account?",
+      "checkEmailTitle": "Check your email",
+      "checkEmailBody": "We've sent an activation link to finish setting up your account."
+    }
+  },
+  "sidenav": {
+    "mcps": "MCPS",
+    "logs": "Logs",
+    "apiKeys": "API Keys",
+    "logout": "Log out",
+    "darkModeToggle": "Toggle Darkmode",
+    "notElectron": "Agent only runs in the desktop app",
+    "agentStatus": {
+      "connected": "Agent connected",
+      "connecting": "Connecting…",
+      "disconnected": "Agent disconnected",
+      "error": "Connection error"
+    }
+  },
+  "mcps": {
+    "title": "MCPs",
+    "subtitle": "Configure the local MCP servers your desktop agent exposes.",
+    "name": "Name",
+    "port": "Port",
+    "subPath": "Sub route (optional)",
+    "add": "Add",
+    "active": "Active",
+    "inactive": "Inactive",
+    "viewLogs": "View logs",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "remove": "Remove",
+    "empty": "No MCPs yet — add one above."
+  },
+  "logs": {
+    "title": "Logs",
+    "subtitle": "Requests and responses proxied to your MCPs.",
+    "subtitleFiltered": "Requests and responses proxied to this MCP.",
+    "clearFilter": "Show all MCPs",
+    "time": "Time",
+    "mcp": "MCP",
+    "request": "Request",
+    "status": "Status",
+    "duration": "Duration",
+    "failed": "Failed",
+    "empty": "No requests logged yet.",
+    "requestBody": "Request body",
+    "data": "Req/Res Data",
+    "responseBody": "Response body",
+    "noBody": "(empty)",
+    "selectAll": "Select all on this page",
+    "selectedCount": "{{count}} selected",
+    "deleteSelected": "Delete selected",
+    "deleteEntry": "Delete entry",
+    "deleteAll": "Delete all",
+    "deleteAllFiltered": "Delete all for this MCP",
+    "confirmDeleteTitle": "Delete log entries?",
+    "confirmDeleteSelected": "Delete {{count}} selected log entries? This can't be undone.",
+    "confirmDeleteAll": "Delete every log entry for every MCP? This can't be undone.",
+    "confirmDeleteAllFiltered": "Delete every log entry for this MCP? This can't be undone.",
+    "totalCount": "{{count}} total",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {{page}} of {{pageCount}}"
+  },
+  "apiKeys": {
+    "title": "API Keys",
+    "subtitle": "Generate long-lived keys to authenticate MCP calls from outside the desktop app.",
+    "name": "Name",
+    "generate": "Generate",
+    "createdTitle": "API key generated",
+    "createdHint": "Copy it now — it won't be shown again.",
+    "copy": "Copy",
+    "dismiss": "Dismiss",
+    "created": "Created",
+    "lastUsed": "Last used",
+    "revoked": "Revoked",
+    "revoke": "Revoke",
+    "confirmRevokeTitle": "Revoke API key?",
+    "confirmRevoke": "Revoke this API key? Anything using it will stop working immediately.",
+    "empty": "No API keys yet — generate one above."
+  }
+}
