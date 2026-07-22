@@ -3,10 +3,12 @@
     "primaryMenu": "Primary navigation",
     "mobileMenu": "Mobile navigation",
     "openMenu": "Open menu",
-    "goToDashboard": "Checkout on github",
+    "goToDashboard": "Github",
     "closeMenu": "Close menu",
     "links": {
       "howItWorks": "How it works",
+      "extension": "Extension",
+      "marketplace": "Marketplace",
       "features": "Features",
       "faq": "FAQ"
     }
@@ -78,6 +80,16 @@
       "point2Description": "Its background service worker speaks the exact same tunnel protocol as the desktop agent, forwarding to your local MCP servers the same way.",
       "point3Title": "Always in sync",
       "point3Description": "Add, remove, or edit MCPs in the dashboard and the extension's local routing table updates live, no reconnect needed."
+    },
+    "marketplace": {
+      "title": "Publish and install MCPs from a marketplace",
+      "subtitle": "Browse MCPs other users have published, or share your own — versioned, searchable, and installed with one click.",
+      "point1Title": "Browse, search, and sort",
+      "point1Description": "Find listings by name, sorted by release date or download count, with a version history for each one.",
+      "point2Title": "One-click install",
+      "point2Description": "The desktop agent downloads the chosen version, unzips it, and cleans up the zip automatically — with a live progress bar the whole way through.",
+      "point3Title": "Stay up to date",
+      "point3Description": "Installed items are flagged the moment a newer version is published, with an Update button right there in the marketplace."
     },
     "features": {
       "title": "Built for running MCPs from anywhere",

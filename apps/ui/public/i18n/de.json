@@ -4,9 +4,11 @@
     "mobileMenu": "Mobile Navigation",
     "openMenu": "Menü öffnen",
     "closeMenu": "Menü schließen",
-    "goToDashboard": "Auf github ansehen",
+    "goToDashboard": "Github",
     "links": {
       "howItWorks": "So funktioniert's",
+      "extension": "Erweiterung",
+      "marketplace": "Marktplatz",
       "features": "Funktionen",
       "faq": "FAQ"
     }
@@ -78,6 +80,16 @@
       "point2Description": "Ihr Hintergrund-Service-Worker spricht exakt dasselbe Tunnel-Protokoll wie der Desktop-Agent und leitet genauso an deine lokalen MCP-Server weiter.",
       "point3Title": "Immer aktuell",
       "point3Description": "MCPs im Dashboard hinzufügen, entfernen oder bearbeiten aktualisiert die Routing-Tabelle der Erweiterung live, ohne erneuten Verbindungsaufbau."
+    },
+    "marketplace": {
+      "title": "MCPs über einen Marktplatz veröffentlichen und installieren",
+      "subtitle": "Durchsuche MCPs, die andere Nutzer veröffentlicht haben, oder teile deine eigenen — versioniert, durchsuchbar und mit einem Klick installiert.",
+      "point1Title": "Durchsuchen, suchen, sortieren",
+      "point1Description": "Finde Einträge nach Namen, sortiert nach Veröffentlichungsdatum oder Downloads, jeweils mit vollständiger Versionshistorie.",
+      "point2Title": "Installation mit einem Klick",
+      "point2Description": "Der Desktop-Agent lädt die gewählte Version herunter, entpackt sie und räumt die ZIP-Datei danach automatisch auf — mit Fortschrittsanzeige während des gesamten Vorgangs.",
+      "point3Title": "Immer aktuell bleiben",
+      "point3Description": "Installierte Einträge werden markiert, sobald eine neuere Version veröffentlicht wird, mit einem Update-Button direkt im Marktplatz."
     },
     "features": {
       "title": "Gebaut, um MCPs von überall zu betreiben",

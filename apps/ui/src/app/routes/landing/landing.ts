@@ -34,7 +34,7 @@ interface FaqItem {
 }
 
 /** ids of every in-page section the nav/sidenav can scroll to and highlight. */
-const SECTION_HREFS = ['#how-it-works', '#features', '#faq'];
+const SECTION_HREFS = ['#how-it-works', '#extension', '#marketplace', '#features', '#faq'];
 
 const STEPS: Step[] = [
   { icon: 'heroLockClosed', titleKey: 'landing.steps.register.title', descriptionKey: 'landing.steps.register.description' },
@@ -222,7 +222,7 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
     </section>
 
     <!-- Chrome extension -->
-    <section class="border-t border-border-subtle bg-primary-2 px-6 py-20">
+    <section id="extension" class="border-t border-border-subtle bg-primary-2 px-6 py-20">
       <div class="mx-auto grid max-w-6xl gap-12 md:grid-cols-2 md:items-center">
         <div uiAnimateOnScroll="right">
           <h2 class="text-3xl font-semibold tracking-tight text-text-primary">{{ 'landing.extension.title' | translate }}</h2>
@@ -247,6 +247,36 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
         <div uiAnimateOnScroll="left" [aosDelay]="80">
           <img class="dark:hidden block rounded-xl shadow-depth-lg" [src]="'preview/chrome-ext-light.png'" role="img" alt="MCP Bridge Chrome extension popup, light" />
           <img class="hidden dark:block rounded-xl shadow-depth-lg" [src]="'preview/chrome-ext-dark.png'" role="img" alt="MCP Bridge Chrome extension popup, dark" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Marketplace -->
+    <section id="marketplace" class="border-t border-border-subtle bg-primary px-6 py-20">
+      <div class="mx-auto grid max-w-6xl gap-12 md:grid-cols-2 md:items-center">
+        <div uiAnimateOnScroll="right" class="order-2 md:order-1">
+          <img class="dark:hidden block rounded-xl shadow-depth-lg" [src]="'preview/marketplace-light.png'" role="img" alt="MCP Bridge marketplace, light" />
+          <img class="hidden dark:block rounded-xl shadow-depth-lg" [src]="'preview/marketplace-dark.png'" role="img" alt="MCP Bridge marketplace, dark" />
+        </div>
+
+        <div uiAnimateOnScroll="left" [aosDelay]="80" class="order-1 md:order-2">
+          <h2 class="text-3xl font-semibold tracking-tight text-text-primary">{{ 'landing.marketplace.title' | translate }}</h2>
+          <p class="mt-3 text-text-secondary">{{ 'landing.marketplace.subtitle' | translate }}</p>
+
+          <ul class="mt-8 space-y-5">
+            <li>
+              <p class="text-sm font-semibold text-text-primary">{{ 'landing.marketplace.point1Title' | translate }}</p>
+              <p class="mt-1 text-sm text-text-secondary">{{ 'landing.marketplace.point1Description' | translate }}</p>
+            </li>
+            <li>
+              <p class="text-sm font-semibold text-text-primary">{{ 'landing.marketplace.point2Title' | translate }}</p>
+              <p class="mt-1 text-sm text-text-secondary">{{ 'landing.marketplace.point2Description' | translate }}</p>
+            </li>
+            <li>
+              <p class="text-sm font-semibold text-text-primary">{{ 'landing.marketplace.point3Title' | translate }}</p>
+              <p class="mt-1 text-sm text-text-secondary">{{ 'landing.marketplace.point3Description' | translate }}</p>
+            </li>
+          </ul>
         </div>
       </div>
     </section>

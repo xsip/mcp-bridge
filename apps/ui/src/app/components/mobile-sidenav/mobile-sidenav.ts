@@ -2,12 +2,14 @@ import { Component, inject, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { heroXMark } from '@ng-icons/heroicons/outline';
+import { heroGlobeAlt, heroXMark } from '@ng-icons/heroicons/outline';
 import { ActiveSectionService } from '../../services/active-section.service';
 
 export interface MobileNavLink {
   labelKey: string;
   fragment: string;
+  /** Optional heroicons outline icon name, rendered before the label. */
+  icon?: string;
 }
 
 /**
@@ -22,7 +24,7 @@ export interface MobileNavLink {
   selector: 'ui-mobile-sidenav',
   standalone: true,
   imports: [RouterLink, TranslatePipe, NgIconComponent],
-  viewProviders: [provideIcons({ heroXMark })],
+  viewProviders: [provideIcons({ heroXMark, heroGlobeAlt })],
   template: `
     @if (open()) {
       <div class="fixed inset-0 z-40 md:hidden">
@@ -49,11 +51,14 @@ export interface MobileNavLink {
             <a
               [href]="'#' + link.fragment"
               (click)="onLinkClick($event, link.fragment)"
-              class="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-accent-subtle hover:text-accent"
+              class="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-accent-subtle hover:text-accent"
               [class.text-accent]="isActive(link.fragment)"
               [class.bg-accent-subtle]="isActive(link.fragment)"
               [class.text-text-secondary]="!isActive(link.fragment)"
             >
+              @if (link.icon) {
+                <ng-icon [name]="link.icon" class="h-4 w-4" />
+              }
               {{ link.labelKey | translate }}
             </a>
           }

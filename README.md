@@ -51,6 +51,16 @@ A NestJS backend that owns:
 
 ![Logs](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/logs-dark.png)
 
+### Marketplace
+
+- Browse published MCP listings — search by name, sort by release date or download count, paginated.
+- Publish your own listing (name, description, visibility) and upload versions (zip files) to it from "My Releases"; edit, change visibility, or remove versions/listings at any time.
+- Downloading installs itself automatically: the Electron agent fetches the version's zip via a single-use download link, unzips it into a configurable download directory, and deletes the zip — all with a progress bar. In a plain browser (no Electron), it falls back to a normal file download of the zip instead.
+- "On this system" lists everything installed locally, flags when a newer version is available with an Update button, and lets you uninstall.
+- The browse list itself marks items you already have installed with the installed version, offering Update/Downgrade instead of Download when appropriate.
+
+![Marketplace](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/marketplace-dark.png)
+
 ### API Keys
 
 - API keys authenticate external callers (ChatGPT, curl, ...) against the `/mcp/:mcpId` proxy endpoint — separate from the dashboard's own JWT session.

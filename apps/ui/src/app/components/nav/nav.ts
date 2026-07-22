@@ -2,13 +2,15 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { heroBars3 } from '@ng-icons/heroicons/outline';
+import { heroBars3, heroGlobeAlt } from '@ng-icons/heroicons/outline';
 import { DarkModeToggleComponent, LanguageSwitcherComponent } from '@mcp-bridge/ui-components';
 import { MobileSidenavComponent, MobileNavLink } from '../mobile-sidenav/mobile-sidenav';
 import { ActiveSectionService } from '../../services/active-section.service';
 
 const NAV_LINKS: MobileNavLink[] = [
   { labelKey: 'nav.links.howItWorks', fragment: 'how-it-works' },
+  { labelKey: 'nav.links.extension', fragment: 'extension', icon: 'heroGlobeAlt' },
+  { labelKey: 'nav.links.marketplace', fragment: 'marketplace' },
   { labelKey: 'nav.links.features', fragment: 'features' },
   { labelKey: 'nav.links.faq', fragment: 'faq' },
 ];
@@ -27,7 +29,7 @@ const NAV_LINKS: MobileNavLink[] = [
   selector: 'ui-nav',
   standalone: true,
   imports: [RouterLink, TranslatePipe, NgIconComponent, DarkModeToggleComponent, LanguageSwitcherComponent, MobileSidenavComponent],
-  viewProviders: [provideIcons({ heroBars3 })],
+  viewProviders: [provideIcons({ heroBars3, heroGlobeAlt })],
   template: `
     <header class="sticky top-0 z-30 border-b border-border-default bg-primary/85 backdrop-blur">
       <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
@@ -41,11 +43,14 @@ const NAV_LINKS: MobileNavLink[] = [
             <a
               [href]="'#' + link.fragment"
               (click)="onLinkClick($event, link.fragment)"
-              class="rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent-subtle hover:text-accent"
+              class="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent-subtle hover:text-accent"
               [class.text-accent]="isActive(link.fragment)"
               [class.bg-accent-subtle]="isActive(link.fragment)"
               [class.text-text-secondary]="!isActive(link.fragment)"
             >
+              @if (link.icon) {
+                <ng-icon [name]="link.icon" class="h-3.5 w-3.5" />
+              }
               {{ link.labelKey | translate }}
             </a>
           }
