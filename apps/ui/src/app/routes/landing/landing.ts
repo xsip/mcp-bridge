@@ -57,6 +57,7 @@ const FAQ: FaqItem[] = [
   { questionKey: 'landing.faq.items.security.question', answerKey: 'landing.faq.items.security.answer' },
   { questionKey: 'landing.faq.items.selfHost.question', answerKey: 'landing.faq.items.selfHost.answer' },
   { questionKey: 'landing.faq.items.multipleAgents.question', answerKey: 'landing.faq.items.multipleAgents.answer' },
+  { questionKey: 'landing.faq.items.browserExtension.question', answerKey: 'landing.faq.items.browserExtension.answer' },
 ];
 
 /**
@@ -217,6 +218,36 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
         <p class="mx-auto mt-10 max-w-2xl text-center text-sm text-text-muted">
           {{ 'landing.architecture.note' | translate }}
         </p>
+      </div>
+    </section>
+
+    <!-- Chrome extension -->
+    <section class="border-t border-border-subtle bg-primary-2 px-6 py-20">
+      <div class="mx-auto grid max-w-6xl gap-12 md:grid-cols-2 md:items-center">
+        <div uiAnimateOnScroll="right">
+          <h2 class="text-3xl font-semibold tracking-tight text-text-primary">{{ 'landing.extension.title' | translate }}</h2>
+          <p class="mt-3 text-text-secondary">{{ 'landing.extension.subtitle' | translate }}</p>
+
+          <ul class="mt-8 space-y-5">
+            <li>
+              <p class="text-sm font-semibold text-text-primary">{{ 'landing.extension.point1Title' | translate }}</p>
+              <p class="mt-1 text-sm text-text-secondary">{{ 'landing.extension.point1Description' | translate }}</p>
+            </li>
+            <li>
+              <p class="text-sm font-semibold text-text-primary">{{ 'landing.extension.point2Title' | translate }}</p>
+              <p class="mt-1 text-sm text-text-secondary">{{ 'landing.extension.point2Description' | translate }}</p>
+            </li>
+            <li>
+              <p class="text-sm font-semibold text-text-primary">{{ 'landing.extension.point3Title' | translate }}</p>
+              <p class="mt-1 text-sm text-text-secondary">{{ 'landing.extension.point3Description' | translate }}</p>
+            </li>
+          </ul>
+        </div>
+
+        <div uiAnimateOnScroll="left" [aosDelay]="80">
+          <img class="dark:hidden block rounded-xl shadow-depth-lg" [src]="'preview/chrome-ext-light.png'" role="img" alt="MCP Bridge Chrome extension popup, light" />
+          <img class="hidden dark:block rounded-xl shadow-depth-lg" [src]="'preview/chrome-ext-dark.png'" role="img" alt="MCP Bridge Chrome extension popup, dark" />
+        </div>
       </div>
     </section>
 

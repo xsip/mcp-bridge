@@ -69,6 +69,16 @@
       },
       "note": "Da die Verbindung immer von deinem Desktop-Agenten aufgebaut wird, gibt es nichts, das du in deinem Netzwerk freigeben, weiterleiten oder offen lassen musst."
     },
+    "extension": {
+      "title": "Keine Desktop-App? Nutze die Browser-Erweiterung",
+      "subtitle": "Installiere die MCP-Bridge-Chrome-Erweiterung, und das Dashboard tunnelt deine MCPs direkt aus dem Browser — keine Electron-Installation nötig.",
+      "point1Title": "Automatische Übergabe",
+      "point1Description": "Melde dich im Dashboard wie auf einer normalen Website an — die Erweiterung übernimmt deine Sitzung automatisch, ohne eigenen Login in der Erweiterung.",
+      "point2Title": "Gleiches Protokoll",
+      "point2Description": "Ihr Hintergrund-Service-Worker spricht exakt dasselbe Tunnel-Protokoll wie der Desktop-Agent und leitet genauso an deine lokalen MCP-Server weiter.",
+      "point3Title": "Immer aktuell",
+      "point3Description": "MCPs im Dashboard hinzufügen, entfernen oder bearbeiten aktualisiert die Routing-Tabelle der Erweiterung live, ohne erneuten Verbindungsaufbau."
+    },
     "features": {
       "title": "Gebaut, um MCPs von überall zu betreiben",
       "subtitle": "Ein kleiner, fokussierter Funktionsumfang statt eines Allzweck-Tunnels.",
@@ -115,6 +125,10 @@
         "multipleAgents": {
           "question": "Kann ich mehrere MCPs gleichzeitig betreiben?",
           "answer": "Ja. Eine einzelne Desktop-Agent-Verbindung kann jeden MCP bedienen, der in deinem Konto konfiguriert ist — jeder erreichbar unter seiner eigenen öffentlichen URL."
+        },
+        "browserExtension": {
+          "question": "Muss ich die Desktop-App installieren?",
+          "answer": "Nein — installiere stattdessen die MCP-Bridge-Chrome-Erweiterung und öffne das Dashboard als normale Website. Sie tunnelt genauso, ganz ohne Electron."
         }
       }
     },

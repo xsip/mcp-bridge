@@ -69,6 +69,16 @@
       },
       "note": "Because the connection is always initiated by your desktop agent, there's nothing to expose, forward, or leave open on your network."
     },
+    "extension": {
+      "title": "No desktop app? Use the browser extension",
+      "subtitle": "Install the MCP Bridge Chrome extension and the dashboard tunnels your MCPs straight from the browser — no Electron install required.",
+      "point1Title": "Automatic handoff",
+      "point1Description": "Log into the dashboard as a normal website and the extension picks up your session automatically — no separate login in the extension itself.",
+      "point2Title": "Same protocol",
+      "point2Description": "Its background service worker speaks the exact same tunnel protocol as the desktop agent, forwarding to your local MCP servers the same way.",
+      "point3Title": "Always in sync",
+      "point3Description": "Add, remove, or edit MCPs in the dashboard and the extension's local routing table updates live, no reconnect needed."
+    },
     "features": {
       "title": "Built for running MCPs from anywhere",
       "subtitle": "A small, focused feature set instead of a general-purpose tunnel.",
@@ -115,6 +125,10 @@
         "multipleAgents": {
           "question": "Can I run more than one MCP at a time?",
           "answer": "Yes. A single desktop agent connection can serve every MCP configured on your account, each reachable at its own public URL."
+        },
+        "browserExtension": {
+          "question": "Do I need to install the desktop app?",
+          "answer": "No — install the MCP Bridge Chrome extension instead and open the dashboard as a normal website. It tunnels the same way, without Electron."
         }
       }
     },

@@ -5,11 +5,11 @@ A relay platform that exposes MCP servers running on users' desktops to the publ
 ![Logs](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/logs-dark.png)
 
 
-This is an Nx monorepo containing the backend (`api`) and the Electron desktop app (`desktop`) — which is **both** the dashboard users log into to configure their MCPs and watch traffic flow through them, **and** the desktop agent itself: its Electron main process is what actually dials out and tunnels requests to `localhost`.
+This is an Nx monorepo containing the backend (`api`), the Electron desktop app (`desktop`), and a Chrome extension (`chrome-extension`) — the desktop app is **both** the dashboard users log into to configure their MCPs and watch traffic flow through them, **and** the desktop agent itself (its Electron main process is what actually dials out and tunnels requests to `localhost`); the extension is an alternative agent for people who'd rather not install Electron at all.
 
 ## How tunneling works
 
-1. The desktop app's Electron main process opens a WebSocket to the `api`'s `/agents` endpoint and authenticates with the user's JWT.
+1. Something holding a valid session opens a WebSocket to the `api`'s `/agents` endpoint and authenticates with the user's JWT — normally the desktop app's Electron main process, or the `chrome-extension`'s background service worker when the dashboard is used as a plain website instead.
 2. An external caller (ChatGPT, curl, ...) sends a request to `https://<bridge>/mcp/<username>-<mcpName>`, authenticating with a long-lived **API key** (see below) instead of the dashboard's JWT.
 3. The `api` looks up which account owns that MCP name and, if the account's agent is currently connected, forwards the request as a message over that account's WebSocket.
 4. The agent looks up the MCP by name in its local name → port map, forwards the request to `http://127.0.0.1:<port>`, and sends the response back over the same socket.
@@ -58,3 +58,15 @@ A NestJS backend that owns:
 - Keys can be individually revoked at any time, which immediately invalidates them.
 
 ![API Keys](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/api-keys-dark.png)
+
+## `chrome-extension`
+
+A Manifest V3 Chrome extension that lets the `desktop` dashboard run as a plain website instead of the Electron app, while still tunneling MCPs.
+
+- Built with Angular (same esbuild-based build as the other apps, no SSR) for the popup; the background service worker and content script are plain TypeScript, bundled separately with esbuild.
+- No separate login in the extension: when the dashboard is open as a website (not Electron) with the extension installed, its content script detects it and hands the session (JWT + MCP list) over automatically.
+- The background service worker holds the actual WebSocket tunnel and forwards requests to `http://127.0.0.1:<port>` — the same protocol the Electron agent speaks.
+- A `chrome.alarms` keepalive works around Manifest V3 terminating idle service workers, reconnecting automatically if the tunnel should be up but was dropped.
+- The popup shows connection status, the account's MCPs, and a manual connect/disconnect override; the backend URL it points at is configurable there too.
+
+![Chrome extension](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/chrome-ext-dark.png)
