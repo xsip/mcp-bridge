@@ -36,28 +36,32 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
         </div>
         <div class="flex items-center gap-3 md:mb-0 mb-5">
           @if (mcpId()) {
-            <a routerLink="/logs" class="text-xs font-medium text-accent hover:underline">{{ 'logs.clearFilter' | translate }}</a>
+            <a routerLink="/logs"
+               class="text-xs font-medium text-accent hover:underline">{{ 'logs.clearFilter' | translate }}</a>
           }
           <button
             type="button"
             (click)="deleteAll()"
             class="press-feedback inline-flex items-center gap-1.5 rounded-lg border border-error-border px-3 py-1.5 text-xs font-medium text-error-text hover:bg-error-bg"
           >
-            <ng-icon name="heroTrash" class="h-3.5 w-3.5" />
+            <ng-icon name="heroTrash" class="h-3.5 w-3.5"/>
             {{ (mcpId() ? 'logs.deleteAllFiltered' : 'logs.deleteAll') | translate }}
           </button>
         </div>
       </div>
 
       @if (logsStore.error(); as error) {
-        <p class="mt-3 animate-shake rounded-lg border border-error-border bg-error-bg px-3 py-2 text-xs text-error-text">{{ error }}</p>
+        <p
+          class="mt-3 animate-shake rounded-lg border border-error-border bg-error-bg px-3 py-2 text-xs text-error-text">{{ error }}</p>
       }
 
       @if (logsStore.selectedIds().length > 0) {
-        <div class="animate-slide-down mt-3 flex items-center justify-between rounded-lg border border-accent/40 bg-accent-subtle px-3 py-2 text-xs text-accent-text">
-          <span>{{ 'logs.selectedCount' | translate: { count: logsStore.selectedIds().length } }}</span>
-          <button type="button" (click)="deleteSelected()" class="press-feedback inline-flex items-center gap-1.5 font-semibold hover:underline">
-            <ng-icon name="heroTrash" class="h-3.5 w-3.5" />
+        <div
+          class="animate-slide-down mt-3 flex items-center justify-between rounded-lg border border-accent/40 bg-accent-subtle px-3 py-2 text-xs text-accent-text">
+          <span>{{ 'logs.selectedCount' | translate: {count: logsStore.selectedIds().length} }}</span>
+          <button type="button" (click)="deleteSelected()"
+                  class="press-feedback inline-flex items-center gap-1.5 font-semibold hover:underline">
+            <ng-icon name="heroTrash" class="h-3.5 w-3.5"/>
             {{ 'logs.deleteSelected' | translate }}
           </button>
         </div>
@@ -67,26 +71,27 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
         <div class="overflow-x-auto">
           <table class="w-full text-left text-sm">
             <thead class="bg-primary-2 text-xs uppercase tracking-wide text-text-muted">
-              <tr>
-                <th class="w-8 px-4 py-2.5">
-                  <ui-checkbox
-                    [checked]="allOnPageSelected()"
-                    (checkedChange)="logsStore.toggleSelectAllOnPage()"
-                    [ariaLabel]="'logs.selectAll' | translate"
-                  />
-                </th>
-                <th class="w-6 px-2 py-2.5"></th>
-                <th class="px-4 py-2.5 font-medium">{{ 'logs.time' | translate }}</th>
-                <th class="px-4 py-2.5 font-medium">{{ 'logs.mcp' | translate }}</th>
-                <th class="px-4 py-2.5 font-medium">{{ 'logs.request' | translate }}</th>
-                <th class="px-4 py-2.5 font-medium">{{ 'logs.status' | translate }}</th>
-                <th class="px-4 py-2.5 font-medium">{{ 'logs.duration' | translate }}</th>
-                <th class="w-8 px-4 py-2.5"></th>
-              </tr>
+            <tr>
+              <th class="w-8 px-4 py-2.5">
+                <ui-checkbox
+                  [checked]="allOnPageSelected()"
+                  (checkedChange)="logsStore.toggleSelectAllOnPage()"
+                  [ariaLabel]="'logs.selectAll' | translate"
+                />
+              </th>
+              <th class="w-6 px-2 py-2.5"></th>
+              <th class="px-4 py-2.5 font-medium">{{ 'logs.time' | translate }}</th>
+              <th class="px-4 py-2.5 font-medium">{{ 'logs.mcp' | translate }}</th>
+              <th class="px-4 py-2.5 font-medium">{{ 'logs.request' | translate }}</th>
+              <th class="px-4 py-2.5 font-medium">{{ 'logs.status' | translate }}</th>
+              <th class="px-4 py-2.5 font-medium">{{ 'logs.duration' | translate }}</th>
+              <th class="w-8 px-4 py-2.5"></th>
+            </tr>
             </thead>
             <tbody class="divide-y divide-border-subtle bg-primary">
               @for (entry of logsStore.items(); track entry.id) {
-                <tr class="animate-fade-in cursor-pointer transition-colors hover:bg-primary-2" (click)="toggleExpanded(entry.id)">
+                <tr class="animate-fade-in cursor-pointer transition-colors hover:bg-primary-2"
+                    (click)="toggleExpanded(entry.id)">
                   <td class="px-4 py-2.5" (click)="$event.stopPropagation()">
                     <ui-checkbox
                       [checked]="logsStore.selectedIds().includes(entry.id)"
@@ -94,25 +99,32 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
                     />
                   </td>
                   <td class="px-2 py-2.5 text-text-muted">
-                    <ng-icon [name]="isExpanded(entry.id) ? 'heroChevronDown' : 'heroChevronRight'" class="h-3.5 w-3.5" />
+                    <ng-icon [name]="isExpanded(entry.id) ? 'heroChevronDown' : 'heroChevronRight'"
+                             class="h-3.5 w-3.5"/>
                   </td>
-                  <td class="whitespace-nowrap px-4 py-2.5 text-text-muted">{{ entry.timestamp | date: 'HH:mm:ss' }}</td>
+                  <td class="whitespace-nowrap px-4 py-2.5 text-text-muted">{{ entry.timestamp | date: 'HH:mm:ss' }}
+                  </td>
                   <td class="whitespace-nowrap px-4 py-2.5 font-medium text-text-primary">{{ entry.mcpName }}</td>
                   <td class="px-4 py-2.5">
                     <span class="font-mono text-xs text-text-secondary">{{ entry.method }} {{ entry.path }}</span>
                     @if (rpcMethod(entry); as rpc) {
-                      <span class="ml-2 inline-flex items-center rounded-md bg-accent-subtle px-1.5 py-0.5 font-mono text-[11px] font-medium text-accent">{{ rpc }}</span>
-                    }
+                      @if (rpc.method === 'tools/call') {
+                        <span class="mt-1.5 mx-1.5 inline-flex items-center rounded-md bg-accent-subtle px-1.5 py-0.5 font-mono text-[11px] font-medium text-accent">{{ rpc.method }} ({{ rpc.name }})</span>
+
+                      } @else {
+                        <span
+                          class="mt-1.5 inline-flex items-center rounded-md bg-accent-subtle px-1.5 py-0.5 font-mono text-[11px] font-medium text-accent">{{ rpc.method }}</span>
+                      }}
                   </td>
                   <td class="whitespace-nowrap px-4 py-2.5">
                     @if (entry.ok) {
                       <span class="inline-flex items-center gap-1 text-success-text">
-                        <ng-icon name="heroCheckCircle" class="h-3.5 w-3.5" />
+                        <ng-icon name="heroCheckCircle" class="h-3.5 w-3.5"/>
                         {{ entry.status }}
                       </span>
                     } @else {
                       <span class="inline-flex items-center gap-1 text-error-text" [title]="entry.errorMessage">
-                        <ng-icon name="heroXCircle" class="h-3.5 w-3.5" />
+                        <ng-icon name="heroXCircle" class="h-3.5 w-3.5"/>
                         {{ 'logs.failed' | translate }}
                       </span>
                     }
@@ -125,7 +137,7 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
                       class="press-feedback inline-flex h-6 w-6 items-center justify-center rounded-lg text-text-secondary hover:bg-error-bg hover:text-error-text"
                       [attr.aria-label]="'logs.deleteEntry' | translate"
                     >
-                      <ng-icon name="heroTrash" class="h-3.5 w-3.5" />
+                      <ng-icon name="heroTrash" class="h-3.5 w-3.5"/>
                     </button>
                   </td>
                 </tr>
@@ -134,16 +146,20 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
                     <td colspan="8" class="px-4 py-4">
                       <div class="grid gap-4 sm:grid-cols-2">
                         <div class="min-w-0">
-                          <p class="mb-1.5 text-xs font-semibold uppercase tracking-wide text-text-muted">{{ 'logs.requestBody' | translate }}</p>
-                          <pre class="max-h-64 overflow-auto rounded-lg border border-border-default bg-primary p-3 font-mono text-xs text-text-secondary">{{
-                            (entry.requestBody | json) || ('logs.noBody' | translate)
-                          }}</pre>
+                          <p
+                            class="mb-1.5 text-xs font-semibold uppercase tracking-wide text-text-muted">{{ 'logs.requestBody' | translate }}</p>
+                          <pre
+                            class="max-h-64 overflow-auto rounded-lg border border-border-default bg-primary p-3 font-mono text-xs text-text-secondary">{{
+                              (entry.requestBody | json) || ('logs.noBody' | translate)
+                            }}</pre>
                         </div>
                         <div class="min-w-0">
-                          <p class="mb-1.5 text-xs font-semibold uppercase tracking-wide text-text-muted">{{ 'logs.responseBody' | translate }}</p>
-                          <pre class="max-h-64 overflow-auto rounded-lg border border-border-default bg-primary p-3 font-mono text-xs text-text-secondary">{{
-                            (entry.responseBody | json) || ('logs.noBody' | translate)
-                          }}</pre>
+                          <p
+                            class="mb-1.5 text-xs font-semibold uppercase tracking-wide text-text-muted">{{ 'logs.responseBody' | translate }}</p>
+                          <pre
+                            class="max-h-64 overflow-auto rounded-lg border border-border-default bg-primary p-3 font-mono text-xs text-text-secondary">{{
+                              (entry.responseBody | json) || ('logs.noBody' | translate)
+                            }}</pre>
                         </div>
                       </div>
                     </td>
@@ -151,7 +167,8 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
                 }
               } @empty {
                 <tr>
-                  <td colspan="8" class="px-4 py-8 text-center text-sm text-text-muted">{{ 'logs.empty' | translate }}</td>
+                  <td colspan="8" class="px-4 py-8 text-center text-sm text-text-muted">{{ 'logs.empty' | translate }}
+                  </td>
                 </tr>
               }
             </tbody>
@@ -184,16 +201,22 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
                 class="press-feedback inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-text-secondary hover:bg-error-bg hover:text-error-text"
                 [attr.aria-label]="'logs.deleteEntry' | translate"
               >
-                <ng-icon name="heroTrash" class="h-3.5 w-3.5" />
+                <ng-icon name="heroTrash" class="h-3.5 w-3.5"/>
               </button>
             </div>
 
             <!-- Request -->
             <div class="mt-3">
-              <p class="text-xs font-semibold uppercase tracking-wide text-text-muted">{{ 'logs.request' | translate }}</p>
+              <p
+                class="text-xs font-semibold uppercase tracking-wide text-text-muted">{{ 'logs.request' | translate }}</p>
               <p class="mt-1 break-all font-mono text-xs text-text-secondary">{{ entry.method }} {{ entry.path }}</p>
               @if (rpcMethod(entry); as rpc) {
-                <span class="mt-1.5 inline-flex items-center rounded-md bg-accent-subtle px-1.5 py-0.5 font-mono text-[11px] font-medium text-accent">{{ rpc }}</span>
+                @if (rpc.method === 'tools/call') {
+                    <span class="mt-1.5 inline-flex items-center rounded-md bg-accent-subtle px-1.5 py-0.5 font-mono text-[11px] font-medium text-accent">{{ rpc.method }} ({{ rpc.name }})</span>
+                } @else {
+                  <span
+                    class="mt-1.5 inline-flex items-center rounded-md bg-accent-subtle px-1.5 py-0.5 font-mono text-[11px] font-medium text-accent">{{ rpc.method }}</span>
+                }
               }
             </div>
 
@@ -201,12 +224,12 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
             <div class="mt-3 flex items-center justify-between text-sm">
               @if (entry.ok) {
                 <span class="inline-flex items-center gap-1 text-success-text">
-                  <ng-icon name="heroCheckCircle" class="h-3.5 w-3.5" />
+                  <ng-icon name="heroCheckCircle" class="h-3.5 w-3.5"/>
                   {{ entry.status }}
                 </span>
               } @else {
                 <span class="inline-flex items-center gap-1 text-error-text" [title]="entry.errorMessage">
-                  <ng-icon name="heroXCircle" class="h-3.5 w-3.5" />
+                  <ng-icon name="heroXCircle" class="h-3.5 w-3.5"/>
                   {{ 'logs.failed' | translate }}
                 </span>
               }
@@ -220,29 +243,34 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
               (click)="toggleExpanded(entry.id)"
             >
               {{ 'logs.requestBody' | translate }}
-              <ng-icon [name]="isExpanded(entry.id) ? 'heroChevronDown' : 'heroChevronRight'" class="h-3.5 w-3.5" />
+              <ng-icon [name]="isExpanded(entry.id) ? 'heroChevronDown' : 'heroChevronRight'" class="h-3.5 w-3.5"/>
             </button>
 
             @if (isExpanded(entry.id)) {
               <div class="animate-accordion-open mt-3 grid gap-3 overflow-hidden">
                 <div class="min-w-0">
-                  <p class="mb-1.5 text-xs font-semibold uppercase tracking-wide text-text-muted">{{ 'logs.requestBody' | translate }}</p>
-                  <pre class="max-h-56 overflow-auto rounded-lg border border-border-default bg-primary p-3 font-mono text-xs text-text-secondary">{{
-                    (entry.requestBody | json) || ('logs.noBody' | translate)
-                  }}</pre>
+                  <p
+                    class="mb-1.5 text-xs font-semibold uppercase tracking-wide text-text-muted">{{ 'logs.requestBody' | translate }}</p>
+                  <pre
+                    class="max-h-56 overflow-auto rounded-lg border border-border-default bg-primary p-3 font-mono text-xs text-text-secondary">{{
+                      (entry.requestBody | json) || ('logs.noBody' | translate)
+                    }}</pre>
                 </div>
 
                 <div class="min-w-0">
-                  <p class="mb-1.5 text-xs font-semibold uppercase tracking-wide text-text-muted">{{ 'logs.responseBody' | translate }}</p>
-                  <pre class="max-h-56 overflow-auto rounded-lg border border-border-default bg-primary p-3 font-mono text-xs text-text-secondary">{{
-                    (entry.responseBody | json) || ('logs.noBody' | translate)
-                  }}</pre>
+                  <p
+                    class="mb-1.5 text-xs font-semibold uppercase tracking-wide text-text-muted">{{ 'logs.responseBody' | translate }}</p>
+                  <pre
+                    class="max-h-56 overflow-auto rounded-lg border border-border-default bg-primary p-3 font-mono text-xs text-text-secondary">{{
+                      (entry.responseBody | json) || ('logs.noBody' | translate)
+                    }}</pre>
                 </div>
               </div>
             }
           </div>
         } @empty {
-          <div class="animate-fade-in rounded-2xl border border-dashed border-border-default p-8 text-center text-sm text-text-muted">
+          <div
+            class="animate-fade-in rounded-2xl border border-dashed border-border-default p-8 text-center text-sm text-text-muted">
             {{ 'logs.empty' | translate }}
           </div>
         }
@@ -250,7 +278,7 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
 
       @if (logsStore.total() > 0) {
         <div class="mt-4 flex items-center justify-between text-xs text-text-secondary">
-          <span>{{ 'logs.totalCount' | translate: { count: logsStore.total() } }}</span>
+          <span>{{ 'logs.totalCount' | translate: {count: logsStore.total()} }}</span>
           <div class="flex items-center gap-3">
             <button
               type="button"
@@ -260,7 +288,7 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
             >
               {{ 'logs.previous' | translate }}
             </button>
-            <span>{{ 'logs.pageOf' | translate: { page: logsStore.page(), pageCount: logsStore.pageCount() } }}</span>
+            <span>{{ 'logs.pageOf' | translate: {page: logsStore.page(), pageCount: logsStore.pageCount()} }}</span>
             <button
               type="button"
               [disabled]="logsStore.page() >= logsStore.pageCount()"
@@ -312,9 +340,9 @@ export class Logs implements OnInit, OnDestroy {
   }
 
   /** Pulls out the JSON-RPC `method` (e.g. "tools/call") from an MCP request body, if present. */
-  protected rpcMethod(entry: { requestBody?: object }): string | null {
-    const method = (entry.requestBody as { method?: unknown } | undefined)?.method;
-    return typeof method === 'string' ? method : null;
+  protected rpcMethod(entry: { requestBody?: object }): { method?: unknown; name?: string; } | null {
+    const data = (entry.requestBody as { method?: unknown; params?: {name: string;} } | undefined);
+    return typeof data?.method === 'string' ? {method: data.method, name: data.params?.name } : null;
   }
 
   protected isExpanded(id: string): boolean {
