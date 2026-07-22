@@ -24,11 +24,11 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const { status, body } = this.mapException(exception);
 
-    if (status >= HttpStatus.INTERNAL_SERVER_ERROR) {
+    // if (status >= HttpStatus.INTERNAL_SERVER_ERROR) {
       this.logger.error(body.message, exception instanceof Error ? exception.stack : undefined);
-    } else {
-      this.logger.warn(body.message);
-    }
+    // } else {
+      // this.logger.warn(body.message);
+    // }
 
     response.status(status).json(body);
   }

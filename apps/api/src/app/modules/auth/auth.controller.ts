@@ -51,7 +51,6 @@ export class AuthController {
   private async issueTokens(user: UserDocument): Promise<TokenPairDto> {
     const accessToken = this.jwtService.sign(
       { user: user.username, role: user.role },
-      { expiresIn: '1h' },
     );
 
     const refreshToken = crypto.randomBytes(48).toString('hex');
