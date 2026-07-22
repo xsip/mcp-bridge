@@ -22,6 +22,15 @@ export const appRoutes: Route[] = [
       { path: 'logs', loadComponent: () => import('./routes/logs/logs').then((m) => m.Logs) },
       { path: 'auth-keys', loadComponent: () => import('./routes/api-keys/api-keys').then((m) => m.ApiKeys) },
       { path: 'marketplace', loadComponent: () => import('./routes/marketplace/marketplace').then((m) => m.Marketplace) },
+      {
+        path: 'marketplace/publish',
+        loadComponent: () => import('./routes/marketplace-publish/marketplace-publish').then((m) => m.MarketplacePublish),
+      },
+      {
+        path: 'marketplace/my-releases',
+        loadComponent: () =>
+          import('./routes/marketplace-my-releases/marketplace-my-releases').then((m) => m.MarketplaceMyReleases),
+      },
       { path: 'settings', loadComponent: () => import('./routes/settings/settings').then((m) => m.Settings) },
     ],
   },

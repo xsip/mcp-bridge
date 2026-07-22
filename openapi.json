@@ -1036,6 +1036,25 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "",
@@ -1156,7 +1175,21 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/AddVersionDto"
+                "type": "object",
+                "required": [
+                  "version",
+                  "file"
+                ],
+                "properties": {
+                  "version": {
+                    "type": "string",
+                    "example": "1.0.0"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
               }
             }
           }
@@ -1944,18 +1977,6 @@
         },
         "required": [
           "visibility"
-        ]
-      },
-      "AddVersionDto": {
-        "type": "object",
-        "properties": {
-          "version": {
-            "type": "string",
-            "example": "1.0.0"
-          }
-        },
-        "required": [
-          "version"
         ]
       },
       "DownloadLinkDto": {

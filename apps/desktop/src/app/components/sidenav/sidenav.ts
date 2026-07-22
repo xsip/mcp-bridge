@@ -4,9 +4,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   heroArrowRightOnRectangle,
+  heroArrowUpTray,
   heroBuildingStorefront,
   heroCog6Tooth,
   heroExclamationTriangle,
+  heroFolderOpen,
   heroKey,
   heroListBullet,
   heroServerStack
@@ -26,7 +28,7 @@ import {TooltipDirective} from "../../directives/tooltip.directive";
   selector: 'ui-sidenav',
   standalone: true,
   imports: [RouterLink, RouterLinkActive, TranslatePipe, NgIconComponent, DarkModeToggleComponent, LanguageSwitcherComponent, TooltipDirective],
-  viewProviders: [provideIcons({ heroServerStack, heroListBullet, heroArrowRightOnRectangle, heroKey, heroExclamationTriangle, heroBuildingStorefront, heroCog6Tooth })],
+  viewProviders: [provideIcons({ heroServerStack, heroListBullet, heroArrowRightOnRectangle, heroKey, heroExclamationTriangle, heroBuildingStorefront, heroCog6Tooth, heroArrowUpTray, heroFolderOpen })],
   template: `
     <aside
       class="flex h-full {{smallMode() ? 'w-16' : 'w-56'}} shrink-0 flex-col border-r border-border-default  bg-primary-2">
@@ -77,6 +79,7 @@ import {TooltipDirective} from "../../directives/tooltip.directive";
         </a>
         <a
           routerLink="/marketplace"
+          [routerLinkActiveOptions]="{ exact: true }"
           uiTooltipPosition="right"
           [uiTooltip]="smallMode() ? ('sidenav.marketplace' | translate): ''"
           routerLinkActive="bg-accent-subtle text-accent shadow-depth-sm"
@@ -87,6 +90,24 @@ import {TooltipDirective} from "../../directives/tooltip.directive";
             {{ 'sidenav.marketplace' | translate }}
           }
         </a>
+        @if (!smallMode()) {
+          <a
+            routerLink="/marketplace/publish"
+            routerLinkActive="bg-accent-subtle text-accent shadow-depth-sm"
+            class="msg-enter flex items-center gap-2.5 rounded-lg py-1.5 pl-9 pr-3 text-xs font-medium text-text-secondary hover:bg-accent-subtle hover:text-accent hover:translate-x-0.5"
+          >
+            <ng-icon name="heroArrowUpTray" class="h-3.5 w-3.5"/>
+            {{ 'sidenav.marketplacePublish' | translate }}
+          </a>
+          <a
+            routerLink="/marketplace/my-releases"
+            routerLinkActive="bg-accent-subtle text-accent shadow-depth-sm"
+            class="msg-enter flex items-center gap-2.5 rounded-lg py-1.5 pl-9 pr-3 text-xs font-medium text-text-secondary hover:bg-accent-subtle hover:text-accent hover:translate-x-0.5"
+          >
+            <ng-icon name="heroFolderOpen" class="h-3.5 w-3.5"/>
+            {{ 'sidenav.marketplaceMyReleases' | translate }}
+          </a>
+        }
         @if (marketplaceFs.isElectron) {
           <a
             routerLink="/settings"

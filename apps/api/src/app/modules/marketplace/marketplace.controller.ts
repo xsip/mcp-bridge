@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
-import { ApiBearerAuth, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { User } from '../auth/user.schema';
@@ -126,6 +126,7 @@ export class MarketplaceController {
   @Post('items/:id/preview-images')
   @UseInterceptors(FileInterceptor('file', PREVIEW_IMAGE_UPLOAD_OPTIONS))
   @ApiConsumes('multipart/form-data')
+  @ApiBody({ schema: { type: 'object', required: ['file'], properties: { file: { type: 'string', format: 'binary' } } } })
   @ApiOperation({ operationId: 'addMarketplaceItemPreviewImage', summary: 'Add a preview image to a listing' })
   @ApiOkResponse({ type: MarketPlaceItemDto })
   addPreviewImage(
@@ -163,6 +164,16 @@ export class MarketplaceController {
   @Post('items/:id/versions')
   @UseInterceptors(FileInterceptor('file', ASSET_UPLOAD_OPTIONS))
   @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      required: ['version', 'file'],
+      properties: {
+        version: { type: 'string', example: '1.0.0' },
+        file: { type: 'string', format: 'binary' },
+      },
+    },
+  })
   @ApiOperation({ operationId: 'addMarketplaceItemVersion', summary: 'Upload a new version (zip) of a listing' })
   @ApiOkResponse({ type: MarketPlaceItemDto })
   addVersion(
