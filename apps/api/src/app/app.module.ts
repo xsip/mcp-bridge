@@ -9,6 +9,7 @@ import { JwtAuthGuard } from './modules/auth/api-key.guard';
 import { RolesGuard } from './modules/auth/roles.guard';
 import { AgentAuthModule } from './modules/agent-auth/agent-auth.module';
 import { McpModule } from './modules/mcp/mcp.module';
+import { MarketplaceModule } from './modules/marketplace/marketplace.module';
 import { HealthModule } from './modules/health/health.module';
 import { ProxyModule } from './modules/proxy/proxy.module';
 import { AppConfigModule } from '@mcp-bridge/config';
@@ -29,6 +30,7 @@ import { BridgeWebsocketModule } from '@mcp-bridge/websocket';
     AuthModule,
     AgentAuthModule,
     McpModule,
+    MarketplaceModule,
     BridgeWebsocketModule,
     ProxyModule,
     HealthModule,

@@ -629,6 +629,660 @@
         ]
       }
     },
+    "/marketplace/items": {
+      "get": {
+        "operationId": "listMarketplaceItems",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortByDownloadCount",
+            "required": false,
+            "in": "query",
+            "description": "Sort by total download count",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          },
+          {
+            "name": "sortByReleaseDate",
+            "required": false,
+            "in": "query",
+            "description": "Sort by release date (creation date)",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedMarketPlaceItemsDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "List public marketplace items plus your own, paginated",
+        "tags": [
+          "marketplace"
+        ]
+      },
+      "post": {
+        "operationId": "createMarketplaceItem",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMarketPlaceItemDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketPlaceItemDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new marketplace listing",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
+    "/marketplace/users/{username}/items": {
+      "get": {
+        "operationId": "listMarketplaceItemsByUser",
+        "parameters": [
+          {
+            "name": "username",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortByDownloadCount",
+            "required": false,
+            "in": "query",
+            "description": "Sort by total download count",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          },
+          {
+            "name": "sortByReleaseDate",
+            "required": false,
+            "in": "query",
+            "description": "Sort by release date (creation date)",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedMarketPlaceItemsDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "List a specific user's marketplace items, paginated (private items only shown to that user)",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
+    "/marketplace/my-downloads": {
+      "get": {
+        "operationId": "getMyMarketplaceDownloads",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MyMarketPlaceDownloadDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "The current user's download history, flagging items with a newer version available",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
+    "/marketplace/items/{id}": {
+      "get": {
+        "operationId": "getMarketplaceItem",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketPlaceItemDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a single marketplace item, with its versions",
+        "tags": [
+          "marketplace"
+        ]
+      },
+      "patch": {
+        "operationId": "updateMarketplaceItem",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMarketPlaceItemDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketPlaceItemDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update a marketplace listing (name, description)",
+        "tags": [
+          "marketplace"
+        ]
+      },
+      "delete": {
+        "operationId": "removeMarketplaceItem",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Remove a listing and all of its versions",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
+    "/marketplace/items/{id}/visibility": {
+      "patch": {
+        "operationId": "changeMarketplaceItemVisibility",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeVisibilityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketPlaceItemDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Change a listing's visibility",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
+    "/marketplace/items/{id}/preview-images": {
+      "post": {
+        "operationId": "addMarketplaceItemPreviewImage",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketPlaceItemDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Add a preview image to a listing",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
+    "/marketplace/items/{id}/preview-images/{fileId}": {
+      "delete": {
+        "operationId": "removeMarketplaceItemPreviewImage",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketPlaceItemDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Remove a preview image from a listing",
+        "tags": [
+          "marketplace"
+        ]
+      },
+      "get": {
+        "operationId": "getMarketplaceItemPreviewImage",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Stream a preview image",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
+    "/marketplace/items/{id}/versions": {
+      "post": {
+        "operationId": "addMarketplaceItemVersion",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/AddVersionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketPlaceItemDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Upload a new version (zip) of a listing",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
+    "/marketplace/items/{id}/versions/{version}": {
+      "delete": {
+        "operationId": "removeMarketplaceItemVersion",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketPlaceItemDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Remove a specific version of a listing",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
+    "/marketplace/items/{id}/versions/{version}/download-link": {
+      "post": {
+        "operationId": "createMarketplaceItemDownloadLink",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DownloadLinkDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Issue a single-use, short-lived link to download a specific version",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
+    "/marketplace/download/{token}": {
+      "get": {
+        "operationId": "downloadMarketplaceItemVersion",
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Consume a single-use download link and stream the version zip",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
     "/health": {
       "get": {
         "operationId": "HealthController_check",
@@ -1031,6 +1685,274 @@
             "description": "Delete every log entry for this one MCP"
           }
         }
+      },
+      "MarketPlaceItemPreviewImageDto": {
+        "type": "object",
+        "properties": {
+          "fileId": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "mimeType": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "fileId",
+          "filename",
+          "mimeType",
+          "fileSize"
+        ]
+      },
+      "MarketPlaceItemAssetDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "number"
+          },
+          "originalFilename": {
+            "type": "string"
+          },
+          "checksum": {
+            "type": "string"
+          },
+          "uploadedBy": {
+            "type": "string"
+          },
+          "downloadCount": {
+            "type": "number"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "fileSize",
+          "originalFilename",
+          "checksum",
+          "uploadedBy",
+          "downloadCount",
+          "createdAt"
+        ]
+      },
+      "MarketPlaceItemDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ownerUsername": {
+            "type": "string"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "public",
+              "unlisted",
+              "private"
+            ]
+          },
+          "previewImages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MarketPlaceItemPreviewImageDto"
+            }
+          },
+          "latestVersion": {
+            "type": "object"
+          },
+          "totalDownloadCount": {
+            "type": "number"
+          },
+          "versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MarketPlaceItemAssetDto"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "ownerUsername",
+          "visibility",
+          "previewImages",
+          "totalDownloadCount",
+          "versions",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "PaginatedMarketPlaceItemsDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MarketPlaceItemDto"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "pageSize"
+        ]
+      },
+      "MyMarketPlaceDownloadDto": {
+        "type": "object",
+        "properties": {
+          "marketPlaceItemId": {
+            "type": "string"
+          },
+          "itemName": {
+            "type": "string"
+          },
+          "downloadedVersion": {
+            "type": "string",
+            "description": "The version this user last downloaded"
+          },
+          "latestVersion": {
+            "type": "object",
+            "description": "The item's current latest version, if it still exists"
+          },
+          "updateAvailable": {
+            "type": "boolean",
+            "description": "True if the item has a newer version than the one downloaded"
+          },
+          "downloadedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "marketPlaceItemId",
+          "itemName",
+          "downloadedVersion",
+          "updateAvailable",
+          "downloadedAt"
+        ]
+      },
+      "CreateMarketPlaceItemDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "my-cool-mcp"
+          },
+          "description": {
+            "type": "string",
+            "example": "Does cool things."
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "public",
+              "unlisted",
+              "private"
+            ],
+            "default": "private"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateMarketPlaceItemDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "my-cool-mcp"
+          },
+          "description": {
+            "type": "string",
+            "example": "Does cool things."
+          }
+        }
+      },
+      "ChangeVisibilityDto": {
+        "type": "object",
+        "properties": {
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "public",
+              "unlisted",
+              "private"
+            ]
+          }
+        },
+        "required": [
+          "visibility"
+        ]
+      },
+      "AddVersionDto": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string",
+            "example": "1.0.0"
+          }
+        },
+        "required": [
+          "version"
+        ]
+      },
+      "DownloadLinkDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "expiresAt"
+        ]
       }
     }
   }
