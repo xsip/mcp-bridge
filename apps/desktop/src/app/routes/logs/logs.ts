@@ -47,6 +47,14 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
             />
             {{ 'logs.toolCallsOnly' | translate }}
           </label>
+          <label class="inline-flex cursor-pointer items-center gap-2 text-xs text-text-secondary">
+            <ui-checkbox
+              [checked]="logsStore.todayOnly()"
+              (checkedChange)="logsStore.setTodayOnly($event)"
+              [ariaLabel]="'logs.todayOnly' | translate"
+            />
+            {{ 'logs.todayOnly' | translate }}
+          </label>
           <button
             type="button"
             (click)="deleteAll()"
@@ -110,7 +118,7 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
                     <ng-icon [name]="isExpanded(entry.id) ? 'heroChevronDown' : 'heroChevronRight'"
                              class="h-3.5 w-3.5"/>
                   </td>
-                  <td class="whitespace-nowrap px-4 py-2.5 text-text-muted">{{ entry.timestamp | date: 'HH:mm:ss' }}
+                  <td class="whitespace-nowrap px-4 py-2.5 text-text-muted">{{ entry.timestamp | date: 'MMM d, HH:mm:ss' }}
                   </td>
                   <td class="whitespace-nowrap px-4 py-2.5 font-medium text-text-primary">{{ entry.mcpName }}</td>
                   <td class="px-4 py-2.5">
@@ -199,7 +207,7 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
 
                 <div class="min-w-0">
                   <p class="truncate text-sm font-semibold text-text-primary">{{ entry.mcpName }}</p>
-                  <p class="text-xs text-text-muted">{{ entry.timestamp | date: 'HH:mm:ss' }}</p>
+                  <p class="text-xs text-text-muted">{{ entry.timestamp | date: 'MMM d, HH:mm:ss' }}</p>
                 </div>
               </div>
 

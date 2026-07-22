@@ -31,7 +31,7 @@ export class McpLogsController {
   @ApiOperation({ operationId: 'listAllMcpLogs', summary: "List (paginated) proxied request/response logs for every MCP the current user owns" })
   @ApiOkResponse({ type: McpLogPageDto })
   listAll(@CurrentUser() user: User, @Query() query: McpLogQueryDto): Promise<McpLogPageDto> {
-    return this.mcpLogService.listForOwner(user.username, query.page, query.pageSize, query.toolCallsOnly);
+    return this.mcpLogService.listForOwner(user.username, query.page, query.pageSize, query.toolCallsOnly, query.todayOnly);
   }
 
   @Delete('logs')
@@ -48,7 +48,7 @@ export class McpLogsController {
   @ApiOperation({ operationId: 'listMcpLogs', summary: 'List (paginated) proxied request/response logs for a single owned MCP' })
   @ApiOkResponse({ type: McpLogPageDto })
   listForMcp(@CurrentUser() user: User, @Param('mcpId') mcpId: string, @Query() query: McpLogQueryDto): Promise<McpLogPageDto> {
-    return this.mcpLogService.listForMcp(user.username, mcpId, query.page, query.pageSize, query.toolCallsOnly);
+    return this.mcpLogService.listForMcp(user.username, mcpId, query.page, query.pageSize, query.toolCallsOnly, query.todayOnly);
   }
 
   @Delete('logs/:id')

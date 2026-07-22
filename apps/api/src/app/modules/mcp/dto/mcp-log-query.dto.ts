@@ -31,4 +31,14 @@ export class McpLogQueryDto {
   @Transform(({ value }) => value === true || value === 'true')
   @IsBoolean()
   toolCallsOnly = false;
+
+  @ApiPropertyOptional({
+    type: Boolean,
+    default: false,
+    description: "When true, only returns entries from today (server-local calendar day)",
+  })
+  @IsOptional()
+  @Transform(({ value }) => value === true || value === 'true')
+  @IsBoolean()
+  todayOnly = false;
 }

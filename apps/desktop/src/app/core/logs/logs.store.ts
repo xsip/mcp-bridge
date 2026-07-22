@@ -9,18 +9,19 @@ import { ToastService } from '../toast/toast.service';
 const DEFAULT_PAGE_SIZE = 25;
 const POLL_INTERVAL_MS = 3000;
 const TOOL_CALLS_ONLY_STORAGE_KEY = 'mcp-bridge.desktop.logs.toolCallsOnly';
+const TODAY_ONLY_STORAGE_KEY = 'mcp-bridge.desktop.logs.todayOnly';
 
-function readStoredToolCallsOnly(): boolean {
+function readStoredBool(key: string): boolean {
   try {
-    return localStorage.getItem(TOOL_CALLS_ONLY_STORAGE_KEY) === 'true';
+    return localStorage.getItem(key) === 'true';
   } catch {
     return false;
   }
 }
 
-function persistToolCallsOnly(value: boolean): void {
+function persistBool(key: string, value: boolean): void {
   try {
-    localStorage.setItem(TOOL_CALLS_ONLY_STORAGE_KEY, String(value));
+    localStorage.setItem(key, String(value));
   } catch {
     /* localStorage unavailable — the preference just won't survive a reload */
   }
@@ -35,6 +36,8 @@ interface LogsState {
   mcpId: string | null;
   /** When true, only JSON-RPC "tools/call" entries are returned — persisted across restarts. */
   toolCallsOnly: boolean;
+  /** When true, only today's (server-local calendar day) entries are returned — persisted across restarts. */
+  todayOnly: boolean;
   status: 'idle' | 'loading' | 'error';
   error: string | null;
   selectedIds: string[];
@@ -46,7 +49,8 @@ const initialState: LogsState = {
   page: 1,
   pageSize: DEFAULT_PAGE_SIZE,
   mcpId: null,
-  toolCallsOnly: readStoredToolCallsOnly(),
+  toolCallsOnly: readStoredBool(TOOL_CALLS_ONLY_STORAGE_KEY),
+  todayOnly: readStoredBool(TODAY_ONLY_STORAGE_KEY),
   status: 'idle',
   error: null,
   selectedIds: [],
@@ -93,10 +97,10 @@ export const LogsStore = signalStore(
           // call *is* the poll tick or a manual action pre-empting it.
           clearPollTimer();
 
-          const { mcpId, page, pageSize, toolCallsOnly } = store;
+          const { mcpId, page, pageSize, toolCallsOnly, todayOnly } = store;
           const request$ = mcpId()
-            ? mcpLogsService.listMcpLogs(mcpId() as string, page(), pageSize(), toolCallsOnly())
-            : mcpLogsService.listAllMcpLogs(page(), pageSize(), toolCallsOnly());
+            ? mcpLogsService.listMcpLogs(mcpId() as string, page(), pageSize(), toolCallsOnly(), todayOnly())
+            : mcpLogsService.listAllMcpLogs(page(), pageSize(), toolCallsOnly(), todayOnly());
           return request$.pipe(
             tap((result) => {
               patchState(store, { items: result.items, total: result.total, status: 'idle', error: null });
@@ -151,11 +155,19 @@ export const LogsStore = signalStore(
         fetchPage();
       },
 
-      /** Toggles the "tool calls only" filter, persists it, and re-fetches from page 1. */
+      /** Toggles the "tool calls only" filter, persists it, and re-fetches from page 1. Combinable with `todayOnly`. */
       setToolCallsOnly(toolCallsOnly: boolean): void {
         if (store.toolCallsOnly() === toolCallsOnly) return;
-        persistToolCallsOnly(toolCallsOnly);
+        persistBool(TOOL_CALLS_ONLY_STORAGE_KEY, toolCallsOnly);
         patchState(store, { toolCallsOnly, page: 1, selectedIds: [] });
+        fetchPage();
+      },
+
+      /** Toggles the "today only" filter, persists it, and re-fetches from page 1. Combinable with `toolCallsOnly`. */
+      setTodayOnly(todayOnly: boolean): void {
+        if (store.todayOnly() === todayOnly) return;
+        persistBool(TODAY_ONLY_STORAGE_KEY, todayOnly);
+        patchState(store, { todayOnly, page: 1, selectedIds: [] });
         fetchPage();
       },
 

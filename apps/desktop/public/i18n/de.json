@@ -73,6 +73,7 @@
     "subtitleFiltered": "Anfragen und Antworten dieses MCPs.",
     "clearFilter": "Alle MCPs anzeigen",
     "toolCallsOnly": "Nur Tool-Aufrufe",
+    "todayOnly": "Nur heute",
     "time": "Zeit",
     "mcp": "MCP",
     "request": "Anfrage",

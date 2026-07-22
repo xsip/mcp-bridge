@@ -50,23 +50,42 @@ export class McpLogService {
     await this.trim(mcpId);
   }
 
-  async listForMcp(ownerId: string, mcpId: string, page: number, pageSize: number, toolCallsOnly = false): Promise<McpLogPageDto> {
+  async listForMcp(
+    ownerId: string,
+    mcpId: string,
+    page: number,
+    pageSize: number,
+    toolCallsOnly = false,
+    todayOnly = false,
+  ): Promise<McpLogPageDto> {
     const mcp = await this.mcpModel.findOne({ ownerId, id: mcpId }).lean().exec();
     if (!mcp) {
       throw new NotFoundException(`No MCP with id "${mcpId}" on this account`);
     }
 
-    return this.paginate(this.withToolCallsFilter({ ownerId, mcpId }, toolCallsOnly), page, pageSize);
+    return this.paginate(this.withFilters({ ownerId, mcpId }, toolCallsOnly, todayOnly), page, pageSize);
   }
 
-  listForOwner(ownerId: string, page: number, pageSize: number, toolCallsOnly = false): Promise<McpLogPageDto> {
-    return this.paginate(this.withToolCallsFilter({ ownerId }, toolCallsOnly), page, pageSize);
+  listForOwner(ownerId: string, page: number, pageSize: number, toolCallsOnly = false, todayOnly = false): Promise<McpLogPageDto> {
+    return this.paginate(this.withFilters({ ownerId }, toolCallsOnly, todayOnly), page, pageSize);
   }
 
-  /** Narrows a log filter to JSON-RPC "tools/call" entries (MCP tool invocations) when requested. */
-  private withToolCallsFilter(filter: Record<string, unknown>, toolCallsOnly: boolean): Record<string, unknown> {
-    if (!toolCallsOnly) return filter;
-    return { ...filter, 'requestBody.method': 'tools/call' };
+  /**
+   * Narrows a log filter to JSON-RPC "tools/call" entries and/or today's
+   * calendar day (server-local), both independently toggleable and
+   * combinable — either, both, or neither can be applied at once.
+   */
+  private withFilters(filter: Record<string, unknown>, toolCallsOnly: boolean, todayOnly: boolean): Record<string, unknown> {
+    const combined = { ...filter };
+    if (toolCallsOnly) {
+      combined['requestBody.method'] = 'tools/call';
+    }
+    if (todayOnly) {
+      const startOfToday = new Date();
+      startOfToday.setHours(0, 0, 0, 0);
+      combined['timestamp'] = { $gte: startOfToday };
+    }
+    return combined;
   }
 
   /** Deletes one log entry, scoped to its owner so a user can never delete another account's logs. */

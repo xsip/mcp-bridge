@@ -73,6 +73,7 @@
     "subtitleFiltered": "Requests and responses proxied to this MCP.",
     "clearFilter": "Show all MCPs",
     "toolCallsOnly": "Tool calls only",
+    "todayOnly": "Today only",
     "time": "Time",
     "mcp": "MCP",
     "request": "Request",

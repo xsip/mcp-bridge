@@ -452,6 +452,16 @@
               "default": false,
               "type": "boolean"
             }
+          },
+          {
+            "name": "todayOnly",
+            "required": false,
+            "in": "query",
+            "description": "When true, only returns entries from today (server-local calendar day)",
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -551,6 +561,16 @@
             "required": false,
             "in": "query",
             "description": "When true, only returns entries whose request body is a JSON-RPC \"tools/call\" (MCP tool invocations)",
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "todayOnly",
+            "required": false,
+            "in": "query",
+            "description": "When true, only returns entries from today (server-local calendar day)",
             "schema": {
               "default": false,
               "type": "boolean"
