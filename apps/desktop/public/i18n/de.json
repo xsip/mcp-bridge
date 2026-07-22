@@ -42,6 +42,7 @@
     "marketplace": "Marktplatz",
     "marketplacePublish": "Veröffentlichen",
     "marketplaceMyReleases": "Meine Releases",
+    "marketplaceInstalled": "Auf diesem System",
     "settings": "Einstellungen",
     "logout": "Abmelden",
     "darkModeToggle": "Darkmode Toggeln",
@@ -128,6 +129,9 @@
     "sortByDate": "Veröffentlichungsdatum",
     "sortByDownloads": "Downloads",
     "download": "Herunterladen",
+    "update": "Aktualisieren",
+    "downgrade": "Zurückstufen",
+    "uninstall": "Deinstallieren",
     "downloadCount": "{{count}} Downloads",
     "empty": "Keine Marktplatz-Einträge gefunden.",
     "previous": "Zurück",
@@ -138,7 +142,11 @@
       "unpacking": "Wird entpackt…",
       "done": "Installiert",
       "error": "Fehlgeschlagen"
-    }
+    },
+    "installedBadge": "Installiert v{{version}}",
+    "updateAvailableBadge": "Update verfügbar",
+    "confirmUninstallTitle": "MCP deinstallieren?",
+    "confirmUninstall": "\"{{name}}\" von diesem System deinstallieren? Dabei werden die installierten Dateien gelöscht — das kann nicht rückgängig gemacht werden."
   },
   "settings": {
     "title": "Einstellungen",
@@ -186,5 +194,14 @@
     "confirmRemoveVersionTitle": "Version entfernen?",
     "confirmRemoveVersion": "Version \"{{version}}\" entfernen? Das kann nicht rückgängig gemacht werden.",
     "empty": "Du hast noch nichts veröffentlicht."
+  },
+  "marketplaceInstalled": {
+    "title": "Auf diesem System",
+    "subtitle": "Marktplatz-Einträge, die du auf diesem Rechner heruntergeladen und installiert hast.",
+    "downloadedAt": "Installiert {{date}}",
+    "publisher": "von {{publisher}}",
+    "confirmUninstallTitle": "MCP deinstallieren?",
+    "confirmUninstall": "\"{{name}}\" von diesem System deinstallieren? Dabei werden die installierten Dateien gelöscht — das kann nicht rückgängig gemacht werden.",
+    "empty": "Noch nichts installiert — lade etwas aus dem Marktplatz herunter."
   }
 }

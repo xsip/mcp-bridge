@@ -83,6 +83,7 @@ ipcMain.handle('marketplace:get-settings', () => marketplaceDownloader.getSettin
 ipcMain.handle('marketplace:pick-download-directory', () => marketplaceDownloader.pickDownloadDirectory(mainWindow));
 ipcMain.handle('marketplace:list-downloaded', () => marketplaceDownloader.listDownloadedMcps());
 ipcMain.handle('marketplace:download-and-install', (_event, args) => marketplaceDownloader.downloadAndInstall(args));
+ipcMain.handle('marketplace:uninstall', (_event, itemId) => marketplaceDownloader.uninstall(itemId));
 
 app.whenReady().then(createWindow);
 

@@ -60,19 +60,30 @@ class MarketplaceDownloader {
     return downloadDirectory;
   }
 
+  /**
+   * Returns the manifest, first dropping any entry whose `installPath` no
+   * longer exists on disk (e.g. the user deleted the folder by hand outside
+   * the app) and persisting that prune — so "installed" always reflects
+   * what's actually there, not just what we once wrote.
+   */
   listDownloadedMcps() {
-    return readJson(this.manifestPath, []);
+    const manifest = readJson(this.manifestPath, []);
+    const stillInstalled = manifest.filter((entry) => fs.existsSync(entry.installPath));
+    if (stillInstalled.length !== manifest.length) {
+      writeJson(this.manifestPath, stillInstalled);
+    }
+    return stillInstalled;
   }
 
   /**
    * Downloads the zip at `downloadUrl` (a single-use marketplace download
    * link — see `MarketplaceService.consumeDownloadToken` on the backend),
    * unzips it into `<downloadDirectory>/<itemName>-<version>`, deletes the
-   * zip, and records `{ itemId, version }` in the manifest. Reports
-   * `{ itemId, phase: 'download' | 'unpacking', progress }` (0-100, or -1 if
-   * indeterminate) via `onProgress` as it goes.
+   * zip, and records `{ itemId, publisher, version, installPath }` in the
+   * manifest. Reports `{ itemId, phase: 'download' | 'unpacking', progress }`
+   * (0-100, or -1 if indeterminate) via `onProgress` as it goes.
    */
-  async downloadAndInstall({ downloadUrl, accessToken, itemId, itemName, version }) {
+  async downloadAndInstall({ downloadUrl, accessToken, itemId, itemName, publisher, version }) {
     const { downloadDirectory } = this.getSettings();
     if (!downloadDirectory) {
       throw new Error('No download directory configured — set one in Settings first.');
@@ -86,7 +97,7 @@ class MarketplaceDownloader {
       await this.download(downloadUrl, accessToken, zipPath, itemId);
       await this.unzip(zipPath, targetDir, itemId);
       fs.unlinkSync(zipPath);
-      this.recordInstall({ itemId, itemName, version, installPath: targetDir });
+      this.recordInstall({ itemId, itemName, publisher, version, installPath: targetDir });
       this.onProgress({ itemId, phase: 'done', progress: 100 });
       return { installPath: targetDir };
     } catch (error) {
@@ -140,10 +151,20 @@ class MarketplaceDownloader {
     }
   }
 
-  recordInstall({ itemId, itemName, version, installPath }) {
+  recordInstall({ itemId, itemName, publisher, version, installPath }) {
     const manifest = this.listDownloadedMcps().filter((entry) => entry.itemId !== itemId);
-    manifest.push({ itemId, itemName, version, installPath, downloadedAt: new Date().toISOString() });
+    manifest.push({ itemId, itemName, publisher, version, installPath, downloadedAt: new Date().toISOString() });
     writeJson(this.manifestPath, manifest);
+  }
+
+  /** Deletes an installed item's folder from disk and drops its manifest entry. No-op if it isn't installed. */
+  uninstall(itemId) {
+    const manifest = this.listDownloadedMcps();
+    const entry = manifest.find((candidate) => candidate.itemId === itemId);
+    if (!entry) return;
+
+    fs.rmSync(entry.installPath, { recursive: true, force: true });
+    writeJson(this.manifestPath, manifest.filter((candidate) => candidate.itemId !== itemId));
   }
 }
 

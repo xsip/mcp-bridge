@@ -124,6 +124,7 @@ export const MarketplaceStore = signalStore(
               accessToken,
               itemId: item.id,
               itemName: item.name,
+              publisher: item.ownerUsername,
               version,
             });
             toast.success(`"${item.name}" ${version} downloaded and installed`);

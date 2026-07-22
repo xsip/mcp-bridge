@@ -45,6 +45,7 @@ contextBridge.exposeInMainWorld('mcpBridgeFs', {
   pickDownloadDirectory: () => ipcRenderer.invoke('marketplace:pick-download-directory'),
   listDownloadedMcps: () => ipcRenderer.invoke('marketplace:list-downloaded'),
   downloadAndInstall: (args) => ipcRenderer.invoke('marketplace:download-and-install', args),
+  uninstall: (itemId) => ipcRenderer.invoke('marketplace:uninstall', itemId),
   onDownloadProgress: (callback) => {
     const listener = (_event, progress) => callback(progress);
     ipcRenderer.on('marketplace:progress', listener);

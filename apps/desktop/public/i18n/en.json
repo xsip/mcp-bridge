@@ -42,6 +42,7 @@
     "marketplace": "Marketplace",
     "marketplacePublish": "Publish",
     "marketplaceMyReleases": "My Releases",
+    "marketplaceInstalled": "On this system",
     "settings": "Settings",
     "logout": "Log out",
     "darkModeToggle": "Toggle Darkmode",
@@ -128,6 +129,9 @@
     "sortByDate": "Release date",
     "sortByDownloads": "Downloads",
     "download": "Download",
+    "update": "Update",
+    "downgrade": "Downgrade",
+    "uninstall": "Uninstall",
     "downloadCount": "{{count}} downloads",
     "empty": "No marketplace items found.",
     "previous": "Previous",
@@ -138,7 +142,11 @@
       "unpacking": "Unpacking…",
       "done": "Installed",
       "error": "Failed"
-    }
+    },
+    "installedBadge": "Installed v{{version}}",
+    "updateAvailableBadge": "update available",
+    "confirmUninstallTitle": "Uninstall MCP?",
+    "confirmUninstall": "Uninstall \"{{name}}\" from this system? This deletes its installed files and can't be undone."
   },
   "settings": {
     "title": "Settings",
@@ -186,5 +194,14 @@
     "confirmRemoveVersionTitle": "Remove version?",
     "confirmRemoveVersion": "Remove version \"{{version}}\"? This cannot be undone.",
     "empty": "You haven't published anything yet."
+  },
+  "marketplaceInstalled": {
+    "title": "On this system",
+    "subtitle": "Marketplace items you've downloaded and installed on this machine.",
+    "downloadedAt": "Installed {{date}}",
+    "publisher": "by {{publisher}}",
+    "confirmUninstallTitle": "Uninstall MCP?",
+    "confirmUninstall": "Uninstall \"{{name}}\" from this system? This deletes its installed files and can't be undone.",
+    "empty": "Nothing installed yet — download something from the Marketplace."
   }
 }

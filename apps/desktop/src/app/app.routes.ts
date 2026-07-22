@@ -31,6 +31,11 @@ export const appRoutes: Route[] = [
         loadComponent: () =>
           import('./routes/marketplace-my-releases/marketplace-my-releases').then((m) => m.MarketplaceMyReleases),
       },
+      {
+        path: 'marketplace/installed',
+        loadComponent: () =>
+          import('./routes/marketplace-installed/marketplace-installed').then((m) => m.MarketplaceInstalled),
+      },
       { path: 'settings', loadComponent: () => import('./routes/settings/settings').then((m) => m.Settings) },
     ],
   },

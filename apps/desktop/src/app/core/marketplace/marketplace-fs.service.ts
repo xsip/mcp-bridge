@@ -13,6 +13,8 @@ export interface DownloadProgress {
 export interface DownloadedMcp {
   itemId: string;
   itemName: string;
+  /** The marketplace item's owning username at the time it was installed. */
+  publisher: string;
   version: string;
   installPath: string;
   downloadedAt: string;
@@ -27,8 +29,10 @@ interface McpBridgeFsApi {
     accessToken: string;
     itemId: string;
     itemName: string;
+    publisher: string;
     version: string;
   }): Promise<{ installPath: string }>;
+  uninstall(itemId: string): Promise<void>;
   onDownloadProgress(callback: (progress: DownloadProgress) => void): () => void;
 }
 
@@ -52,6 +56,8 @@ export class MarketplaceFsService implements OnDestroy {
   readonly downloadDirectory = signal<string | null>(null);
   /** Latest progress per item id — cleared once a download finishes (kept briefly on error for display). */
   readonly progress = signal<Map<string, DownloadProgress>>(new Map());
+  /** Locally installed MCPs, keyed by marketplace item id — powers the "On this system" route and the "already installed" badge in the browse list. */
+  readonly installed = signal<Map<string, DownloadedMcp>>(new Map());
 
   private readonly unsubscribeProgress?: () => void;
 
@@ -59,11 +65,17 @@ export class MarketplaceFsService implements OnDestroy {
     if (!this.isElectron) return;
 
     void window.mcpBridgeFs?.getSettings().then((settings) => this.downloadDirectory.set(settings.downloadDirectory));
+    void this.refreshInstalled();
     this.unsubscribeProgress = window.mcpBridgeFs?.onDownloadProgress((progress) => {
       const next = new Map(this.progress());
       next.set(progress.itemId, progress);
       this.progress.set(next);
     });
+  }
+
+  async refreshInstalled(): Promise<void> {
+    const list = await this.listDownloadedMcps();
+    this.installed.set(new Map(list.map((entry) => [entry.itemId, entry])));
   }
 
   async pickDownloadDirectory(): Promise<string | null> {
@@ -81,11 +93,14 @@ export class MarketplaceFsService implements OnDestroy {
     accessToken: string;
     itemId: string;
     itemName: string;
+    publisher: string;
     version: string;
   }): Promise<{ installPath: string }> {
     if (!window.mcpBridgeFs) throw new Error('Not running in the desktop app');
     try {
-      return await window.mcpBridgeFs.downloadAndInstall(args);
+      const result = await window.mcpBridgeFs.downloadAndInstall(args);
+      await this.refreshInstalled();
+      return result;
     } finally {
       // Give the "done"/"error" state a moment to render before clearing it.
       setTimeout(() => {
@@ -94,6 +109,13 @@ export class MarketplaceFsService implements OnDestroy {
         this.progress.set(next);
       }, 3000);
     }
+  }
+
+  /** Deletes an installed item's folder and drops it from the manifest — no-op if it isn't installed. */
+  async uninstall(itemId: string): Promise<void> {
+    if (!window.mcpBridgeFs) return;
+    await window.mcpBridgeFs.uninstall(itemId);
+    await this.refreshInstalled();
   }
 
   ngOnDestroy(): void {

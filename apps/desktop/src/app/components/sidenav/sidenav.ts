@@ -7,6 +7,7 @@ import {
   heroArrowUpTray,
   heroBuildingStorefront,
   heroCog6Tooth,
+  heroComputerDesktop,
   heroExclamationTriangle,
   heroFolderOpen,
   heroKey,
@@ -28,7 +29,7 @@ import {TooltipDirective} from "../../directives/tooltip.directive";
   selector: 'ui-sidenav',
   standalone: true,
   imports: [RouterLink, RouterLinkActive, TranslatePipe, NgIconComponent, DarkModeToggleComponent, LanguageSwitcherComponent, TooltipDirective],
-  viewProviders: [provideIcons({ heroServerStack, heroListBullet, heroArrowRightOnRectangle, heroKey, heroExclamationTriangle, heroBuildingStorefront, heroCog6Tooth, heroArrowUpTray, heroFolderOpen })],
+  viewProviders: [provideIcons({ heroServerStack, heroListBullet, heroArrowRightOnRectangle, heroKey, heroExclamationTriangle, heroBuildingStorefront, heroCog6Tooth, heroArrowUpTray, heroFolderOpen, heroComputerDesktop })],
   template: `
     <aside
       class="flex h-full {{smallMode() ? 'w-16' : 'w-56'}} shrink-0 flex-col border-r border-border-default  bg-primary-2">
@@ -107,6 +108,16 @@ import {TooltipDirective} from "../../directives/tooltip.directive";
             <ng-icon name="heroFolderOpen" class="h-3.5 w-3.5"/>
             {{ 'sidenav.marketplaceMyReleases' | translate }}
           </a>
+          @if (marketplaceFs.isElectron) {
+            <a
+              routerLink="/marketplace/installed"
+              routerLinkActive="bg-accent-subtle text-accent shadow-depth-sm"
+              class="msg-enter flex items-center gap-2.5 rounded-lg py-1.5 pl-9 pr-3 text-xs font-medium text-text-secondary hover:bg-accent-subtle hover:text-accent hover:translate-x-0.5"
+            >
+              <ng-icon name="heroComputerDesktop" class="h-3.5 w-3.5"/>
+              {{ 'sidenav.marketplaceInstalled' | translate }}
+            </a>
+          }
         }
         @if (marketplaceFs.isElectron) {
           <a

@@ -1,16 +1,19 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   heroArrowDownTray,
+  heroArrowPath,
   heroBarsArrowDown,
   heroBarsArrowUp,
   heroMagnifyingGlass,
+  heroTrash,
 } from '@ng-icons/heroicons/outline';
 import { MarketPlaceItemDto } from '@mcp-bridge/ui-client';
 import { MarketplaceStore } from '../../core/marketplace/marketplace.store';
 import { MarketplaceFsService } from '../../core/marketplace/marketplace-fs.service';
+import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service';
 
 /**
  * "Marketplace" route — browse published MCP listings, search by name, sort
@@ -22,7 +25,7 @@ import { MarketplaceFsService } from '../../core/marketplace/marketplace-fs.serv
   selector: 'app-marketplace',
   standalone: true,
   imports: [FormsModule, TranslatePipe, NgIconComponent],
-  viewProviders: [provideIcons({ heroMagnifyingGlass, heroArrowDownTray, heroBarsArrowUp, heroBarsArrowDown })],
+  viewProviders: [provideIcons({ heroMagnifyingGlass, heroArrowDownTray, heroBarsArrowUp, heroBarsArrowDown, heroArrowPath, heroTrash })],
   template: `
     <div class="mx-auto max-w-4xl animate-slide-up">
       <div>
@@ -78,6 +81,18 @@ import { MarketplaceFsService } from '../../core/marketplace/marketplace-fs.serv
                 <div class="flex items-center gap-2">
                   <p class="truncate text-sm font-semibold text-text-primary">{{ item.name }}</p>
                   <span class="rounded-full bg-primary px-2 py-0.5 text-[10px] font-medium text-text-muted">{{ item.visibility }}</span>
+                  @if (installedVersion(item.id); as installed) {
+                    <span
+                      class="rounded-full bg-success-bg px-2 py-0.5 text-[10px] font-medium text-success-text"
+                      [class.bg-warn-bg]="installed !== item.latestVersion"
+                      [class.text-warn-text]="installed !== item.latestVersion"
+                    >
+                      {{ 'marketplace.installedBadge' | translate: { version: installed } }}
+                      @if (installed !== item.latestVersion) {
+                        · {{ 'marketplace.updateAvailableBadge' | translate }}
+                      }
+                    </span>
+                  }
                 </div>
                 @if (item.description) {
                   <p class="mt-1 line-clamp-2 text-xs text-text-secondary">{{ item.description }}</p>
@@ -98,14 +113,46 @@ import { MarketplaceFsService } from '../../core/marketplace/marketplace-fs.serv
                       <option [value]="version.version">{{ version.version }}</option>
                     }
                   </select>
-                  <button
-                    type="button"
-                    (click)="download(item)"
-                    class="press-feedback inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-white shadow-depth-sm hover-lift disabled:opacity-60"
-                  >
-                    <ng-icon name="heroArrowDownTray" class="h-3.5 w-3.5" />
-                    {{ 'marketplace.download' | translate }}
-                  </button>
+
+                  @if (isSelectedVersionInstalled(item)) {
+                    <button
+                      type="button"
+                      disabled
+                      class="inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-white shadow-depth-sm opacity-60"
+                    >
+                      <ng-icon name="heroArrowDownTray" class="h-3.5 w-3.5" />
+                      {{ 'marketplace.download' | translate }}
+                    </button>
+                  } @else if (installedVersion(item.id)) {
+                    <button
+                      type="button"
+                      (click)="download(item)"
+                      class="press-feedback inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-white shadow-depth-sm hover-lift"
+                    >
+                      <ng-icon name="heroArrowPath" class="h-3.5 w-3.5" />
+                      {{ (isDowngrade(item) ? 'marketplace.downgrade' : 'marketplace.update') | translate }}
+                    </button>
+                  } @else {
+                    <button
+                      type="button"
+                      (click)="download(item)"
+                      class="press-feedback inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-white shadow-depth-sm hover-lift"
+                    >
+                      <ng-icon name="heroArrowDownTray" class="h-3.5 w-3.5" />
+                      {{ 'marketplace.download' | translate }}
+                    </button>
+                  }
+
+                  @if (marketplaceFs.isElectron && installedVersion(item.id)) {
+                    <button
+                      type="button"
+                      (click)="removeInstalled(item)"
+                      class="press-feedback inline-flex items-center gap-1.5 rounded-lg border border-border-default px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-error-bg hover:text-error-text"
+                    >
+                      <ng-icon name="heroTrash" class="h-3.5 w-3.5" />
+                      {{ 'marketplace.uninstall' | translate }}
+                    </button>
+                  }
                 </div>
               }
             </div>
@@ -163,6 +210,8 @@ import { MarketplaceFsService } from '../../core/marketplace/marketplace-fs.serv
 export class Marketplace implements OnInit {
   protected readonly marketplaceStore = inject(MarketplaceStore);
   protected readonly marketplaceFs = inject(MarketplaceFsService);
+  private readonly confirmDialog = inject(ConfirmDialogService);
+  private readonly translate = inject(TranslateService);
 
   private readonly selectedVersions = signal<Map<string, string>>(new Map());
   private searchDebounce: ReturnType<typeof setTimeout> | null = null;
@@ -200,9 +249,52 @@ export class Marketplace implements OnInit {
     return this.marketplaceFs.progress().get(itemId);
   }
 
+  /** The version installed locally for this item, if any — only ever populated in Electron (see `MarketplaceFsService.installed`). */
+  protected installedVersion(itemId: string): string | undefined {
+    return this.marketplaceFs.installed().get(itemId)?.version;
+  }
+
+  /** True when the currently-selected dropdown version is exactly what's already installed — greys out Download instead of offering a pointless re-download. */
+  protected isSelectedVersionInstalled(item: MarketPlaceItemDto): boolean {
+    const installed = this.installedVersion(item.id);
+    if (!installed) return false;
+    const selected = this.selectedVersion(item.id) ?? item.versions[0]?.version;
+    return installed === selected;
+  }
+
+  /**
+   * True when the selected dropdown version is older than what's installed
+   * (by upload date, not string comparison — versions are free-form, not
+   * enforced semver). Falls back to "update" (false) if the installed
+   * version's own asset entry is gone (e.g. that version was since removed).
+   */
+  protected isDowngrade(item: MarketPlaceItemDto): boolean {
+    const installed = this.installedVersion(item.id);
+    const selected = this.selectedVersion(item.id) ?? item.versions[0]?.version;
+    if (!installed || !selected) return false;
+
+    const installedAsset = item.versions.find((version) => version.version === installed);
+    const selectedAsset = item.versions.find((version) => version.version === selected);
+    if (!installedAsset || !selectedAsset) return false;
+
+    return new Date(selectedAsset.createdAt).getTime() < new Date(installedAsset.createdAt).getTime();
+  }
+
   protected download(item: MarketPlaceItemDto): void {
     const version = this.selectedVersion(item.id) ?? item.versions[0]?.version;
     if (!version) return;
     void this.marketplaceStore.download(item, version);
+  }
+
+  protected async removeInstalled(item: MarketPlaceItemDto): Promise<void> {
+    const confirmed = await this.confirmDialog.confirm({
+      title: this.translate.instant('marketplace.confirmUninstallTitle'),
+      message: this.translate.instant('marketplace.confirmUninstall', { name: item.name }),
+      confirmLabel: this.translate.instant('marketplace.uninstall'),
+      cancelLabel: this.translate.instant('common.cancel'),
+      danger: true,
+    });
+    if (!confirmed) return;
+    await this.marketplaceFs.uninstall(item.id);
   }
 }
