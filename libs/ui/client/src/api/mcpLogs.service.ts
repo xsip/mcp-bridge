@@ -168,7 +168,7 @@ export class McpLogsService extends BaseService {
      * List (paginated) proxied request/response logs for every MCP the current user owns
      * @endpoint get /mcp/logs
      * @param page 1-based page number
-     * @param pageSize
+     * @param pageSize 
      * @param toolCallsOnly When true, only returns entries whose request body is a JSON-RPC \&quot;tools/call\&quot; (MCP tool invocations)
      * @param todayOnly When true, only returns entries from today (server-local calendar day)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -267,7 +267,7 @@ export class McpLogsService extends BaseService {
      * @endpoint get /mcp/{mcpId}/logs
      * @param mcpId 
      * @param page 1-based page number
-     * @param pageSize
+     * @param pageSize 
      * @param toolCallsOnly When true, only returns entries whose request body is a JSON-RPC \&quot;tools/call\&quot; (MCP tool invocations)
      * @param todayOnly When true, only returns entries from today (server-local calendar day)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

@@ -63,11 +63,15 @@ export class MarketplaceService {
   }
 
   private async paginate(
-    filter: MarketPlaceItemFilter,
+    baseFilter: MarketPlaceItemFilter,
     query: ListMarketPlaceItemsQueryDto,
   ): Promise<PaginatedMarketPlaceItemsDto> {
     const page = query.page ?? 1;
     const pageSize = query.pageSize ?? 20;
+
+    const filter: MarketPlaceItemFilter = query.search
+      ? { $and: [baseFilter, { name: { $regex: escapeRegExp(query.search), $options: 'i' } }] }
+      : baseFilter;
 
     const sort: Record<string, 1 | -1> = {};
     if (query.sortByDownloadCount) {
@@ -402,4 +406,8 @@ export class MarketplaceService {
       updatedAt: (item as unknown as { updatedAt: Date }).updatedAt,
     };
   }
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

@@ -21,6 +21,8 @@ export const appRoutes: Route[] = [
       { path: 'mcps', loadComponent: () => import('./routes/mcps/mcps').then((m) => m.Mcps) },
       { path: 'logs', loadComponent: () => import('./routes/logs/logs').then((m) => m.Logs) },
       { path: 'auth-keys', loadComponent: () => import('./routes/api-keys/api-keys').then((m) => m.ApiKeys) },
+      { path: 'marketplace', loadComponent: () => import('./routes/marketplace/marketplace').then((m) => m.Marketplace) },
+      { path: 'settings', loadComponent: () => import('./routes/settings/settings').then((m) => m.Settings) },
     ],
   },
   { path: '**', redirectTo: '' },

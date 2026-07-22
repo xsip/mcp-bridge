@@ -32,3 +32,22 @@ contextBridge.exposeInMainWorld('mcpBridgeWindow', {
     return () => ipcRenderer.removeListener('window:maximized-change', listener);
   },
 });
+
+/**
+ * Marketplace download directory setting + download-and-install (fetch the
+ * zip, unzip, delete the zip, record it) — all real filesystem work, so it
+ * has to happen in the main process. Exposed as `window.mcpBridgeFs` — see
+ * `apps/desktop/src/app/core/marketplace/marketplace-fs.service.ts`. Only
+ * present in the real Electron app, never in a plain browser tab.
+ */
+contextBridge.exposeInMainWorld('mcpBridgeFs', {
+  getSettings: () => ipcRenderer.invoke('marketplace:get-settings'),
+  pickDownloadDirectory: () => ipcRenderer.invoke('marketplace:pick-download-directory'),
+  listDownloadedMcps: () => ipcRenderer.invoke('marketplace:list-downloaded'),
+  downloadAndInstall: (args) => ipcRenderer.invoke('marketplace:download-and-install', args),
+  onDownloadProgress: (callback) => {
+    const listener = (_event, progress) => callback(progress);
+    ipcRenderer.on('marketplace:progress', listener);
+    return () => ipcRenderer.removeListener('marketplace:progress', listener);
+  },
+});

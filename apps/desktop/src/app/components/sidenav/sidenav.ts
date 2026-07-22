@@ -4,6 +4,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   heroArrowRightOnRectangle,
+  heroBuildingStorefront,
+  heroCog6Tooth,
   heroExclamationTriangle,
   heroKey,
   heroListBullet,
@@ -12,6 +14,7 @@ import {
 import { DarkModeToggleComponent, LanguageSwitcherComponent } from '@mcp-bridge/ui-components';
 import { AuthStore } from '../../core/auth/auth.store';
 import { AgentBridgeService } from '../../core/agent/agent-bridge.service';
+import { MarketplaceFsService } from '../../core/marketplace/marketplace-fs.service';
 import {TooltipDirective} from "../../directives/tooltip.directive";
 
 /**
@@ -23,7 +26,7 @@ import {TooltipDirective} from "../../directives/tooltip.directive";
   selector: 'ui-sidenav',
   standalone: true,
   imports: [RouterLink, RouterLinkActive, TranslatePipe, NgIconComponent, DarkModeToggleComponent, LanguageSwitcherComponent, TooltipDirective],
-  viewProviders: [provideIcons({ heroServerStack, heroListBullet, heroArrowRightOnRectangle, heroKey,heroExclamationTriangle })],
+  viewProviders: [provideIcons({ heroServerStack, heroListBullet, heroArrowRightOnRectangle, heroKey, heroExclamationTriangle, heroBuildingStorefront, heroCog6Tooth })],
   template: `
     <aside
       class="flex h-full {{smallMode() ? 'w-16' : 'w-56'}} shrink-0 flex-col border-r border-border-default  bg-primary-2">
@@ -72,6 +75,32 @@ import {TooltipDirective} from "../../directives/tooltip.directive";
             {{ 'sidenav.apiKeys' | translate }}
           }
         </a>
+        <a
+          routerLink="/marketplace"
+          uiTooltipPosition="right"
+          [uiTooltip]="smallMode() ? ('sidenav.marketplace' | translate): ''"
+          routerLinkActive="bg-accent-subtle text-accent shadow-depth-sm"
+          class="msg-enter flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-text-secondary hover:bg-accent-subtle hover:text-accent hover:translate-x-0.5"
+        >
+          <ng-icon name="heroBuildingStorefront" class="h-4 w-4"/>
+          @if (!smallMode()) {
+            {{ 'sidenav.marketplace' | translate }}
+          }
+        </a>
+        @if (marketplaceFs.isElectron) {
+          <a
+            routerLink="/settings"
+            uiTooltipPosition="right"
+            [uiTooltip]="smallMode() ? ('sidenav.settings' | translate): ''"
+            routerLinkActive="bg-accent-subtle text-accent shadow-depth-sm"
+            class="msg-enter flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-text-secondary hover:bg-accent-subtle hover:text-accent hover:translate-x-0.5"
+          >
+            <ng-icon name="heroCog6Tooth" class="h-4 w-4"/>
+            @if (!smallMode()) {
+              {{ 'sidenav.settings' | translate }}
+            }
+          </a>
+        }
       </nav>
 
       <div class="space-y-3 border-t border-border-subtle p-3">
@@ -146,4 +175,5 @@ export class SidenavComponent {
   smallMode = input<boolean>();
   protected readonly authStore = inject(AuthStore);
   protected readonly agentBridge = inject(AgentBridgeService);
+  protected readonly marketplaceFs = inject(MarketplaceFsService);
 }

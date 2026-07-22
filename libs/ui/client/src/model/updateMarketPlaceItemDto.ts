@@ -9,10 +9,8 @@
  */
 
 
-export interface CreateApiKeyDto { 
-    /**
-     * A label to tell this key apart from others in the list
-     */
-    name: string;
+export interface UpdateMarketPlaceItemDto { 
+    name?: string;
+    description?: string;
 }
 

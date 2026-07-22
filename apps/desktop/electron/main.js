@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { AgentTunnel } = require('./agent');
+const { MarketplaceDownloader } = require('./marketplace-downloader');
 
 let mainWindow;
 const args = process.argv.slice(1);
@@ -12,6 +13,12 @@ const serve = args.some((val) => val === '--serve');
 // Angular renderer (AgentBridgeService), never driven from here directly.
 const agent = new AgentTunnel((status) => {
   mainWindow?.webContents.send('agent:status', status);
+});
+
+// Handles the marketplace download directory setting, and downloading +
+// unzipping a version's zip — see marketplace-downloader.js.
+const marketplaceDownloader = new MarketplaceDownloader((progress) => {
+  mainWindow?.webContents.send('marketplace:progress', progress);
 });
 
 async function createWindow() {
@@ -71,6 +78,11 @@ ipcMain.on('window:maximize-toggle', () => {
 });
 ipcMain.on('window:close', () => mainWindow?.close());
 ipcMain.handle('window:is-maximized', () => mainWindow?.isMaximized() ?? false);
+
+ipcMain.handle('marketplace:get-settings', () => marketplaceDownloader.getSettings());
+ipcMain.handle('marketplace:pick-download-directory', () => marketplaceDownloader.pickDownloadDirectory(mainWindow));
+ipcMain.handle('marketplace:list-downloaded', () => marketplaceDownloader.listDownloadedMcps());
+ipcMain.handle('marketplace:download-and-install', (_event, args) => marketplaceDownloader.downloadAndInstall(args));
 
 app.whenReady().then(createWindow);
 

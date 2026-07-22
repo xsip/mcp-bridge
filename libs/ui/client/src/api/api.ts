@@ -1,13 +1,15 @@
-export * from './app.service';
-import { AppService } from './app.service';
 export * from './apiKeys.service';
 import { ApiKeysService } from './apiKeys.service';
+export * from './app.service';
+import { AppService } from './app.service';
 export * from './auth.service';
 import { AuthService } from './auth.service';
 export * from './health.service';
 import { HealthService } from './health.service';
+export * from './marketplace.service';
+import { MarketplaceService } from './marketplace.service';
 export * from './mcpLogs.service';
 import { McpLogsService } from './mcpLogs.service';
 export * from './mcps.service';
 import { McpsService } from './mcps.service';
-export const APIS = [AppService, ApiKeysService, AuthService, HealthService, McpLogsService, McpsService];
+export const APIS = [ApiKeysService, AppService, AuthService, HealthService, MarketplaceService, McpLogsService, McpsService];

@@ -39,6 +39,8 @@
     "mcps": "MCPS",
     "logs": "Logs",
     "apiKeys": "API Keys",
+    "marketplace": "Marketplace",
+    "settings": "Settings",
     "logout": "Log out",
     "darkModeToggle": "Toggle Darkmode",
     "notElectron": "Install the desktop app or the browser extension to tunnel MCPs",
@@ -116,5 +118,32 @@
     "confirmRevokeTitle": "Revoke API key?",
     "confirmRevoke": "Revoke this API key? Anything using it will stop working immediately.",
     "empty": "No API keys yet — generate one above."
+  },
+  "marketplace": {
+    "title": "Marketplace",
+    "subtitle": "Browse published MCPs and download the version you need.",
+    "searchPlaceholder": "Search by name…",
+    "sortByDate": "Release date",
+    "sortByDownloads": "Downloads",
+    "download": "Download",
+    "downloadCount": "{{count}} downloads",
+    "empty": "No marketplace items found.",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {{page}} of {{pageCount}}",
+    "progress": {
+      "download": "Downloading…",
+      "unpacking": "Unpacking…",
+      "done": "Installed",
+      "error": "Failed"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Configure the desktop app.",
+    "downloadDirectory": "Marketplace download directory",
+    "noDirectorySet": "No directory set",
+    "chooseDirectory": "Choose…",
+    "downloadDirectoryHint": "Marketplace downloads are unzipped here automatically and the zip is deleted afterwards."
   }
 }

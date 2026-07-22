@@ -9,10 +9,10 @@
  */
 
 
-export interface CreateApiKeyDto { 
-    /**
-     * A label to tell this key apart from others in the list
-     */
-    name: string;
+export interface MarketPlaceItemPreviewImageDto { 
+    fileId: string;
+    filename: string;
+    mimeType: string;
+    fileSize: number;
 }
 

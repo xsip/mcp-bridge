@@ -634,6 +634,15 @@
         "operationId": "listMarketplaceItems",
         "parameters": [
           {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Case-insensitive substring match against the item name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "page",
             "required": false,
             "in": "query",
@@ -747,6 +756,15 @@
             "name": "username",
             "required": true,
             "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Case-insensitive substring match against the item name",
             "schema": {
               "type": "string"
             }
@@ -1779,7 +1797,8 @@
             }
           },
           "latestVersion": {
-            "type": "object"
+            "type": "string",
+            "nullable": true
           },
           "totalDownloadCount": {
             "type": "number"
@@ -1852,8 +1871,9 @@
             "description": "The version this user last downloaded"
           },
           "latestVersion": {
-            "type": "object",
-            "description": "The item's current latest version, if it still exists"
+            "type": "string",
+            "description": "The item's current latest version, if it still exists",
+            "nullable": true
           },
           "updateAvailable": {
             "type": "boolean",

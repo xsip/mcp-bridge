@@ -64,7 +64,7 @@ export class MarketPlaceItemDto {
   @ApiProperty({ type: [MarketPlaceItemPreviewImageDto] })
   previewImages: MarketPlaceItemPreviewImageDto[];
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ type: String, nullable: true })
   latestVersion: string | null;
 
   @ApiProperty()
@@ -137,6 +137,12 @@ export class DownloadLinkDto {
 }
 
 export class ListMarketPlaceItemsQueryDto {
+  @ApiPropertyOptional({ description: 'Case-insensitive substring match against the item name' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  search?: string;
+
   @ApiPropertyOptional({ default: 1, minimum: 1 })
   @IsOptional()
   @Type(() => Number)
@@ -187,7 +193,7 @@ export class MyMarketPlaceDownloadDto {
   @ApiProperty({ description: 'The version this user last downloaded' })
   downloadedVersion: string;
 
-  @ApiPropertyOptional({ description: "The item's current latest version, if it still exists" })
+  @ApiPropertyOptional({ description: "The item's current latest version, if it still exists", type: String, nullable: true })
   latestVersion: string | null;
 
   @ApiProperty({ description: 'True if the item has a newer version than the one downloaded' })

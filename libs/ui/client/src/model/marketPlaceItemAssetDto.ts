@@ -9,15 +9,14 @@
  */
 
 
-export interface ApiKeyDto { 
+export interface MarketPlaceItemAssetDto { 
     id: string;
-    name: string;
-    /**
-     * First few characters of the key, for identification — the rest is never shown again
-     */
-    prefix: string;
+    version: string;
+    fileSize: number;
+    originalFilename: string;
+    checksum: string;
+    uploadedBy: string;
+    downloadCount: number;
     createdAt: string;
-    lastUsedAt: string | null;
-    revokedAt: string | null;
 }
 

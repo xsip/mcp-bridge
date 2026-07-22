@@ -39,6 +39,8 @@
     "mcps": "MCPS",
     "logs": "Logs",
     "apiKeys": "API-Schlüssel",
+    "marketplace": "Marktplatz",
+    "settings": "Einstellungen",
     "logout": "Abmelden",
     "darkModeToggle": "Darkmode Toggeln",
     "notElectron": "Installiere die Desktop-App oder die Browser-Erweiterung, um MCPs zu tunneln",
@@ -116,5 +118,32 @@
     "confirmRevokeTitle": "API-Schlüssel widerrufen?",
     "confirmRevoke": "Diesen API-Schlüssel widerrufen? Alles, was ihn verwendet, funktioniert danach sofort nicht mehr.",
     "empty": "Noch keine API-Schlüssel — oben einen erzeugen."
+  },
+  "marketplace": {
+    "title": "Marktplatz",
+    "subtitle": "Veröffentlichte MCPs durchsuchen und die gewünschte Version herunterladen.",
+    "searchPlaceholder": "Nach Namen suchen…",
+    "sortByDate": "Veröffentlichungsdatum",
+    "sortByDownloads": "Downloads",
+    "download": "Herunterladen",
+    "downloadCount": "{{count}} Downloads",
+    "empty": "Keine Marktplatz-Einträge gefunden.",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "pageOf": "Seite {{page}} von {{pageCount}}",
+    "progress": {
+      "download": "Wird heruntergeladen…",
+      "unpacking": "Wird entpackt…",
+      "done": "Installiert",
+      "error": "Fehlgeschlagen"
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "subtitle": "Desktop-App konfigurieren.",
+    "downloadDirectory": "Download-Verzeichnis für den Marktplatz",
+    "noDirectorySet": "Kein Verzeichnis festgelegt",
+    "chooseDirectory": "Auswählen…",
+    "downloadDirectoryHint": "Marktplatz-Downloads werden hier automatisch entpackt, die ZIP-Datei wird danach gelöscht."
   }
 }
