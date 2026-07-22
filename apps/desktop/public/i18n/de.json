@@ -63,6 +63,8 @@
     "save": "Speichern",
     "cancel": "Abbrechen",
     "remove": "Entfernen",
+    "confirmRemoveTitle": "MCP entfernen?",
+    "confirmRemove": "\"{{name}}\" entfernen? Alle Clients, die es aufrufen, funktionieren danach sofort nicht mehr.",
     "empty": "Noch keine MCPs — oben hinzufügen."
   },
   "logs": {

@@ -1,12 +1,13 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { CustomMcpDto } from '@mcp-bridge/ui-client';
 import { heroCheck, heroPencilSquare, heroPlus, heroTrash, heroXMark } from '@ng-icons/heroicons/outline';
 import { McpsStore } from '../../core/mcps/mcps.store';
 import { CheckboxComponent } from '@mcp-bridge/ui-components';
+import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service';
 
 /**
  * "MCPS" route — lets the user configure the local MCP servers their
@@ -181,7 +182,7 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
 
                   <button
                     type="button"
-                    (click)="removeMcp(mcp.id)"
+                    (click)="removeMcp(mcp)"
                     class="press-feedback inline-flex h-7 w-7 items-center justify-center rounded-lg text-text-secondary hover:bg-error-bg hover:text-error-text"
                     [attr.aria-label]="'mcps.remove' | translate"
                   >
@@ -203,6 +204,8 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
 })
 export class Mcps implements OnInit {
   protected readonly mcpsStore = inject(McpsStore);
+  private readonly translate = inject(TranslateService);
+  private readonly confirmDialog = inject(ConfirmDialogService);
 
   protected newName = '';
   protected newPort: number | null = null;
@@ -244,7 +247,15 @@ export class Mcps implements OnInit {
     this.editingId.set(null);
   }
 
-  protected removeMcp(id: string): void {
-    this.mcpsStore.remove(id);
+  protected async removeMcp(mcp: CustomMcpDto): Promise<void> {
+    const confirmed = await this.confirmDialog.confirm({
+      title: this.translate.instant('mcps.confirmRemoveTitle'),
+      message: this.translate.instant('mcps.confirmRemove', { name: mcp.name }),
+      confirmLabel: this.translate.instant('mcps.remove'),
+      cancelLabel: this.translate.instant('common.cancel'),
+      danger: true,
+    });
+    if (!confirmed) return;
+    this.mcpsStore.remove(mcp.id);
   }
 }

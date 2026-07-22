@@ -63,6 +63,8 @@
     "save": "Save",
     "cancel": "Cancel",
     "remove": "Remove",
+    "confirmRemoveTitle": "Remove MCP?",
+    "confirmRemove": "Remove \"{{name}}\"? Any client calling it will stop working immediately.",
     "empty": "No MCPs yet — add one above."
   },
   "logs": {
