@@ -1,4 +1,5 @@
 import { computed, effect, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -109,8 +110,14 @@ export const AuthStore = signalStore(
           patchState(store, { token: tokens.accessToken, refreshToken: tokens.refreshToken });
           return true;
         }),
-        catchError(() => {
-          this.logout();
+        catchError((error: unknown) => {
+          // Only a genuine 401 means the refresh token itself is invalid/expired —
+          // log out in that case. A transient error (network blip, server
+          // restarting, 5xx) should leave the stored session alone so the next
+          // request can retry once the server is back.
+          if (error instanceof HttpErrorResponse && error.status === 401) {
+            this.logout();
+          }
           return of(false);
         }),
         shareReplay({ bufferSize: 1, refCount: false }),
