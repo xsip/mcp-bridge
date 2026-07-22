@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "api:ts-node": "cross-env TS_NODE_PROJECT=apps/api/tsconfig.app.json TS_NODE_TRANSPILE_ONLY=true TS_NODE_COMPILER_OPTIONS={\\\"allowSyntheticDefaultImports\\\":true,\\\"esModuleInterop\\\":true,\\\"module\\\":\\\"commonjs\\\"} node --watch -r ts-node/register -r tsconfig-paths/register apps/api/src/main.ts",
-    "gen:client": "npx @openapitools/openapi-generator-cli generate -i ./openapi.json -g typescript-angular -o ./libs/ui/client/src --additional-properties=ngVersion=21,providedIn=root,useStandalone=true"
+    "gen:client": "npx @openapitools/openapi-generator-cli generate -i ./openapi.json -g typescript-angular -o ./libs/ui/client/src --additional-properties=ngVersion=21,providedIn=root,useStandalone=true",
+    "build:extension:single": "nx build chrome-extension && nx build-background chrome-extension && nx build-content chrome-extension",
+    "build:extension": "nx package chrome-extension"
   },
   "private": true,
   "devDependencies": {
@@ -34,6 +36,7 @@
     "@swc/helpers": "~0.5.18",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/bcrypt": "^5.0.2",
+    "@types/chrome": "^0.2.2",
     "@types/express": "^5.0.6",
     "@types/jest": "~30.0.0",
     "@types/node": "^22.0.0",
@@ -45,6 +48,7 @@
     "autoprefixer": "^10.4.0",
     "cross-env": "^10.1.0",
     "electron": "^43.1.1",
+    "esbuild": "^0.28.1",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-playwright": "^1.6.2",

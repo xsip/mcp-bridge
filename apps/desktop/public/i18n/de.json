@@ -41,7 +41,7 @@
     "apiKeys": "API-Schlüssel",
     "logout": "Abmelden",
     "darkModeToggle": "Darkmode Toggeln",
-    "notElectron": "Der Agent läuft nur in der Desktop-App",
+    "notElectron": "Installiere die Desktop-App oder die Browser-Erweiterung, um MCPs zu tunneln",
     "agentStatus": {
       "connected": "Agent verbunden",
       "connecting": "Verbindung wird aufgebaut…",

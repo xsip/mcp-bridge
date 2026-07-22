@@ -1,0 +1,78 @@
+{
+  "name": "chrome-extension",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/chrome-extension/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/chrome-extension",
+        "browser": "apps/chrome-extension/src/main.ts",
+        "tsConfig": "apps/chrome-extension/tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/chrome-extension/public"
+          }
+        ],
+        "styles": ["libs/ui/styles/styles.css"],
+        "optimization": {
+          "styles": {
+            "inlineCritical": false
+          }
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      }
+    },
+    "build-background": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/apps/chrome-extension/browser/background.js"],
+      "options": {
+        "command": "npx esbuild apps/chrome-extension/src/background/background.ts --bundle --format=iife --platform=browser --outfile=dist/apps/chrome-extension/browser/background.js"
+      }
+    },
+    "build-content": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/apps/chrome-extension/browser/content-script.js"],
+      "options": {
+        "command": "npx esbuild apps/chrome-extension/src/content/content-script.ts --bundle --format=iife --platform=browser --outfile=dist/apps/chrome-extension/browser/content-script.js"
+      }
+    },
+    "package": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build", "build-background", "build-content"],
+      "options": {
+        "command": "echo Extension ready at dist/apps/chrome-extension/browser — load it unpacked via chrome://extensions"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

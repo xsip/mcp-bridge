@@ -2,6 +2,7 @@ import {Component, DestroyRef, inject, signal} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SidenavComponent } from '../../components/sidenav/sidenav';
 import {BlobBackgroundDirective} from "../../directives/blob-background.directive";
+import { McpsStore } from '../../core/mcps/mcps.store';
 
 /**
  * Authenticated app shell: sidenav + routed content (MCPS / Logs).
@@ -30,9 +31,18 @@ import {BlobBackgroundDirective} from "../../directives/blob-background.directiv
 export class Shell {
   private destroyRef = inject(DestroyRef);
 
+  // McpsStore is `providedIn: 'root'` (tree-shakable/lazy) — without this,
+  // it's only ever constructed (and its `onInit` effect that pushes the
+  // active MCP list to the tunnel starts running) once the user actually
+  // visits the MCPs route. Injecting it here, in the shell every
+  // authenticated route mounts under, means the tunnel gets the real MCP
+  // list immediately after login/refresh regardless of which tab is open.
+  private readonly mcpsStore = inject(McpsStore);
+
   private mediaQuery = window.matchMedia('(min-width: 640px)');
   smallMode = signal<boolean>(this.mediaQuery.matches);
   constructor() {
+    this.mcpsStore.load();
     this.smallMode.set(!this.mediaQuery.matches);
     const listener = (e: MediaQueryListEvent) => {
       this.smallMode.set(!e.matches);

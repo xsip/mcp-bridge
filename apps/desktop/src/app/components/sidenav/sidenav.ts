@@ -75,7 +75,7 @@ import {TooltipDirective} from "../../directives/tooltip.directive";
       </nav>
 
       <div class="space-y-3 border-t border-border-subtle p-3">
-        @if (agentBridge.isElectron) {
+        @if (agentBridge.bridgeAvailable()) {
           <div class="flex items-center {{smallMode() ? 'justify-center': ''}} gap-2 px-2 text-xs text-text-muted">
             <span
               class="h-2 w-2 rounded-full transition-colors duration-300"
