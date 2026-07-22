@@ -82,7 +82,7 @@ import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service'
       <!-- List -->
       <ul class="mt-6 space-y-3 stagger-children">
         @for (key of apiKeysStore.items(); track key.id) {
-          <li class="msg-enter hover-lift rounded-2xl border border-border-default bg-primary-2 p-4">
+          <li class="msg-enter  {{key.revokedAt ? 'opacity-70! ': 'hover-lift'}} rounded-2xl border border-border-default bg-primary-2 p-4">
             <div class="flex items-center justify-between gap-3">
               <div class="min-w-0">
                 <p class="truncate text-sm font-semibold text-text-primary">{{ key.name }}</p>
