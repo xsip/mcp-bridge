@@ -1,5 +1,5 @@
-import { Type } from 'class-transformer';
-import { IsInt, IsOptional, Max, Min } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsBoolean, IsInt, IsOptional, Max, Min } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export const DEFAULT_LOG_PAGE_SIZE = 25;
@@ -21,4 +21,14 @@ export class McpLogQueryDto {
   @Min(1)
   @Max(MAX_LOG_PAGE_SIZE)
   pageSize = DEFAULT_LOG_PAGE_SIZE;
+
+  @ApiPropertyOptional({
+    type: Boolean,
+    default: false,
+    description: 'When true, only returns entries whose request body is a JSON-RPC "tools/call" (MCP tool invocations)',
+  })
+  @IsOptional()
+  @Transform(({ value }) => value === true || value === 'true')
+  @IsBoolean()
+  toolCallsOnly = false;
 }

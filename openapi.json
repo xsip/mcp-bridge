@@ -442,6 +442,16 @@
               "default": 25,
               "type": "number"
             }
+          },
+          {
+            "name": "toolCallsOnly",
+            "required": false,
+            "in": "query",
+            "description": "When true, only returns entries whose request body is a JSON-RPC \"tools/call\" (MCP tool invocations)",
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -534,6 +544,16 @@
               "maximum": 100,
               "default": 25,
               "type": "number"
+            }
+          },
+          {
+            "name": "toolCallsOnly",
+            "required": false,
+            "in": "query",
+            "description": "When true, only returns entries whose request body is a JSON-RPC \"tools/call\" (MCP tool invocations)",
+            "schema": {
+              "default": false,
+              "type": "boolean"
             }
           }
         ],

@@ -39,6 +39,14 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
             <a routerLink="/logs"
                class="text-xs font-medium text-accent hover:underline">{{ 'logs.clearFilter' | translate }}</a>
           }
+          <label class="inline-flex cursor-pointer items-center gap-2 text-xs text-text-secondary">
+            <ui-checkbox
+              [checked]="logsStore.toolCallsOnly()"
+              (checkedChange)="logsStore.setToolCallsOnly($event)"
+              [ariaLabel]="'logs.toolCallsOnly' | translate"
+            />
+            {{ 'logs.toolCallsOnly' | translate }}
+          </label>
           <button
             type="button"
             (click)="deleteAll()"

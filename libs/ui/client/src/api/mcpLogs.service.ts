@@ -168,15 +168,16 @@ export class McpLogsService extends BaseService {
      * List (paginated) proxied request/response logs for every MCP the current user owns
      * @endpoint get /mcp/logs
      * @param page 1-based page number
-     * @param pageSize 
+     * @param pageSize
+     * @param toolCallsOnly When true, only returns entries whose request body is a JSON-RPC \&quot;tools/call\&quot; (MCP tool invocations)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public listAllMcpLogs(page?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<McpLogPageDto>;
-    public listAllMcpLogs(page?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<McpLogPageDto>>;
-    public listAllMcpLogs(page?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<McpLogPageDto>>;
-    public listAllMcpLogs(page?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public listAllMcpLogs(page?: number, pageSize?: number, toolCallsOnly?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<McpLogPageDto>;
+    public listAllMcpLogs(page?: number, pageSize?: number, toolCallsOnly?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<McpLogPageDto>>;
+    public listAllMcpLogs(page?: number, pageSize?: number, toolCallsOnly?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<McpLogPageDto>>;
+    public listAllMcpLogs(page?: number, pageSize?: number, toolCallsOnly?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new OpenApiHttpParams(this.encoder);
 
@@ -193,6 +194,15 @@ export class McpLogsService extends BaseService {
             localVarQueryParameters,
             'pageSize',
             <any>pageSize,
+            QueryParamStyle.Form,
+            true,
+        );
+
+
+        localVarQueryParameters = this.addToHttpParams(
+            localVarQueryParameters,
+            'toolCallsOnly',
+            <any>toolCallsOnly,
             QueryParamStyle.Form,
             true,
         );
@@ -247,15 +257,16 @@ export class McpLogsService extends BaseService {
      * @endpoint get /mcp/{mcpId}/logs
      * @param mcpId 
      * @param page 1-based page number
-     * @param pageSize 
+     * @param pageSize
+     * @param toolCallsOnly When true, only returns entries whose request body is a JSON-RPC \&quot;tools/call\&quot; (MCP tool invocations)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public listMcpLogs(mcpId: string, page?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<McpLogPageDto>;
-    public listMcpLogs(mcpId: string, page?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<McpLogPageDto>>;
-    public listMcpLogs(mcpId: string, page?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<McpLogPageDto>>;
-    public listMcpLogs(mcpId: string, page?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public listMcpLogs(mcpId: string, page?: number, pageSize?: number, toolCallsOnly?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<McpLogPageDto>;
+    public listMcpLogs(mcpId: string, page?: number, pageSize?: number, toolCallsOnly?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<McpLogPageDto>>;
+    public listMcpLogs(mcpId: string, page?: number, pageSize?: number, toolCallsOnly?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<McpLogPageDto>>;
+    public listMcpLogs(mcpId: string, page?: number, pageSize?: number, toolCallsOnly?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (mcpId === null || mcpId === undefined) {
             throw new Error('Required parameter mcpId was null or undefined when calling listMcpLogs.');
         }
@@ -275,6 +286,15 @@ export class McpLogsService extends BaseService {
             localVarQueryParameters,
             'pageSize',
             <any>pageSize,
+            QueryParamStyle.Form,
+            true,
+        );
+
+
+        localVarQueryParameters = this.addToHttpParams(
+            localVarQueryParameters,
+            'toolCallsOnly',
+            <any>toolCallsOnly,
             QueryParamStyle.Form,
             true,
         );

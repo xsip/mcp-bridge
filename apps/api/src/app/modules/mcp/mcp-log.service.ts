@@ -50,17 +50,23 @@ export class McpLogService {
     await this.trim(mcpId);
   }
 
-  async listForMcp(ownerId: string, mcpId: string, page: number, pageSize: number): Promise<McpLogPageDto> {
+  async listForMcp(ownerId: string, mcpId: string, page: number, pageSize: number, toolCallsOnly = false): Promise<McpLogPageDto> {
     const mcp = await this.mcpModel.findOne({ ownerId, id: mcpId }).lean().exec();
     if (!mcp) {
       throw new NotFoundException(`No MCP with id "${mcpId}" on this account`);
     }
 
-    return this.paginate({ ownerId, mcpId }, page, pageSize);
+    return this.paginate(this.withToolCallsFilter({ ownerId, mcpId }, toolCallsOnly), page, pageSize);
   }
 
-  listForOwner(ownerId: string, page: number, pageSize: number): Promise<McpLogPageDto> {
-    return this.paginate({ ownerId }, page, pageSize);
+  listForOwner(ownerId: string, page: number, pageSize: number, toolCallsOnly = false): Promise<McpLogPageDto> {
+    return this.paginate(this.withToolCallsFilter({ ownerId }, toolCallsOnly), page, pageSize);
+  }
+
+  /** Narrows a log filter to JSON-RPC "tools/call" entries (MCP tool invocations) when requested. */
+  private withToolCallsFilter(filter: Record<string, unknown>, toolCallsOnly: boolean): Record<string, unknown> {
+    if (!toolCallsOnly) return filter;
+    return { ...filter, 'requestBody.method': 'tools/call' };
   }
 
   /** Deletes one log entry, scoped to its owner so a user can never delete another account's logs. */
