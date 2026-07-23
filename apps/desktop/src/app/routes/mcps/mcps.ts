@@ -21,14 +21,15 @@ import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service'
   imports: [FormsModule, RouterLink, TranslatePipe, NgIconComponent, CheckboxComponent],
   viewProviders: [provideIcons({ heroPlus, heroTrash, heroPencilSquare, heroCheck, heroXMark })],
   template: `
-    <div class="mx-auto max-w-3xl animate-slide-up">
-      <div class="flex items-center justify-between">
-        <div>
+    <div class="animate-slide-up">
+      <div class="glass sticky -top-8 z-20 -mx-8 -mt-8 border-x-0 border-t-0 border-b-border-glass px-8 pb-4 pt-8 shadow-depth-sm">
+        <div class="mx-auto max-w-3xl">
           <h1 class="text-xl font-semibold text-text-primary">{{ 'mcps.title' | translate }}</h1>
           <p class="mt-1 text-sm text-text-secondary">{{ 'mcps.subtitle' | translate }}</p>
         </div>
       </div>
 
+      <div class="mx-auto max-w-3xl">
       <!-- Add form -->
       <form
         class="mt-6 flex md:flex-row flex-col flex-wrap items-end gap-3 rounded-2xl border border-border-default bg-primary-2 p-4 shadow-depth-sm transition-shadow hover:shadow-depth-md"
@@ -198,6 +199,7 @@ import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service'
           </li>
         }
       </ul>
+      </div>
     </div>
   `,
   styles: ``,

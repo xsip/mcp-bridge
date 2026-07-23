@@ -22,37 +22,44 @@ import { FileManifestTreeComponent } from '../../components/file-manifest-tree/f
   imports: [RouterLink, TranslatePipe, NgIconComponent, PreviewImageComponent, MarketplaceItemActionsComponent, FileManifestTreeComponent],
   viewProviders: [provideIcons({ heroArrowLeft, heroChevronDown, heroChevronRight, heroPhoto })],
   template: `
-    <div class="mx-auto max-w-3xl animate-slide-up">
-      <a
-        routerLink="/marketplace"
-        class="press-feedback inline-flex items-center gap-1.5 text-xs font-medium text-text-secondary hover:text-accent"
-      >
-        <ng-icon name="heroArrowLeft" class="h-3.5 w-3.5" />
-        {{ 'marketplaceDetail.back' | translate }}
-      </a>
+    <div class="animate-slide-up">
+      <div class="glass sticky -top-8 z-20 -mx-8 -mt-8 border-x-0 border-t-0 border-b-border-glass px-8 pb-4 pt-8 shadow-depth-sm">
+        <div class="mx-auto max-w-3xl">
+          <a
+            routerLink="/marketplace"
+            class="press-feedback inline-flex items-center gap-1.5 text-xs font-medium text-text-secondary hover:text-accent"
+          >
+            <ng-icon name="heroArrowLeft" class="h-3.5 w-3.5" />
+            {{ 'marketplaceDetail.back' | translate }}
+          </a>
 
+          @if (item(); as current) {
+            <div class="mt-4 flex flex-wrap items-start justify-between gap-4">
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <h1 class="text-xl font-semibold text-text-primary">{{ current.name }}</h1>
+                  <span class="rounded-full bg-primary-2 px-2 py-0.5 text-[10px] font-medium text-text-muted">{{ current.visibility }}</span>
+                </div>
+                <p class="mt-1 text-xs text-text-muted">
+                  {{ current.ownerUsername }} · {{ 'marketplace.downloadCount' | translate: { count: current.totalDownloadCount } }}
+                </p>
+              </div>
+
+              <app-marketplace-item-actions [item]="current" />
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="mx-auto max-w-3xl">
       @if (loading()) {
-        <p class="mt-6 text-sm text-text-muted">{{ 'marketplaceDetail.loading' | translate }}</p>
+        <p class="mt-2 text-sm text-text-muted">{{ 'marketplaceDetail.loading' | translate }}</p>
       } @else if (!item()) {
-        <p class="mt-6 rounded-lg border border-error-border bg-error-bg px-3 py-2 text-sm text-error-text">
+        <p class="mt-2 rounded-lg border border-error-border bg-error-bg px-3 py-2 text-sm text-error-text">
           {{ 'marketplaceDetail.notFound' | translate }}
         </p>
       } @else {
         @let current = item()!;
-
-        <div class="mt-4 flex flex-wrap items-start justify-between gap-4">
-          <div class="min-w-0">
-            <div class="flex items-center gap-2">
-              <h1 class="text-xl font-semibold text-text-primary">{{ current.name }}</h1>
-              <span class="rounded-full bg-primary-2 px-2 py-0.5 text-[10px] font-medium text-text-muted">{{ current.visibility }}</span>
-            </div>
-            <p class="mt-1 text-xs text-text-muted">
-              {{ current.ownerUsername }} · {{ 'marketplace.downloadCount' | translate: { count: current.totalDownloadCount } }}
-            </p>
-          </div>
-
-          <app-marketplace-item-actions [item]="current" />
-        </div>
 
         @if (current.previewImages.length > 0) {
           <div class="mt-6 flex flex-wrap gap-3">
@@ -112,6 +119,7 @@ import { FileManifestTreeComponent } from '../../components/file-manifest-tree/f
           </ul>
         </div>
       }
+      </div>
     </div>
   `,
   styles: ``,

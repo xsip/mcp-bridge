@@ -21,10 +21,15 @@ import { PreviewImageComponent } from '../../components/preview-image/preview-im
   imports: [FormsModule, TranslatePipe, NgIconComponent, RichTextEditorComponent, PreviewImageComponent],
   viewProviders: [provideIcons({ heroPencilSquare, heroTrash, heroXMark, heroArrowUpTray, heroPhoto })],
   template: `
-    <div class="mx-auto max-w-4xl animate-slide-up">
-      <h1 class="text-xl font-semibold text-text-primary">{{ 'marketplaceMyReleases.title' | translate }}</h1>
-      <p class="mt-1 text-sm text-text-secondary">{{ 'marketplaceMyReleases.subtitle' | translate }}</p>
+    <div class="animate-slide-up">
+      <div class="glass sticky -top-8 z-20 -mx-8 -mt-8 border-x-0 border-t-0 border-b-border-glass px-8 pb-4 pt-8 shadow-depth-sm">
+        <div class="mx-auto max-w-4xl">
+          <h1 class="text-xl font-semibold text-text-primary">{{ 'marketplaceMyReleases.title' | translate }}</h1>
+          <p class="mt-1 text-sm text-text-secondary">{{ 'marketplaceMyReleases.subtitle' | translate }}</p>
+        </div>
+      </div>
 
+      <div class="mx-auto max-w-4xl">
       @if (store.error(); as error) {
         <p class="mt-3 animate-shake rounded-lg border border-error-border bg-error-bg px-3 py-2 text-xs text-error-text">{{ error }}</p>
       }
@@ -195,6 +200,7 @@ import { PreviewImageComponent } from '../../components/preview-image/preview-im
           </li>
         }
       </ul>
+      </div>
     </div>
   `,
   styles: ``,

@@ -26,45 +26,50 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
   imports: [RouterLink, TranslatePipe, NgIconComponent, DatePipe, JsonPipe, CheckboxComponent],
   viewProviders: [provideIcons({ heroCheckCircle, heroXCircle, heroChevronDown, heroChevronRight, heroTrash })],
   template: `
-    <div class="mx-auto max-w-5xl animate-slide-up">
-      <div class="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 class="text-xl font-semibold text-text-primary">{{ 'logs.title' | translate }}</h1>
-          <p class="mt-1 text-sm text-text-secondary">
-            {{ (mcpId() ? 'logs.subtitleFiltered' : 'logs.subtitle') | translate }}
-          </p>
-        </div>
-        <div class="flex items-center gap-3 md:mb-0 mb-5">
-          @if (mcpId()) {
-            <a routerLink="/logs"
-               class="text-xs font-medium text-accent hover:underline">{{ 'logs.clearFilter' | translate }}</a>
-          }
-          <label class="inline-flex cursor-pointer items-center gap-2 text-xs text-text-secondary">
-            <ui-checkbox
-              [checked]="logsStore.toolCallsOnly()"
-              (checkedChange)="logsStore.setToolCallsOnly($event)"
-              [ariaLabel]="'logs.toolCallsOnly' | translate"
-            />
-            {{ 'logs.toolCallsOnly' | translate }}
-          </label>
-          <label class="inline-flex cursor-pointer items-center gap-2 text-xs text-text-secondary">
-            <ui-checkbox
-              [checked]="logsStore.todayOnly()"
-              (checkedChange)="logsStore.setTodayOnly($event)"
-              [ariaLabel]="'logs.todayOnly' | translate"
-            />
-            {{ 'logs.todayOnly' | translate }}
-          </label>
-          <button
-            type="button"
-            (click)="deleteAll()"
-            class="press-feedback inline-flex items-center gap-1.5 rounded-lg border border-error-border px-3 py-1.5 text-xs font-medium text-error-text hover:bg-error-bg"
-          >
-            <ng-icon name="heroTrash" class="h-3.5 w-3.5"/>
-            {{ (mcpId() ? 'logs.deleteAllFiltered' : 'logs.deleteAll') | translate }}
-          </button>
+    <div class="flex h-full flex-col animate-slide-up">
+      <div class="glass z-20 -mx-8 -mt-8 shrink-0 border-x-0 border-t-0 border-b-border-glass px-8 pb-4 pt-8 shadow-depth-sm">
+        <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3">
+          <div>
+            <h1 class="text-xl font-semibold text-text-primary">{{ 'logs.title' | translate }}</h1>
+            <p class="mt-1 text-sm text-text-secondary">
+              {{ (mcpId() ? 'logs.subtitleFiltered' : 'logs.subtitle') | translate }}
+            </p>
+          </div>
+          <div class="flex items-center gap-3 md:mb-0 mb-5">
+            @if (mcpId()) {
+              <a routerLink="/logs"
+                 class="text-xs font-medium text-accent hover:underline">{{ 'logs.clearFilter' | translate }}</a>
+            }
+            <label class="inline-flex cursor-pointer items-center gap-2 text-xs text-text-secondary">
+              <ui-checkbox
+                [checked]="logsStore.toolCallsOnly()"
+                (checkedChange)="logsStore.setToolCallsOnly($event)"
+                [ariaLabel]="'logs.toolCallsOnly' | translate"
+              />
+              {{ 'logs.toolCallsOnly' | translate }}
+            </label>
+            <label class="inline-flex cursor-pointer items-center gap-2 text-xs text-text-secondary">
+              <ui-checkbox
+                [checked]="logsStore.todayOnly()"
+                (checkedChange)="logsStore.setTodayOnly($event)"
+                [ariaLabel]="'logs.todayOnly' | translate"
+              />
+              {{ 'logs.todayOnly' | translate }}
+            </label>
+            <button
+              type="button"
+              (click)="deleteAll()"
+              class="press-feedback inline-flex items-center gap-1.5 rounded-lg border border-error-border px-3 py-1.5 text-xs font-medium text-error-text hover:bg-error-bg"
+            >
+              <ng-icon name="heroTrash" class="h-3.5 w-3.5"/>
+              {{ (mcpId() ? 'logs.deleteAllFiltered' : 'logs.deleteAll') | translate }}
+            </button>
+          </div>
         </div>
       </div>
+
+      <div class="min-h-0 flex-1 overflow-y-auto">
+      <div class="mx-auto max-w-5xl">
 
       @if (logsStore.error(); as error) {
         <p
@@ -292,27 +297,32 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
         }
       </div>
 
+      </div>
+      </div>
+
       @if (logsStore.total() > 0) {
-        <div class="mt-4 flex items-center justify-between text-xs text-text-secondary">
-          <span>{{ 'logs.totalCount' | translate: {count: logsStore.total()} }}</span>
-          <div class="flex items-center gap-3">
-            <button
-              type="button"
-              [disabled]="logsStore.page() <= 1"
-              (click)="logsStore.goToPage(logsStore.page() - 1)"
-              class="press-feedback rounded-lg border border-border-default px-2.5 py-1.5 font-medium hover:bg-primary-2 disabled:opacity-40"
-            >
-              {{ 'logs.previous' | translate }}
-            </button>
-            <span>{{ 'logs.pageOf' | translate: {page: logsStore.page(), pageCount: logsStore.pageCount()} }}</span>
-            <button
-              type="button"
-              [disabled]="logsStore.page() >= logsStore.pageCount()"
-              (click)="logsStore.goToPage(logsStore.page() + 1)"
-              class="press-feedback rounded-lg border border-border-default px-2.5 py-1.5 font-medium hover:bg-primary-2 disabled:opacity-40"
-            >
-              {{ 'logs.next' | translate }}
-            </button>
+        <div class="glass z-20 -mx-8 -mb-8 shrink-0 border-x-0 border-b-0 border-t-border-glass px-8 pb-8 pt-3 shadow-depth-sm">
+          <div class="mx-auto flex max-w-5xl items-center justify-between text-xs text-text-secondary">
+            <span>{{ 'logs.totalCount' | translate: {count: logsStore.total()} }}</span>
+            <div class="flex items-center gap-3">
+              <button
+                type="button"
+                [disabled]="logsStore.page() <= 1"
+                (click)="logsStore.goToPage(logsStore.page() - 1)"
+                class="press-feedback rounded-lg border border-border-default px-2.5 py-1.5 font-medium hover:bg-primary-2 disabled:opacity-40"
+              >
+                {{ 'logs.previous' | translate }}
+              </button>
+              <span>{{ 'logs.pageOf' | translate: {page: logsStore.page(), pageCount: logsStore.pageCount()} }}</span>
+              <button
+                type="button"
+                [disabled]="logsStore.page() >= logsStore.pageCount()"
+                (click)="logsStore.goToPage(logsStore.page() + 1)"
+                class="press-feedback rounded-lg border border-border-default px-2.5 py-1.5 font-medium hover:bg-primary-2 disabled:opacity-40"
+              >
+                {{ 'logs.next' | translate }}
+              </button>
+            </div>
           </div>
         </div>
       }

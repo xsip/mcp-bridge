@@ -21,10 +21,15 @@ import { PreviewImageComponent } from '../../components/preview-image/preview-im
   imports: [FormsModule, TranslatePipe, NgIconComponent, RichTextEditorComponent, PreviewImageComponent],
   viewProviders: [provideIcons({ heroArrowUpTray, heroCheckCircle, heroPhoto, heroTrash })],
   template: `
-    <div class="mx-auto max-w-2xl animate-slide-up">
-      <h1 class="text-xl font-semibold text-text-primary">{{ 'marketplacePublish.title' | translate }}</h1>
-      <p class="mt-1 text-sm text-text-secondary">{{ 'marketplacePublish.subtitle' | translate }}</p>
+    <div class="animate-slide-up">
+      <div class="glass sticky -top-8 z-20 -mx-8 -mt-8 border-x-0 border-t-0 border-b-border-glass px-8 pb-4 pt-8 shadow-depth-sm">
+        <div class="mx-auto max-w-2xl">
+          <h1 class="text-xl font-semibold text-text-primary">{{ 'marketplacePublish.title' | translate }}</h1>
+          <p class="mt-1 text-sm text-text-secondary">{{ 'marketplacePublish.subtitle' | translate }}</p>
+        </div>
+      </div>
 
+      <div class="mx-auto max-w-2xl">
       @if (!createdItem()) {
         <form class="mt-6 space-y-4 rounded-2xl border border-border-default bg-primary-2 p-4" (ngSubmit)="submitCreate()">
           <div>
@@ -144,6 +149,7 @@ import { PreviewImageComponent } from '../../components/preview-image/preview-im
           }
         </div>
       }
+      </div>
     </div>
   `,
   styles: ``,

@@ -17,10 +17,15 @@ import { MarketplaceFsService } from '../../core/marketplace/marketplace-fs.serv
   imports: [TranslatePipe, NgIconComponent],
   viewProviders: [provideIcons({ heroFolderOpen })],
   template: `
-    <div class="mx-auto max-w-2xl animate-slide-up">
-      <h1 class="text-xl font-semibold text-text-primary">{{ 'settings.title' | translate }}</h1>
-      <p class="mt-1 text-sm text-text-secondary">{{ 'settings.subtitle' | translate }}</p>
+    <div class="animate-slide-up">
+      <div class="glass sticky -top-8 z-20 -mx-8 -mt-8 border-x-0 border-t-0 border-b-border-glass px-8 pb-4 pt-8 shadow-depth-sm">
+        <div class="mx-auto max-w-2xl">
+          <h1 class="text-xl font-semibold text-text-primary">{{ 'settings.title' | translate }}</h1>
+          <p class="mt-1 text-sm text-text-secondary">{{ 'settings.subtitle' | translate }}</p>
+        </div>
+      </div>
 
+      <div class="mx-auto max-w-2xl">
       <div class="mt-6 rounded-2xl border border-border-default bg-primary-2 p-4">
         <label for="downloadDirectory" class="mb-1 block text-xs font-medium text-text-secondary">{{ 'settings.downloadDirectory' | translate }}</label>
         <div class="flex items-center gap-2">
@@ -41,6 +46,7 @@ import { MarketplaceFsService } from '../../core/marketplace/marketplace-fs.serv
           </button>
         </div>
         <p class="mt-2 text-xs text-text-muted">{{ 'settings.downloadDirectoryHint' | translate }}</p>
+      </div>
       </div>
     </div>
   `,

@@ -24,10 +24,15 @@ import { PreviewImageComponent } from '../../components/preview-image/preview-im
   imports: [TranslatePipe, NgIconComponent, DatePipe, RouterLink, PreviewImageComponent],
   viewProviders: [provideIcons({ heroCheckCircle, heroFolder, heroTrash, heroArrowPath, heroPhoto })],
   template: `
-    <div class="mx-auto max-w-3xl animate-slide-up">
-      <h1 class="text-xl font-semibold text-text-primary">{{ 'marketplaceInstalled.title' | translate }}</h1>
-      <p class="mt-1 text-sm text-text-secondary">{{ 'marketplaceInstalled.subtitle' | translate }}</p>
+    <div class="animate-slide-up">
+      <div class="glass sticky -top-8 z-20 -mx-8 -mt-8 border-x-0 border-t-0 border-b-border-glass px-8 pb-4 pt-8 shadow-depth-sm">
+        <div class="mx-auto max-w-3xl">
+          <h1 class="text-xl font-semibold text-text-primary">{{ 'marketplaceInstalled.title' | translate }}</h1>
+          <p class="mt-1 text-sm text-text-secondary">{{ 'marketplaceInstalled.subtitle' | translate }}</p>
+        </div>
+      </div>
 
+      <div class="mx-auto max-w-3xl">
       <ul class="mt-6 space-y-3 stagger-children">
         @for (entry of installedList(); track entry.itemId) {
           <li
@@ -123,6 +128,7 @@ import { PreviewImageComponent } from '../../components/preview-image/preview-im
           </li>
         }
       </ul>
+      </div>
     </div>
   `,
   styles: ``,

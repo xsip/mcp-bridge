@@ -17,11 +17,11 @@ import { ImageLightboxService } from '../../core/image-lightbox/image-lightbox.s
   },
   template: `
     @if (lightbox.image(); as image) {
-      <div class="animate-fade-in fixed inset-x-0 bottom-0 top-9 z-50 flex items-center justify-center bg-black/80 p-6" (click)="lightbox.close()">
+      <div class="animate-fade-in fixed inset-x-0 bottom-0 top-9 z-50 flex items-center justify-center bg-primary/80 p-6" (click)="lightbox.close()">
         <button
           type="button"
           (click)="lightbox.close()"
-          class="press-feedback absolute right-6 top-6 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
+          class="press-feedback absolute right-6 top-6 inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary-2/90 text-secondary hover:bg-white/20"
           aria-label="Close"
         >
           <ng-icon name="heroXMark" class="h-5 w-5" />

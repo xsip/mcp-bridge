@@ -25,48 +25,53 @@ import { MarketplaceItemActionsComponent } from '../../components/marketplace-it
   imports: [FormsModule, TranslatePipe, NgIconComponent, PreviewImageComponent, MarketplaceItemActionsComponent],
   viewProviders: [provideIcons({ heroMagnifyingGlass, heroBarsArrowUp, heroBarsArrowDown, heroPhoto, heroMagnifyingGlassPlus })],
   template: `
-    <div class="mx-auto max-w-4xl animate-slide-up">
-      <div>
-        <h1 class="text-xl font-semibold text-text-primary">{{ 'marketplace.title' | translate }}</h1>
-        <p class="mt-1 text-sm text-text-secondary">{{ 'marketplace.subtitle' | translate }}</p>
-      </div>
+    <div class="animate-slide-up">
+      <div class="glass sticky -top-8 z-20 -mx-8 -mt-8 border-x-0 border-t-0 border-b-border-glass px-8 pb-4 pt-8 shadow-depth-sm">
+        <div class="mx-auto max-w-4xl">
+          <div>
+            <h1 class="text-xl font-semibold text-text-primary">{{ 'marketplace.title' | translate }}</h1>
+            <p class="mt-1 text-sm text-text-secondary">{{ 'marketplace.subtitle' | translate }}</p>
+          </div>
 
-      <div class="mt-6 flex flex-wrap items-center gap-3">
-        <div class="relative min-w-0 flex-1">
-          <ng-icon
-            name="heroMagnifyingGlass"
-            class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted"
-          />
-          <input
-            type="text"
-            [ngModel]="marketplaceStore.search()"
-            (ngModelChange)="onSearchChange($event)"
-            [placeholder]="'marketplace.searchPlaceholder' | translate"
-            class="w-full rounded-lg border border-border-default bg-primary py-2 pl-9 pr-3 text-sm text-text-primary"
-          />
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <div class="relative min-w-0 flex-1">
+              <ng-icon
+                name="heroMagnifyingGlass"
+                class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted"
+              />
+              <input
+                type="text"
+                [ngModel]="marketplaceStore.search()"
+                (ngModelChange)="onSearchChange($event)"
+                [placeholder]="'marketplace.searchPlaceholder' | translate"
+                class="w-full rounded-lg border border-border-default bg-primary py-2 pl-9 pr-3 text-sm text-text-primary"
+              />
+            </div>
+
+            <button
+              type="button"
+              (click)="toggleReleaseDateSort()"
+              class="press-feedback inline-flex items-center gap-1.5 rounded-lg border border-border-default px-3 py-2 text-xs font-medium text-text-secondary hover:bg-primary-2"
+              [class.text-accent]="marketplaceStore.sortByReleaseDate()"
+            >
+              <ng-icon [name]="marketplaceStore.sortByReleaseDate() === 'asc' ? 'heroBarsArrowUp' : 'heroBarsArrowDown'" class="h-3.5 w-3.5" />
+              {{ 'marketplace.sortByDate' | translate }}
+            </button>
+
+            <button
+              type="button"
+              (click)="toggleDownloadCountSort()"
+              class="press-feedback inline-flex items-center gap-1.5 rounded-lg border border-border-default px-3 py-2 text-xs font-medium text-text-secondary hover:bg-primary-2"
+              [class.text-accent]="marketplaceStore.sortByDownloadCount()"
+            >
+              <ng-icon [name]="marketplaceStore.sortByDownloadCount() === 'asc' ? 'heroBarsArrowUp' : 'heroBarsArrowDown'" class="h-3.5 w-3.5" />
+              {{ 'marketplace.sortByDownloads' | translate }}
+            </button>
+          </div>
         </div>
-
-        <button
-          type="button"
-          (click)="toggleReleaseDateSort()"
-          class="press-feedback inline-flex items-center gap-1.5 rounded-lg border border-border-default px-3 py-2 text-xs font-medium text-text-secondary hover:bg-primary-2"
-          [class.text-accent]="marketplaceStore.sortByReleaseDate()"
-        >
-          <ng-icon [name]="marketplaceStore.sortByReleaseDate() === 'asc' ? 'heroBarsArrowUp' : 'heroBarsArrowDown'" class="h-3.5 w-3.5" />
-          {{ 'marketplace.sortByDate' | translate }}
-        </button>
-
-        <button
-          type="button"
-          (click)="toggleDownloadCountSort()"
-          class="press-feedback inline-flex items-center gap-1.5 rounded-lg border border-border-default px-3 py-2 text-xs font-medium text-text-secondary hover:bg-primary-2"
-          [class.text-accent]="marketplaceStore.sortByDownloadCount()"
-        >
-          <ng-icon [name]="marketplaceStore.sortByDownloadCount() === 'asc' ? 'heroBarsArrowUp' : 'heroBarsArrowDown'" class="h-3.5 w-3.5" />
-          {{ 'marketplace.sortByDownloads' | translate }}
-        </button>
       </div>
 
+      <div class="mx-auto max-w-4xl">
       @if (marketplaceStore.error(); as error) {
         <p class="mt-3 animate-shake rounded-lg border border-error-border bg-error-bg px-3 py-2 text-xs text-error-text">{{ error }}</p>
       }
@@ -159,6 +164,7 @@ import { MarketplaceItemActionsComponent } from '../../components/marketplace-it
           </button>
         </div>
       }
+      </div>
     </div>
   `,
   styles: ``,

@@ -19,12 +19,15 @@ import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service'
   imports: [FormsModule, TranslatePipe, NgIconComponent, DatePipe],
   viewProviders: [provideIcons({ heroPlus, heroTrash, heroKey, heroClipboard })],
   template: `
-    <div class="mx-auto max-w-3xl animate-slide-up">
-      <div>
-        <h1 class="text-xl font-semibold text-text-primary">{{ 'apiKeys.title' | translate }}</h1>
-        <p class="mt-1 text-sm text-text-secondary">{{ 'apiKeys.subtitle' | translate }}</p>
+    <div class="animate-slide-up">
+      <div class="glass sticky -top-8 z-20 -mx-8 -mt-8 border-x-0 border-t-0 border-b-border-glass px-8 pb-4 pt-8 shadow-depth-sm">
+        <div class="mx-auto max-w-3xl">
+          <h1 class="text-xl font-semibold text-text-primary">{{ 'apiKeys.title' | translate }}</h1>
+          <p class="mt-1 text-sm text-text-secondary">{{ 'apiKeys.subtitle' | translate }}</p>
+        </div>
       </div>
 
+      <div class="mx-auto max-w-3xl">
       @if (apiKeysStore.justCreated(); as created) {
         <div class="animate-bounce-in mt-6 rounded-2xl border border-accent/40 bg-accent-subtle p-4 shadow-glow-accent">
           <p class="text-sm font-semibold text-accent-text">{{ 'apiKeys.createdTitle' | translate }}</p>
@@ -117,6 +120,7 @@ import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service'
           </li>
         }
       </ul>
+      </div>
     </div>
   `,
   styles: ``,
