@@ -2,13 +2,14 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { heroArrowLeft, heroPhoto } from '@ng-icons/heroicons/outline';
+import { heroArrowLeft, heroChevronDown, heroChevronRight, heroPhoto } from '@ng-icons/heroicons/outline';
 import { firstValueFrom } from 'rxjs';
 import { MarketPlaceItemDto, MarketplaceService } from '@mcp-bridge/ui-client';
 import { PreviewImageService } from '../../core/marketplace/preview-image.service';
 import { ImageLightboxService } from '../../core/image-lightbox/image-lightbox.service';
 import { PreviewImageComponent } from '../../components/preview-image/preview-image';
 import { MarketplaceItemActionsComponent } from '../../components/marketplace-item-actions/marketplace-item-actions';
+import { FileManifestTreeComponent } from '../../components/file-manifest-tree/file-manifest-tree';
 
 /**
  * Marketplace item detail page (`/marketplace/:id`) — full description, all
@@ -18,8 +19,8 @@ import { MarketplaceItemActionsComponent } from '../../components/marketplace-it
 @Component({
   selector: 'app-marketplace-detail',
   standalone: true,
-  imports: [RouterLink, TranslatePipe, NgIconComponent, PreviewImageComponent, MarketplaceItemActionsComponent],
-  viewProviders: [provideIcons({ heroArrowLeft, heroPhoto })],
+  imports: [RouterLink, TranslatePipe, NgIconComponent, PreviewImageComponent, MarketplaceItemActionsComponent, FileManifestTreeComponent],
+  viewProviders: [provideIcons({ heroArrowLeft, heroChevronDown, heroChevronRight, heroPhoto })],
   template: `
     <div class="mx-auto max-w-3xl animate-slide-up">
       <a
@@ -78,12 +79,34 @@ import { MarketplaceItemActionsComponent } from '../../components/marketplace-it
           <h2 class="text-sm font-semibold text-text-primary">{{ 'marketplaceDetail.versions' | translate }}</h2>
           <ul class="mt-3 space-y-2">
             @for (version of current.versions; track version.id) {
-              <li class="flex items-center justify-between rounded-lg border border-border-default bg-primary-2 px-3 py-2 text-xs">
-                <span class="font-medium text-text-primary">{{ version.version }}</span>
-                <span class="text-text-muted">
-                  {{ 'marketplace.downloadCount' | translate: { count: version.downloadCount } }} ·
-                  {{ version.uploadedBy }}
-                </span>
+              <li class="rounded-lg border border-border-default bg-primary-2 px-3 py-2 text-xs">
+                <div class="flex items-center justify-between">
+                  <span class="font-medium text-text-primary">{{ version.version }}</span>
+                  <span class="text-text-muted">
+                    {{ 'marketplace.downloadCount' | translate: { count: version.downloadCount } }} ·
+                    {{ version.uploadedBy }}
+                  </span>
+                </div>
+
+                @if (version.fileManifest.length > 0) {
+                  <button
+                    type="button"
+                    (click)="toggleFiles(version.id)"
+                    class="press-feedback mt-1.5 inline-flex items-center gap-1 text-text-muted hover:text-accent"
+                  >
+                    <ng-icon [name]="isFilesOpen(version.id) ? 'heroChevronDown' : 'heroChevronRight'" class="h-3 w-3" />
+                    {{ (isFilesOpen(version.id) ? 'marketplaceDetail.hideFiles' : 'marketplaceDetail.viewFiles') | translate }}
+                    · {{ 'marketplaceDetail.fileCount' | translate: { count: version.fileManifest.length } }}
+                  </button>
+
+                  @if (isFilesOpen(version.id)) {
+                    <div class="mt-2 rounded-md border border-border-subtle bg-primary p-1.5">
+                      <app-file-manifest-tree [entries]="version.fileManifest" />
+                    </div>
+                  }
+                } @else {
+                  <p class="mt-1.5 text-text-muted">{{ 'marketplaceDetail.noFiles' | translate }}</p>
+                }
               </li>
             }
           </ul>
@@ -102,6 +125,7 @@ export class MarketplaceDetail implements OnInit {
 
   protected readonly item = signal<MarketPlaceItemDto | null>(null);
   protected readonly loading = signal(true);
+  private readonly openFileVersions = signal(new Set<string>());
 
   async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
@@ -121,5 +145,19 @@ export class MarketplaceDetail implements OnInit {
 
   protected openLightbox(item: MarketPlaceItemDto, fileId: string): void {
     this.previewImages.getObjectUrl(item.id, fileId).subscribe((url) => this.lightbox.open({ url, alt: item.name }));
+  }
+
+  protected isFilesOpen(versionId: string): boolean {
+    return this.openFileVersions().has(versionId);
+  }
+
+  protected toggleFiles(versionId: string): void {
+    const next = new Set(this.openFileVersions());
+    if (next.has(versionId)) {
+      next.delete(versionId);
+    } else {
+      next.add(versionId);
+    }
+    this.openFileVersions.set(next);
   }
 }

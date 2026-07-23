@@ -19,6 +19,17 @@ export class MarketPlaceItemPreviewImageDto {
   fileSize: number;
 }
 
+export class MarketPlaceItemAssetManifestEntryDto {
+  @ApiProperty()
+  path: string;
+
+  @ApiProperty()
+  size: number;
+
+  @ApiProperty()
+  isDirectory: boolean;
+}
+
 export class MarketPlaceItemAssetDto {
   @ApiProperty()
   id: string;
@@ -40,6 +51,9 @@ export class MarketPlaceItemAssetDto {
 
   @ApiProperty()
   downloadCount: number;
+
+  @ApiProperty({ type: [MarketPlaceItemAssetManifestEntryDto] })
+  fileManifest: MarketPlaceItemAssetManifestEntryDto[];
 
   @ApiProperty()
   createdAt: Date;

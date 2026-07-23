@@ -205,7 +205,11 @@
     "back": "Zurück zum Marktplatz",
     "loading": "Wird geladen…",
     "notFound": "Dieser Marktplatz-Eintrag konnte nicht gefunden werden — er ist möglicherweise privat oder wurde entfernt.",
-    "versions": "Versionen"
+    "versions": "Versionen",
+    "viewFiles": "Dateien anzeigen",
+    "hideFiles": "Dateien ausblenden",
+    "fileCount": "{{count}} Dateien",
+    "noFiles": "Für diese Version sind keine Dateiinformationen verfügbar."
   },
   "marketplaceInstalled": {
     "title": "Auf diesem System",

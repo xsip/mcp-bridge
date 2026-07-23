@@ -9,6 +9,7 @@ export * from './deleteMcpLogsDto';
 export * from './downloadLinkDto';
 export * from './loginDto';
 export * from './marketPlaceItemAssetDto';
+export * from './marketPlaceItemAssetManifestEntryDto';
 export * from './marketPlaceItemDto';
 export * from './marketPlaceItemPreviewImageDto';
 export * from './mcpLogPageDto';

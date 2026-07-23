@@ -205,7 +205,11 @@
     "back": "Back to Marketplace",
     "loading": "Loading…",
     "notFound": "This marketplace item couldn't be found — it may be private or have been removed.",
-    "versions": "Versions"
+    "versions": "Versions",
+    "viewFiles": "View files",
+    "hideFiles": "Hide files",
+    "fileCount": "{{count}} files",
+    "noFiles": "No file information available for this version."
   },
   "marketplaceInstalled": {
     "title": "On this system",

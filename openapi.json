@@ -1760,6 +1760,25 @@
           "fileSize"
         ]
       },
+      "MarketPlaceItemAssetManifestEntryDto": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "size": {
+            "type": "number"
+          },
+          "isDirectory": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "path",
+          "size",
+          "isDirectory"
+        ]
+      },
       "MarketPlaceItemAssetDto": {
         "type": "object",
         "properties": {
@@ -1784,6 +1803,12 @@
           "downloadCount": {
             "type": "number"
           },
+          "fileManifest": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MarketPlaceItemAssetManifestEntryDto"
+            }
+          },
           "createdAt": {
             "format": "date-time",
             "type": "string"
@@ -1797,6 +1822,7 @@
           "checksum",
           "uploadedBy",
           "downloadCount",
+          "fileManifest",
           "createdAt"
         ]
       },

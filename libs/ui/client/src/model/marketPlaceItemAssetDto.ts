@@ -9,7 +9,9 @@
  */
 
 
-export interface MarketPlaceItemAssetDto { 
+import { MarketPlaceItemAssetManifestEntryDto } from './marketPlaceItemAssetManifestEntryDto';
+
+export interface MarketPlaceItemAssetDto {
     id: string;
     version: string;
     fileSize: number;
@@ -17,6 +19,7 @@ export interface MarketPlaceItemAssetDto {
     checksum: string;
     uploadedBy: string;
     downloadCount: number;
+    fileManifest: Array<MarketPlaceItemAssetManifestEntryDto>;
     createdAt: string;
 }
 

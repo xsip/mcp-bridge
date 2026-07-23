@@ -2,6 +2,7 @@ import { ConflictException, ForbiddenException, Injectable, NotFoundException } 
 import { InjectModel } from '@nestjs/mongoose';
 import { randomUUID, randomBytes, createHash } from 'crypto';
 import { Model } from 'mongoose';
+import * as unzipper from 'unzipper';
 import { Role } from '../auth/roles.decorator';
 import {
   AddVersionDto,
@@ -15,7 +16,11 @@ import {
 } from './dto/marketplace-item.dto';
 import { MarketplaceStorageService } from './marketplace-storage.service';
 import { MarketPlaceDownloadToken, MarketPlaceDownloadTokenDocument } from './schemas/marketplace-download-token.schema';
-import { MarketPlaceItemAsset, MarketPlaceItemAssetDocument } from './schemas/marketplace-item-asset.schema';
+import {
+  MarketPlaceItemAsset,
+  MarketPlaceItemAssetDocument,
+  MarketPlaceItemAssetManifestEntry,
+} from './schemas/marketplace-item-asset.schema';
 import { MarketPlaceItem, MarketPlaceItemDocument, MarketPlaceVisibility } from './schemas/marketplace-item.schema';
 import { MarketPlaceUserDownload, MarketPlaceUserDownloadDocument } from './schemas/marketplace-user-download.schema';
 
@@ -214,6 +219,7 @@ export class MarketplaceService {
     }
 
     const checksum = createHash('sha256').update(file.buffer).digest('hex');
+    const fileManifest = await this.readZipManifest(file.buffer);
     const stored = await this.storage.storeAsset(file.buffer, file.originalname);
 
     await this.assetModel.create({
@@ -225,6 +231,7 @@ export class MarketplaceService {
       originalFilename: file.originalname,
       checksum,
       uploadedBy: user.username,
+      fileManifest,
     });
 
     item.latestVersion = dto.version;
@@ -361,6 +368,16 @@ export class MarketplaceService {
     return { stream: await this.storage.readPreviewImage(fileId), mimeType: image.mimeType };
   }
 
+  /** Reads the zip's central directory (no extraction) to list every entry's path/size/type. */
+  private async readZipManifest(buffer: Buffer): Promise<MarketPlaceItemAssetManifestEntry[]> {
+    const directory = await unzipper.Open.buffer(buffer);
+    return directory.files.map((entry) => ({
+      path: entry.path,
+      size: entry.uncompressedSize,
+      isDirectory: entry.type === 'Directory',
+    }));
+  }
+
   private async findItemOrThrow(itemId: string): Promise<MarketPlaceItemDocument> {
     const item = await this.itemModel.findOne({ id: itemId }).exec();
     if (!item) {
@@ -400,6 +417,7 @@ export class MarketplaceService {
         checksum: asset.checksum,
         uploadedBy: asset.uploadedBy,
         downloadCount: asset.downloadCount,
+        fileManifest: asset.fileManifest,
         createdAt: (asset as unknown as { createdAt: Date }).createdAt,
       })),
       createdAt: (item as unknown as { createdAt: Date }).createdAt,

@@ -3,6 +3,18 @@ import { Document } from 'mongoose';
 
 export type MarketPlaceItemAssetDocument = MarketPlaceItemAsset & Document;
 
+/** One entry (file or folder) inside an uploaded zip, captured at upload time. */
+export class MarketPlaceItemAssetManifestEntry {
+  @Prop({ required: true })
+  path: string;
+
+  @Prop({ required: true })
+  size: number;
+
+  @Prop({ required: true })
+  isDirectory: boolean;
+}
+
 /**
  * One published version of a `MarketPlaceItem`. The zip payload itself is
  * stored in GridFS (see `MarketplaceStorageService`); this document only
@@ -41,6 +53,10 @@ export class MarketPlaceItemAsset {
   /** Count of distinct users who have downloaded this specific version. */
   @Prop({ required: true, default: 0 })
   downloadCount: number;
+
+  /** Flat listing of every entry in the zip (files and folders), captured once at upload time. */
+  @Prop({ required: true, type: [Object], default: [] })
+  fileManifest: MarketPlaceItemAssetManifestEntry[];
 }
 
 export const MarketPlaceItemAssetSchema = SchemaFactory.createForClass(MarketPlaceItemAsset);
