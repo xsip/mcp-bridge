@@ -1,4 +1,4 @@
-# MCP Loop
+# <img alt="logo" src="https://raw.githubusercontent.com/xsip/mcp-loop/refs/heads/main/apps/ui/public/logo-no-text.png" width="60"/>MCP Loop - [mcploop.dev](https://mcploop.dev)
 
 A relay platform that exposes MCP servers running on users' desktops to the public internet over plain HTTP — without opening a single port or touching a router. A user registers an account, configures one or more local MCPs (a name + the port their MCP server listens on), and runs a desktop agent that dials out to the backend over a persistent WebSocket. `GET/POST/... /mcp/<username>-<mcpName>` then becomes a message on that socket, and the agent's response streams back to the HTTP caller — typically ChatGPT or another MCP-capable client. Conceptually it's the same shape as Cloudflare Tunnel or ngrok, purpose-built for MCP.
 
