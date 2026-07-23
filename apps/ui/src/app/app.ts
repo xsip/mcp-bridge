@@ -18,5 +18,5 @@ import { NavComponent } from './components/nav/nav';
   styles: ``,
 })
 export class App {
-  protected title = 'ui';
+  protected title = 'MCP Loop';
 }
