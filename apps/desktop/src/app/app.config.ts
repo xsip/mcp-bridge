@@ -1,5 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withViewTransitions } from '@angular/router';
+import { skipInitialRouteTransition } from './core/route-transition.util';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideApi } from '@mcp-bridge/ui-client';
 import { appRoutes } from './app.routes';
@@ -11,7 +12,11 @@ import { authExpiryInterceptor } from './core/auth/auth-expiry.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(appRoutes),
+    // Route-transition animations — see the `::view-transition-*` rules in
+    // libs/ui/styles/styles.css for the actual enter/exit animation; this
+    // just tells the router to wrap each navigation in
+    // `document.startViewTransition()` so those rules get a chance to run.
+    provideRouter(appRoutes, withViewTransitions({ onViewTransitionCreated: skipInitialRouteTransition })),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor, authExpiryInterceptor])),
     provideTranslateService({
       loader: provideTranslateHttpLoader({

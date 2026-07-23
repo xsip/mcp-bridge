@@ -21,7 +21,7 @@ import { McpsStore } from '../../core/mcps/mcps.store';
   template: `
     <div appBlobBackground class="flex h-full overflow-hidden bg-primary text-secondary">
       <ui-sidenav [smallMode]="smallMode()" />
-      <main class="flex-1 overflow-y-auto p-8">
+      <main class="route-transition-content flex-1 overflow-y-auto p-8">
         <router-outlet></router-outlet>
       </main>
     </div>

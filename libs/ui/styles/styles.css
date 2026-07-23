@@ -503,9 +503,49 @@ pre, code, kbd, .font-mono {
     60%       { transform: translateX(-3px); }
     80%       { transform: translateX(3px); }
   }
+  @keyframes route-exit {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to   { opacity: 0; transform: translateY(-8px) scale(0.99); }
+  }
+  @keyframes route-enter {
+    from { opacity: 0; transform: translateY(10px) scale(0.99); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+}
+
+/* ─────────────────────────────────────────────────────
+   Route transitions (desktop app — see withViewTransitions()
+   in apps/desktop/src/app/app.config.ts). The animation is
+   scoped to `.route-transition-content` (the shell's <main>,
+   which wraps only the routed page — see shell.ts) via its own
+   `view-transition-name`, so the sidenav/titlebar chrome around
+   it stays perfectly still instead of the whole window
+   animating; only the actual page content fades+rises, matching
+   the rest of the app's "slide-up" entrance motif (.msg-enter).
+   The root capture (everything NOT named) is left un-animated
+   for the same reason.
+───────────────────────────────────────────────────── */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+::view-transition-old(route-content) {
+  animation: 180ms var(--ease-smooth) both route-exit;
+}
+::view-transition-new(route-content) {
+  animation: 320ms var(--ease-out-expo) both route-enter;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(route-content),
+  ::view-transition-new(route-content) {
+    animation-duration: 1ms;
+  }
 }
 
 @layer utilities {
+  /* Marks the routed-content region for the route-transition animation above — see shell.ts. */
+  .route-transition-content { view-transition-name: route-content; }
+
   /* Message entrance */
   .msg-enter { animation: var(--animate-slide-up); }
 
