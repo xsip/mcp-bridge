@@ -13,6 +13,46 @@ export class MarketPlaceItemAssetManifestEntry {
 
   @Prop({ required: true })
   isDirectory: boolean;
+
+  /** md5 hex digest of the file's content — undefined for directories. Used to detect changes between versions. */
+  @Prop({ required: false })
+  hash?: string;
+
+  /** Newline-count of the file's content — undefined for directories or content that looks binary. */
+  @Prop({ required: false })
+  lines?: number;
+}
+
+/** One file's line-count change between this version and the previous one. */
+export class MarketPlaceItemAssetChangelogEntry {
+  @Prop({ required: true })
+  path: string;
+
+  @Prop({ required: false })
+  previousLines?: number;
+
+  @Prop({ required: false })
+  currentLines?: number;
+}
+
+/**
+ * Diff between this version's zip and the previous version's zip, computed
+ * once at upload time (see `MarketplaceService.addVersion`) by comparing
+ * each file's md5 hash — never recomputed on read.
+ */
+export class MarketPlaceItemAssetChangelog {
+  /** The version this one was compared against, or null if this is the item's first version. */
+  @Prop({ required: false, default: null, type: String })
+  previousVersion: string | null;
+
+  @Prop({ required: true, type: [Object], default: [] })
+  added: MarketPlaceItemAssetChangelogEntry[];
+
+  @Prop({ required: true, type: [Object], default: [] })
+  removed: MarketPlaceItemAssetChangelogEntry[];
+
+  @Prop({ required: true, type: [Object], default: [] })
+  modified: MarketPlaceItemAssetChangelogEntry[];
 }
 
 /**
@@ -57,6 +97,10 @@ export class MarketPlaceItemAsset {
   /** Flat listing of every entry in the zip (files and folders), captured once at upload time. */
   @Prop({ required: true, type: [Object], default: [] })
   fileManifest: MarketPlaceItemAssetManifestEntry[];
+
+  /** Diff against the previous version, computed once at upload time — null for an item's first version. */
+  @Prop({ required: false, type: Object, default: null })
+  changelog: MarketPlaceItemAssetChangelog | null;
 }
 
 export const MarketPlaceItemAssetSchema = SchemaFactory.createForClass(MarketPlaceItemAsset);

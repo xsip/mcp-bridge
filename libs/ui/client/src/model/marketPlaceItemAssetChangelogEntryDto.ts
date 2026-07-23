@@ -9,11 +9,9 @@
  */
 
 
-export interface MarketPlaceItemAssetManifestEntryDto {
+export interface MarketPlaceItemAssetChangelogEntryDto {
     path: string;
-    size: number;
-    isDirectory: boolean;
-    hash?: string;
-    lines?: number;
+    previousLines?: number;
+    currentLines?: number;
 }
 

@@ -28,6 +28,37 @@ export class MarketPlaceItemAssetManifestEntryDto {
 
   @ApiProperty()
   isDirectory: boolean;
+
+  @ApiPropertyOptional()
+  hash?: string;
+
+  @ApiPropertyOptional()
+  lines?: number;
+}
+
+export class MarketPlaceItemAssetChangelogEntryDto {
+  @ApiProperty()
+  path: string;
+
+  @ApiPropertyOptional()
+  previousLines?: number;
+
+  @ApiPropertyOptional()
+  currentLines?: number;
+}
+
+export class MarketPlaceItemAssetChangelogDto {
+  @ApiPropertyOptional({ type: String, nullable: true })
+  previousVersion: string | null;
+
+  @ApiProperty({ type: [MarketPlaceItemAssetChangelogEntryDto] })
+  added: MarketPlaceItemAssetChangelogEntryDto[];
+
+  @ApiProperty({ type: [MarketPlaceItemAssetChangelogEntryDto] })
+  removed: MarketPlaceItemAssetChangelogEntryDto[];
+
+  @ApiProperty({ type: [MarketPlaceItemAssetChangelogEntryDto] })
+  modified: MarketPlaceItemAssetChangelogEntryDto[];
 }
 
 export class MarketPlaceItemAssetDto {
@@ -54,6 +85,9 @@ export class MarketPlaceItemAssetDto {
 
   @ApiProperty({ type: [MarketPlaceItemAssetManifestEntryDto] })
   fileManifest: MarketPlaceItemAssetManifestEntryDto[];
+
+  @ApiPropertyOptional({ type: MarketPlaceItemAssetChangelogDto, nullable: true })
+  changelog: MarketPlaceItemAssetChangelogDto | null;
 
   @ApiProperty()
   createdAt: Date;

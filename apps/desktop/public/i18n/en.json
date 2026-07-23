@@ -209,7 +209,13 @@
     "viewFiles": "View files",
     "hideFiles": "Hide files",
     "fileCount": "{{count}} files",
-    "noFiles": "No file information available for this version."
+    "noFiles": "No file information available for this version.",
+    "viewChangelog": "View changelog",
+    "hideChangelog": "Hide changelog",
+    "changelogComparedTo": "Compared to version {{version}}",
+    "changelogInitialRelease": "Initial release — nothing to compare against.",
+    "changelogNoChanges": "No file changes detected.",
+    "changelogLines": "{{count}} lines"
   },
   "marketplaceInstalled": {
     "title": "On this system",

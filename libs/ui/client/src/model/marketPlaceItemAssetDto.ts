@@ -10,6 +10,7 @@
 
 
 import { MarketPlaceItemAssetManifestEntryDto } from './marketPlaceItemAssetManifestEntryDto';
+import { MarketPlaceItemAssetChangelogDto } from './marketPlaceItemAssetChangelogDto';
 
 export interface MarketPlaceItemAssetDto {
     id: string;
@@ -20,6 +21,7 @@ export interface MarketPlaceItemAssetDto {
     uploadedBy: string;
     downloadCount: number;
     fileManifest: Array<MarketPlaceItemAssetManifestEntryDto>;
+    changelog: MarketPlaceItemAssetChangelogDto | null;
     createdAt: string;
 }
 

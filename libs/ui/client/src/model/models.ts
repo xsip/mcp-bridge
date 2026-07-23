@@ -8,6 +8,8 @@ export * from './customMcpDto';
 export * from './deleteMcpLogsDto';
 export * from './downloadLinkDto';
 export * from './loginDto';
+export * from './marketPlaceItemAssetChangelogDto';
+export * from './marketPlaceItemAssetChangelogEntryDto';
 export * from './marketPlaceItemAssetDto';
 export * from './marketPlaceItemAssetManifestEntryDto';
 export * from './marketPlaceItemDto';

@@ -2,6 +2,7 @@ import { ConflictException, ForbiddenException, Injectable, NotFoundException } 
 import { InjectModel } from '@nestjs/mongoose';
 import { randomUUID, randomBytes, createHash } from 'crypto';
 import { Model } from 'mongoose';
+import { Readable } from 'stream';
 import * as unzipper from 'unzipper';
 import { Role } from '../auth/roles.decorator';
 import {
@@ -18,6 +19,8 @@ import { MarketplaceStorageService } from './marketplace-storage.service';
 import { MarketPlaceDownloadToken, MarketPlaceDownloadTokenDocument } from './schemas/marketplace-download-token.schema';
 import {
   MarketPlaceItemAsset,
+  MarketPlaceItemAssetChangelog,
+  MarketPlaceItemAssetChangelogEntry,
   MarketPlaceItemAssetDocument,
   MarketPlaceItemAssetManifestEntry,
 } from './schemas/marketplace-item-asset.schema';
@@ -220,6 +223,12 @@ export class MarketplaceService {
 
     const checksum = createHash('sha256').update(file.buffer).digest('hex');
     const fileManifest = await this.readZipManifest(file.buffer);
+
+    const previousAsset = item.latestVersion
+      ? await this.assetModel.findOne({ marketPlaceItemId: item.id, version: item.latestVersion }).lean().exec()
+      : null;
+    const changelog = await this.buildChangelog(previousAsset, fileManifest);
+
     const stored = await this.storage.storeAsset(file.buffer, file.originalname);
 
     await this.assetModel.create({
@@ -232,6 +241,7 @@ export class MarketplaceService {
       checksum,
       uploadedBy: user.username,
       fileManifest,
+      changelog,
     });
 
     item.latestVersion = dto.version;
@@ -368,14 +378,68 @@ export class MarketplaceService {
     return { stream: await this.storage.readPreviewImage(fileId), mimeType: image.mimeType };
   }
 
-  /** Reads the zip's central directory (no extraction) to list every entry's path/size/type. */
+  /**
+   * Lists every entry in the zip with its path/size/type, plus — for files —
+   * an md5 hash and newline count of its content, used both by the file-
+   * structure viewer and by `buildChangelog` to diff two versions.
+   */
   private async readZipManifest(buffer: Buffer): Promise<MarketPlaceItemAssetManifestEntry[]> {
     const directory = await unzipper.Open.buffer(buffer);
-    return directory.files.map((entry) => ({
-      path: entry.path,
-      size: entry.uncompressedSize,
-      isDirectory: entry.type === 'Directory',
-    }));
+    return Promise.all(
+      directory.files.map(async (entry) => {
+        if (entry.type === 'Directory') {
+          return { path: entry.path, size: 0, isDirectory: true };
+        }
+
+        const content: Buffer = await entry.buffer();
+        const hash = createHash('md5').update(content).digest('hex');
+        const lines = looksLikeText(content) ? countLines(content) : undefined;
+
+        return { path: entry.path, size: entry.uncompressedSize, isDirectory: false, hash, lines };
+      }),
+    );
+  }
+
+  /** The manifest for a previously-uploaded asset — reused as-is if it already carries hashes, otherwise recomputed from its stored zip (covers assets uploaded before this field existed). */
+  private async getManifestForAsset(asset: MarketPlaceItemAsset): Promise<MarketPlaceItemAssetManifestEntry[]> {
+    const hasHashes = asset.fileManifest.every((entry) => entry.isDirectory || entry.hash !== undefined);
+    if (hasHashes) {
+      return asset.fileManifest;
+    }
+    const buffer = await streamToBuffer(this.storage.readAsset(asset.fileId));
+    return this.readZipManifest(buffer);
+  }
+
+  /** Diffs `currentManifest` against `previousAsset`'s zip (if any) by comparing each file's md5 hash. */
+  private async buildChangelog(
+    previousAsset: MarketPlaceItemAsset | null,
+    currentManifest: MarketPlaceItemAssetManifestEntry[],
+  ): Promise<MarketPlaceItemAssetChangelog | null> {
+    if (!previousAsset) return null;
+
+    const previousManifest = await this.getManifestForAsset(previousAsset);
+    const previousFiles = new Map(previousManifest.filter((entry) => !entry.isDirectory).map((entry) => [entry.path, entry]));
+    const currentFiles = new Map(currentManifest.filter((entry) => !entry.isDirectory).map((entry) => [entry.path, entry]));
+
+    const added: MarketPlaceItemAssetChangelogEntry[] = [];
+    const modified: MarketPlaceItemAssetChangelogEntry[] = [];
+    for (const [path, entry] of currentFiles) {
+      const previousEntry = previousFiles.get(path);
+      if (!previousEntry) {
+        added.push({ path, currentLines: entry.lines });
+      } else if (previousEntry.hash !== entry.hash) {
+        modified.push({ path, previousLines: previousEntry.lines, currentLines: entry.lines });
+      }
+    }
+
+    const removed: MarketPlaceItemAssetChangelogEntry[] = [];
+    for (const [path, entry] of previousFiles) {
+      if (!currentFiles.has(path)) {
+        removed.push({ path, previousLines: entry.lines });
+      }
+    }
+
+    return { previousVersion: previousAsset.version, added, removed, modified };
   }
 
   private async findItemOrThrow(itemId: string): Promise<MarketPlaceItemDocument> {
@@ -418,6 +482,7 @@ export class MarketplaceService {
         uploadedBy: asset.uploadedBy,
         downloadCount: asset.downloadCount,
         fileManifest: asset.fileManifest,
+        changelog: asset.changelog,
         createdAt: (asset as unknown as { createdAt: Date }).createdAt,
       })),
       createdAt: (item as unknown as { createdAt: Date }).createdAt,
@@ -428,4 +493,25 @@ export class MarketplaceService {
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/** Heuristic: a null byte in the first few KB is a strong binary signal — skip line-counting those. */
+function looksLikeText(content: Buffer): boolean {
+  return !content.subarray(0, 8000).includes(0);
+}
+
+function countLines(content: Buffer): number {
+  if (content.length === 0) return 0;
+  const text = content.toString('utf8');
+  const trimmed = text.endsWith('\n') ? text.slice(0, -1) : text;
+  return trimmed.length === 0 ? 0 : trimmed.split('\n').length;
+}
+
+function streamToBuffer(stream: Readable): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    stream.on('data', (chunk: Buffer) => chunks.push(chunk));
+    stream.on('error', reject);
+    stream.on('end', () => resolve(Buffer.concat(chunks)));
+  });
 }

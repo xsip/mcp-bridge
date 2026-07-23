@@ -10,6 +10,7 @@ import { ImageLightboxService } from '../../core/image-lightbox/image-lightbox.s
 import { PreviewImageComponent } from '../../components/preview-image/preview-image';
 import { MarketplaceItemActionsComponent } from '../../components/marketplace-item-actions/marketplace-item-actions';
 import { FileManifestTreeComponent } from '../../components/file-manifest-tree/file-manifest-tree';
+import { VersionChangelogComponent } from '../../components/version-changelog/version-changelog';
 
 /**
  * Marketplace item detail page (`/marketplace/:id`) — full description, all
@@ -19,7 +20,15 @@ import { FileManifestTreeComponent } from '../../components/file-manifest-tree/f
 @Component({
   selector: 'app-marketplace-detail',
   standalone: true,
-  imports: [RouterLink, TranslatePipe, NgIconComponent, PreviewImageComponent, MarketplaceItemActionsComponent, FileManifestTreeComponent],
+  imports: [
+    RouterLink,
+    TranslatePipe,
+    NgIconComponent,
+    PreviewImageComponent,
+    MarketplaceItemActionsComponent,
+    FileManifestTreeComponent,
+    VersionChangelogComponent,
+  ],
   viewProviders: [provideIcons({ heroArrowLeft, heroChevronDown, heroChevronRight, heroPhoto })],
   template: `
     <div class="animate-slide-up">
@@ -114,6 +123,23 @@ import { FileManifestTreeComponent } from '../../components/file-manifest-tree/f
                 } @else {
                   <p class="mt-1.5 text-text-muted">{{ 'marketplaceDetail.noFiles' | translate }}</p>
                 }
+
+                @if (version.changelog; as changelog) {
+                  <button
+                    type="button"
+                    (click)="toggleChangelog(version.id)"
+                    class="press-feedback mt-1.5 inline-flex items-center gap-1 text-text-muted hover:text-accent"
+                  >
+                    <ng-icon [name]="isChangelogOpen(version.id) ? 'heroChevronDown' : 'heroChevronRight'" class="h-3 w-3" />
+                    {{ (isChangelogOpen(version.id) ? 'marketplaceDetail.hideChangelog' : 'marketplaceDetail.viewChangelog') | translate }}
+                  </button>
+
+                  @if (isChangelogOpen(version.id)) {
+                    <div class="mt-2 rounded-md border border-border-subtle bg-primary p-2">
+                      <app-version-changelog [changelog]="changelog" />
+                    </div>
+                  }
+                }
               </li>
             }
           </ul>
@@ -134,6 +160,7 @@ export class MarketplaceDetail implements OnInit {
   protected readonly item = signal<MarketPlaceItemDto | null>(null);
   protected readonly loading = signal(true);
   private readonly openFileVersions = signal(new Set<string>());
+  private readonly openChangelogVersions = signal(new Set<string>());
 
   async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
@@ -167,5 +194,19 @@ export class MarketplaceDetail implements OnInit {
       next.add(versionId);
     }
     this.openFileVersions.set(next);
+  }
+
+  protected isChangelogOpen(versionId: string): boolean {
+    return this.openChangelogVersions().has(versionId);
+  }
+
+  protected toggleChangelog(versionId: string): void {
+    const next = new Set(this.openChangelogVersions());
+    if (next.has(versionId)) {
+      next.delete(versionId);
+    } else {
+      next.add(versionId);
+    }
+    this.openChangelogVersions.set(next);
   }
 }

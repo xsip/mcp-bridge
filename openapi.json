@@ -1771,12 +1771,67 @@
           },
           "isDirectory": {
             "type": "boolean"
+          },
+          "hash": {
+            "type": "string"
+          },
+          "lines": {
+            "type": "number"
           }
         },
         "required": [
           "path",
           "size",
           "isDirectory"
+        ]
+      },
+      "MarketPlaceItemAssetChangelogEntryDto": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "previousLines": {
+            "type": "number"
+          },
+          "currentLines": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "path"
+        ]
+      },
+      "MarketPlaceItemAssetChangelogDto": {
+        "type": "object",
+        "properties": {
+          "previousVersion": {
+            "type": "string",
+            "nullable": true
+          },
+          "added": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MarketPlaceItemAssetChangelogEntryDto"
+            }
+          },
+          "removed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MarketPlaceItemAssetChangelogEntryDto"
+            }
+          },
+          "modified": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MarketPlaceItemAssetChangelogEntryDto"
+            }
+          }
+        },
+        "required": [
+          "added",
+          "removed",
+          "modified"
         ]
       },
       "MarketPlaceItemAssetDto": {
@@ -1808,6 +1863,15 @@
             "items": {
               "$ref": "#/components/schemas/MarketPlaceItemAssetManifestEntryDto"
             }
+          },
+          "changelog": {
+            "nullable": true,
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MarketPlaceItemAssetChangelogDto"
+              }
+            ]
           },
           "createdAt": {
             "format": "date-time",
