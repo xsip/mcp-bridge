@@ -17,7 +17,7 @@ import { ImageLightboxService } from '../../core/image-lightbox/image-lightbox.s
   },
   template: `
     @if (lightbox.image(); as image) {
-      <div class="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-6" (click)="lightbox.close()">
+      <div class="animate-fade-in fixed inset-x-0 bottom-0 top-9 z-50 flex items-center justify-center bg-black/80 p-6" (click)="lightbox.close()">
         <button
           type="button"
           (click)="lightbox.close()"
