@@ -1,4 +1,4 @@
-import { IsEnum, IsIn, IsInt, IsOptional, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { IsEnum, IsIn, IsInt, IsOptional, IsString, Matches, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { MarketPlaceVisibility } from '../schemas/marketplace-item.schema';
@@ -174,6 +174,19 @@ export class AddVersionDto {
   @MinLength(1)
   @MaxLength(50)
   version: string;
+}
+
+export class AddVersionFromGithubDto {
+  @ApiProperty({ example: '1.0.0' })
+  @IsString()
+  @MinLength(1)
+  @MaxLength(50)
+  version: string;
+
+  @ApiProperty({ example: 'https://github.com/ChromeDevTools/chrome-devtools-mcp' })
+  @IsString()
+  @Matches(/^https:\/\/github\.com\/[^/\s]+\/[^/\s]+/, { message: 'Must be a github.com repository URL' })
+  githubUrl: string;
 }
 
 export class DownloadLinkDto {

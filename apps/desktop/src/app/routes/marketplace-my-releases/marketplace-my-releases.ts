@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { heroArrowUpTray, heroPencilSquare, heroPhoto, heroTrash, heroXMark } from '@ng-icons/heroicons/outline';
+import { heroArrowUpTray, heroCodeBracket, heroPencilSquare, heroPhoto, heroTrash, heroXMark } from '@ng-icons/heroicons/outline';
 import { MarketPlaceItemDto } from '@mcp-bridge/ui-client';
 import { MyReleasesStore } from '../../core/marketplace/my-releases.store';
 import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service';
@@ -19,7 +19,7 @@ import { PreviewImageComponent } from '../../components/preview-image/preview-im
   selector: 'app-marketplace-my-releases',
   standalone: true,
   imports: [FormsModule, TranslatePipe, NgIconComponent, RichTextEditorComponent, PreviewImageComponent],
-  viewProviders: [provideIcons({ heroPencilSquare, heroTrash, heroXMark, heroArrowUpTray, heroPhoto })],
+  viewProviders: [provideIcons({ heroPencilSquare, heroTrash, heroXMark, heroArrowUpTray, heroPhoto, heroCodeBracket })],
   template: `
     <div class="animate-slide-up">
       <div class="glass sticky -top-8 z-20 -mx-8 -mt-8 border-x-0 border-t-0 border-b-border-glass px-8 pb-4 pt-8 shadow-depth-sm">
@@ -165,33 +165,87 @@ import { PreviewImageComponent } from '../../components/preview-image/preview-im
                 }
               </ul>
 
-              <form class="mt-3 flex flex-wrap items-end gap-2" (ngSubmit)="submitAddVersion(item.id)">
-                <div class="w-24">
-                  <input
-                    type="text"
-                    placeholder="1.0.1"
-                    required
-                    [(ngModel)]="newVersion[item.id]"
-                    name="newVersion-{{ item.id }}"
-                    class="w-full rounded-lg border border-border-default bg-primary px-2 py-1.5 text-xs text-text-primary"
-                  />
-                </div>
-                <input
-                  type="file"
-                  accept=".zip"
-                  required
-                  (change)="onFileSelected(item.id, $event)"
-                  class="min-w-0 flex-1 rounded-lg border border-border-default bg-primary px-2 py-1.5 text-xs text-text-primary file:mr-2 file:rounded-md file:border-0 file:bg-accent-subtle file:px-2 file:py-1 file:text-[11px] file:text-accent"
-                />
+              <div class="mt-3 flex items-center gap-1 text-[11px]">
                 <button
-                  type="submit"
-                  [disabled]="!newVersionFiles[item.id]"
-                  class="press-feedback inline-flex items-center gap-1 rounded-lg bg-accent px-2.5 py-1.5 text-xs font-semibold text-white shadow-depth-sm hover-lift disabled:opacity-60"
+                  type="button"
+                  (click)="setVersionMode(item.id, 'file')"
+                  class="press-feedback rounded-md px-2 py-1 font-medium"
+                  [class.bg-accent-subtle]="versionMode(item.id) === 'file'"
+                  [class.text-accent]="versionMode(item.id) === 'file'"
+                  [class.text-text-muted]="versionMode(item.id) !== 'file'"
                 >
-                  <ng-icon name="heroArrowUpTray" class="h-3.5 w-3.5" />
-                  {{ 'marketplaceMyReleases.addVersion' | translate }}
+                  {{ 'marketplaceMyReleases.uploadZip' | translate }}
                 </button>
-              </form>
+                <button
+                  type="button"
+                  (click)="setVersionMode(item.id, 'github')"
+                  class="press-feedback rounded-md px-2 py-1 font-medium"
+                  [class.bg-accent-subtle]="versionMode(item.id) === 'github'"
+                  [class.text-accent]="versionMode(item.id) === 'github'"
+                  [class.text-text-muted]="versionMode(item.id) !== 'github'"
+                >
+                  {{ 'marketplaceMyReleases.fromGithub' | translate }}
+                </button>
+              </div>
+
+              @if (versionMode(item.id) === 'file') {
+                <form class="mt-2 flex flex-wrap items-end gap-2" (ngSubmit)="submitAddVersion(item.id)">
+                  <div class="w-24">
+                    <input
+                      type="text"
+                      placeholder="1.0.1"
+                      required
+                      [(ngModel)]="newVersion[item.id]"
+                      name="newVersion-{{ item.id }}"
+                      class="w-full rounded-lg border border-border-default bg-primary px-2 py-1.5 text-xs text-text-primary"
+                    />
+                  </div>
+                  <input
+                    type="file"
+                    accept=".zip"
+                    required
+                    (change)="onFileSelected(item.id, $event)"
+                    class="min-w-0 flex-1 rounded-lg border border-border-default bg-primary px-2 py-1.5 text-xs text-text-primary file:mr-2 file:rounded-md file:border-0 file:bg-accent-subtle file:px-2 file:py-1 file:text-[11px] file:text-accent"
+                  />
+                  <button
+                    type="submit"
+                    [disabled]="!newVersionFiles[item.id]"
+                    class="press-feedback inline-flex items-center gap-1 rounded-lg bg-accent px-2.5 py-1.5 text-xs font-semibold text-white shadow-depth-sm hover-lift disabled:opacity-60"
+                  >
+                    <ng-icon name="heroArrowUpTray" class="h-3.5 w-3.5" />
+                    {{ 'marketplaceMyReleases.addVersion' | translate }}
+                  </button>
+                </form>
+              } @else {
+                <form class="mt-2 flex flex-wrap items-end gap-2" (ngSubmit)="submitAddVersionFromGithub(item.id)">
+                  <div class="w-24">
+                    <input
+                      type="text"
+                      placeholder="1.0.1"
+                      required
+                      [(ngModel)]="newVersion[item.id]"
+                      name="newVersionGh-{{ item.id }}"
+                      class="w-full rounded-lg border border-border-default bg-primary px-2 py-1.5 text-xs text-text-primary"
+                    />
+                  </div>
+                  <input
+                    type="url"
+                    required
+                    [placeholder]="'marketplaceMyReleases.githubUrlPlaceholder' | translate"
+                    [(ngModel)]="newVersionGithubUrl[item.id]"
+                    name="newVersionGithubUrl-{{ item.id }}"
+                    class="min-w-0 flex-1 rounded-lg border border-border-default bg-primary px-2 py-1.5 text-xs text-text-primary"
+                  />
+                  <button
+                    type="submit"
+                    [disabled]="!newVersionGithubUrl[item.id] || addingFromGithub(item.id)"
+                    class="press-feedback inline-flex items-center gap-1 rounded-lg bg-accent px-2.5 py-1.5 text-xs font-semibold text-white shadow-depth-sm hover-lift disabled:opacity-60"
+                  >
+                    <ng-icon name="heroCodeBracket" class="h-3.5 w-3.5" />
+                    {{ (addingFromGithub(item.id) ? 'marketplaceMyReleases.importing' : 'marketplaceMyReleases.addVersion') | translate }}
+                  </button>
+                </form>
+              }
             </div>
           </li>
         } @empty {
@@ -216,6 +270,10 @@ export class MarketplaceMyReleases implements OnInit {
 
   protected readonly newVersion: Record<string, string> = {};
   protected readonly newVersionFiles: Record<string, File | undefined> = {};
+  protected readonly newVersionGithubUrl: Record<string, string> = {};
+
+  private readonly versionModeByItem = signal<Record<string, 'file' | 'github'>>({});
+  private readonly addingFromGithubIds = signal(new Set<string>());
 
   ngOnInit(): void {
     this.store.load();
@@ -291,5 +349,34 @@ export class MarketplaceMyReleases implements OnInit {
 
   protected async removePreviewImage(itemId: string, fileId: string): Promise<void> {
     await this.store.removePreviewImage(itemId, fileId);
+  }
+
+  protected versionMode(itemId: string): 'file' | 'github' {
+    return this.versionModeByItem()[itemId] ?? 'file';
+  }
+
+  protected setVersionMode(itemId: string, mode: 'file' | 'github'): void {
+    this.versionModeByItem.set({ ...this.versionModeByItem(), [itemId]: mode });
+  }
+
+  protected addingFromGithub(itemId: string): boolean {
+    return this.addingFromGithubIds().has(itemId);
+  }
+
+  protected async submitAddVersionFromGithub(itemId: string): Promise<void> {
+    const version = this.newVersion[itemId];
+    const githubUrl = this.newVersionGithubUrl[itemId];
+    if (!version || !githubUrl) return;
+
+    this.addingFromGithubIds.set(new Set(this.addingFromGithubIds()).add(itemId));
+    const updated = await this.store.addVersionFromGithub(itemId, version, githubUrl);
+    const next = new Set(this.addingFromGithubIds());
+    next.delete(itemId);
+    this.addingFromGithubIds.set(next);
+
+    if (updated) {
+      delete this.newVersion[itemId];
+      delete this.newVersionGithubUrl[itemId];
+    }
   }
 }

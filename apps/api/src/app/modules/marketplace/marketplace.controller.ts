@@ -21,6 +21,7 @@ import { CurrentUser } from '../auth/current-user.decorator';
 import { User } from '../auth/user.schema';
 import {
   AddVersionDto,
+  AddVersionFromGithubDto,
   ChangeVisibilityDto,
   CreateMarketPlaceItemDto,
   DownloadLinkDto,
@@ -183,6 +184,20 @@ export class MarketplaceController {
     @UploadedFile() file: Express.Multer.File,
   ): Promise<MarketPlaceItemDto> {
     return this.marketplaceService.addVersion(user, id, dto, file);
+  }
+
+  @Post('items/:id/versions/from-github')
+  @ApiOperation({
+    operationId: 'addMarketplaceItemVersionFromGithub',
+    summary: 'Publish a new version by downloading a GitHub repository as a zip',
+  })
+  @ApiOkResponse({ type: MarketPlaceItemDto })
+  addVersionFromGithub(
+    @CurrentUser() user: User,
+    @Param('id') id: string,
+    @Body() dto: AddVersionFromGithubDto,
+  ): Promise<MarketPlaceItemDto> {
+    return this.marketplaceService.addVersionFromGithub(user, id, dto);
   }
 
   @Delete('items/:id/versions/:version')

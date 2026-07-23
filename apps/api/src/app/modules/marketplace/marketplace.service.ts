@@ -1,4 +1,4 @@
-import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { randomUUID, randomBytes, createHash } from 'crypto';
 import { Model } from 'mongoose';
@@ -7,6 +7,7 @@ import * as unzipper from 'unzipper';
 import { Role } from '../auth/roles.decorator';
 import {
   AddVersionDto,
+  AddVersionFromGithubDto,
   ChangeVisibilityDto,
   CreateMarketPlaceItemDto,
   ListMarketPlaceItemsQueryDto,
@@ -29,6 +30,9 @@ import { MarketPlaceUserDownload, MarketPlaceUserDownloadDocument } from './sche
 
 const DOWNLOAD_LINK_TTL_MS = 5 * 60 * 1000; // 5 minutes
 const MAX_PREVIEW_IMAGES = 10;
+
+/** GitHub's REST API rejects unauthenticated requests with no User-Agent. */
+const GITHUB_API_HEADERS = { 'User-Agent': 'mcp-bridge', Accept: 'application/vnd.github+json' };
 
 type MarketPlaceItemFilter = Record<string, unknown>;
 
@@ -215,38 +219,125 @@ export class MarketplaceService {
   ): Promise<MarketPlaceItemDto> {
     const item = await this.findItemOrThrow(itemId);
     this.assertOwner(user, item);
+    await this.createVersion(user, item, dto.version, file.buffer, file.originalname);
+    return this.toDto(item);
+  }
 
-    const existing = await this.assetModel.findOne({ marketPlaceItemId: item.id, version: dto.version }).lean().exec();
-    if (existing) {
-      throw new ConflictException(`Version "${dto.version}" already exists for this item`);
+  /**
+   * Publishes a new version by downloading a GitHub repository (branch or
+   * tag) as a zip and publishing it exactly like an uploaded file. If the
+   * item has no preview images yet, the GitHub owner's avatar is fetched and
+   * added as the first one — a best-effort touch, never fails the publish.
+   */
+  async addVersionFromGithub(user: CurrentUserLike, itemId: string, dto: AddVersionFromGithubDto): Promise<MarketPlaceItemDto> {
+    const item = await this.findItemOrThrow(itemId);
+    this.assertOwner(user, item);
+
+    const { owner, repo, ref } = await this.resolveGithubRef(dto.githubUrl);
+    const buffer = await this.downloadGithubZip(owner, repo, ref);
+
+    await this.createVersion(user, item, dto.version, buffer, `${repo}-${ref}.zip`);
+
+    if (item.previewImages.length === 0) {
+      await this.addGithubAvatarAsPreview(item, owner);
     }
 
-    const checksum = createHash('sha256').update(file.buffer).digest('hex');
-    const fileManifest = await this.readZipManifest(file.buffer);
+    return this.toDto(item);
+  }
+
+  /** Shared by `addVersion` and `addVersionFromGithub` — everything past "we have the zip's raw bytes". */
+  private async createVersion(
+    user: CurrentUserLike,
+    item: MarketPlaceItemDocument,
+    version: string,
+    buffer: Buffer,
+    originalFilename: string,
+  ): Promise<void> {
+    const existing = await this.assetModel.findOne({ marketPlaceItemId: item.id, version }).lean().exec();
+    if (existing) {
+      throw new ConflictException(`Version "${version}" already exists for this item`);
+    }
+
+    const checksum = createHash('sha256').update(buffer).digest('hex');
+    const fileManifest = await this.readZipManifest(buffer);
 
     const previousAsset = item.latestVersion
       ? await this.assetModel.findOne({ marketPlaceItemId: item.id, version: item.latestVersion }).lean().exec()
       : null;
     const changelog = await this.buildChangelog(previousAsset, fileManifest);
 
-    const stored = await this.storage.storeAsset(file.buffer, file.originalname);
+    const stored = await this.storage.storeAsset(buffer, originalFilename);
 
     await this.assetModel.create({
       id: randomUUID(),
       marketPlaceItemId: item.id,
-      version: dto.version,
+      version,
       fileId: stored.fileId,
       fileSize: stored.fileSize,
-      originalFilename: file.originalname,
+      originalFilename,
       checksum,
       uploadedBy: user.username,
       fileManifest,
       changelog,
     });
 
-    item.latestVersion = dto.version;
+    item.latestVersion = version;
     await item.save();
-    return this.toDto(item);
+  }
+
+  /** Parses a `github.com/{owner}/{repo}[/tree/{ref}]` URL, resolving `ref` against the repo's real branches (a branch name may itself contain "/"). Falls back to the default branch when no `/tree/` segment is present. */
+  private async resolveGithubRef(url: string): Promise<{ owner: string; repo: string; ref: string }> {
+    const match = /^https:\/\/github\.com\/([^/\s]+)\/([^/\s]+?)(?:\.git)?(?:\/tree\/(.+?))?\/?$/.exec(url.trim());
+    if (!match) {
+      throw new BadRequestException('Not a valid GitHub repository URL');
+    }
+    const [, owner, repo, treeRef] = match;
+
+    if (!treeRef) {
+      const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers: GITHUB_API_HEADERS });
+      if (!response.ok) {
+        throw new NotFoundException(`GitHub repository "${owner}/${repo}" not found`);
+      }
+      const data = (await response.json()) as { default_branch?: string };
+      return { owner, repo, ref: data.default_branch ?? 'main' };
+    }
+
+    const branchesResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/branches?per_page=100`, {
+      headers: GITHUB_API_HEADERS,
+    });
+    const branches = branchesResponse.ok ? ((await branchesResponse.json()) as Array<{ name: string }>).map((b) => b.name) : [];
+    const matchingBranch = branches
+      .filter((branch) => treeRef === branch || treeRef.startsWith(`${branch}/`))
+      .sort((a, b) => b.length - a.length)[0];
+
+    return { owner, repo, ref: matchingBranch ?? treeRef };
+  }
+
+  /** Downloads `{owner}/{repo}` at `ref` as a zip via GitHub's codeload, trying it as a branch then a tag. */
+  private async downloadGithubZip(owner: string, repo: string, ref: string): Promise<Buffer> {
+    for (const kind of ['heads', 'tags'] as const) {
+      const response = await fetch(`https://codeload.github.com/${owner}/${repo}/zip/refs/${kind}/${ref}`);
+      if (response.ok) {
+        return Buffer.from(await response.arrayBuffer());
+      }
+    }
+    throw new NotFoundException(`Could not download "${ref}" from ${owner}/${repo} — check the branch or tag exists`);
+  }
+
+  /** Best-effort: a missing or failed avatar fetch must never fail the publish itself. */
+  private async addGithubAvatarAsPreview(item: MarketPlaceItemDocument, owner: string): Promise<void> {
+    try {
+      const response = await fetch(`https://github.com/${owner}.png?size=200`);
+      if (!response.ok) return;
+
+      const mimeType = response.headers.get('content-type') ?? 'image/png';
+      const buffer = Buffer.from(await response.arrayBuffer());
+      const stored = await this.storage.storePreviewImage(buffer, `${owner}.png`);
+      item.previewImages.push({ fileId: stored.fileId, filename: `${owner}.png`, mimeType, fileSize: stored.fileSize });
+      await item.save();
+    } catch {
+      // best-effort — see method doc
+    }
   }
 
   async removeVersion(user: CurrentUserLike, itemId: string, version: string): Promise<MarketPlaceItemDto> {

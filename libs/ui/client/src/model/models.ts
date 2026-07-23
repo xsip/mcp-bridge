@@ -1,4 +1,5 @@
 export * from './addCustomMcpDto';
+export * from './addVersionFromGithubDto';
 export * from './apiKeyDto';
 export * from './changeVisibilityDto';
 export * from './createApiKeyDto';

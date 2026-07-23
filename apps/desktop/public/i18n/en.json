@@ -175,7 +175,10 @@
     "viewInMyReleases": "View in My Releases",
     "previewImages": "Preview images",
     "addImage": "Add",
-    "removeImage": "Remove image"
+    "removeImage": "Remove image",
+    "uploadZip": "Upload zip",
+    "fromGithub": "From GitHub",
+    "githubUrl": "GitHub URL"
   },
   "marketplaceMyReleases": {
     "title": "My Releases",
@@ -199,7 +202,11 @@
     "empty": "You haven't published anything yet.",
     "previewImages": "Preview images",
     "addImage": "Add",
-    "removeImage": "Remove image"
+    "removeImage": "Remove image",
+    "uploadZip": "Upload zip",
+    "fromGithub": "From GitHub",
+    "githubUrlPlaceholder": "https://github.com/owner/repo",
+    "importing": "Importing…"
   },
   "marketplaceDetail": {
     "back": "Back to Marketplace",

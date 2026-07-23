@@ -1217,6 +1217,52 @@
         ]
       }
     },
+    "/marketplace/items/{id}/versions/from-github": {
+      "post": {
+        "operationId": "addMarketplaceItemVersionFromGithub",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddVersionFromGithubDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketPlaceItemDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Publish a new version by downloading a GitHub repository as a zip",
+        "tags": [
+          "marketplace"
+        ]
+      }
+    },
     "/marketplace/items/{id}/versions/{version}": {
       "delete": {
         "operationId": "removeMarketplaceItemVersion",
@@ -2069,6 +2115,23 @@
         },
         "required": [
           "visibility"
+        ]
+      },
+      "AddVersionFromGithubDto": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string",
+            "example": "1.0.0"
+          },
+          "githubUrl": {
+            "type": "string",
+            "example": "https://github.com/ChromeDevTools/chrome-devtools-mcp"
+          }
+        },
+        "required": [
+          "version",
+          "githubUrl"
         ]
       },
       "DownloadLinkDto": {

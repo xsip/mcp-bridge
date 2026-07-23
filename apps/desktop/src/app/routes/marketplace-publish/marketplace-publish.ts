@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { heroArrowUpTray, heroCheckCircle, heroPhoto, heroTrash } from '@ng-icons/heroicons/outline';
+import { heroArrowUpTray, heroCheckCircle, heroCodeBracket, heroPhoto, heroTrash } from '@ng-icons/heroicons/outline';
 import { MarketPlaceItemDto } from '@mcp-bridge/ui-client';
 import { MyReleasesStore } from '../../core/marketplace/my-releases.store';
 import { RichTextEditorComponent } from '../../components/rich-text-editor/rich-text-editor';
@@ -19,7 +19,7 @@ import { PreviewImageComponent } from '../../components/preview-image/preview-im
   selector: 'app-marketplace-publish',
   standalone: true,
   imports: [FormsModule, TranslatePipe, NgIconComponent, RichTextEditorComponent, PreviewImageComponent],
-  viewProviders: [provideIcons({ heroArrowUpTray, heroCheckCircle, heroPhoto, heroTrash })],
+  viewProviders: [provideIcons({ heroArrowUpTray, heroCheckCircle, heroPhoto, heroTrash, heroCodeBracket })],
   template: `
     <div class="animate-slide-up">
       <div class="glass sticky -top-8 z-20 -mx-8 -mt-8 border-x-0 border-t-0 border-b-border-glass px-8 pb-4 pt-8 shadow-depth-sm">
@@ -102,40 +102,100 @@ import { PreviewImageComponent } from '../../components/preview-image/preview-im
 
           <p class="mt-5 text-xs text-text-secondary">{{ 'marketplacePublish.uploadFirstVersion' | translate }}</p>
 
-          <form class="mt-3 flex flex-wrap items-end gap-3" (ngSubmit)="submitVersion()">
-            <div class="w-32">
-              <label for="version" class="mb-1 block text-xs font-medium text-text-secondary">{{ 'marketplacePublish.version' | translate }}</label>
-              <input
-                id="version"
-                name="version"
-                type="text"
-                required
-                placeholder="1.0.0"
-                [(ngModel)]="version"
-                class="w-full rounded-lg border border-border-default bg-primary px-3 py-2 text-sm text-text-primary"
-              />
-            </div>
-            <div class="min-w-0 flex-1">
-              <label for="file" class="mb-1 block text-xs font-medium text-text-secondary">{{ 'marketplacePublish.zipFile' | translate }}</label>
-              <input
-                id="file"
-                name="file"
-                type="file"
-                accept=".zip"
-                required
-                (change)="onFileSelected($event)"
-                class="w-full rounded-lg border border-border-default bg-primary px-3 py-2 text-sm text-text-primary file:mr-3 file:rounded-md file:border-0 file:bg-accent-subtle file:px-2 file:py-1 file:text-xs file:text-accent"
-              />
-            </div>
+          <div class="mt-2 flex items-center gap-1 text-[11px]">
             <button
-              type="submit"
-              [disabled]="uploading() || !selectedFile()"
-              class="inline-flex items-center gap-1.5 rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white shadow-depth-sm hover-lift press-feedback disabled:opacity-60"
+              type="button"
+              (click)="versionMode.set('file')"
+              class="press-feedback rounded-md px-2 py-1 font-medium"
+              [class.bg-accent-subtle]="versionMode() === 'file'"
+              [class.text-accent]="versionMode() === 'file'"
+              [class.text-text-muted]="versionMode() !== 'file'"
             >
-              <ng-icon name="heroArrowUpTray" class="h-4 w-4" />
-              {{ 'marketplacePublish.upload' | translate }}
+              {{ 'marketplacePublish.uploadZip' | translate }}
             </button>
-          </form>
+            <button
+              type="button"
+              (click)="versionMode.set('github')"
+              class="press-feedback rounded-md px-2 py-1 font-medium"
+              [class.bg-accent-subtle]="versionMode() === 'github'"
+              [class.text-accent]="versionMode() === 'github'"
+              [class.text-text-muted]="versionMode() !== 'github'"
+            >
+              {{ 'marketplacePublish.fromGithub' | translate }}
+            </button>
+          </div>
+
+          @if (versionMode() === 'file') {
+            <form class="mt-2 flex flex-wrap items-end gap-3" (ngSubmit)="submitVersion()">
+              <div class="w-32">
+                <label for="version" class="mb-1 block text-xs font-medium text-text-secondary">{{ 'marketplacePublish.version' | translate }}</label>
+                <input
+                  id="version"
+                  name="version"
+                  type="text"
+                  required
+                  placeholder="1.0.0"
+                  [(ngModel)]="version"
+                  class="w-full rounded-lg border border-border-default bg-primary px-3 py-2 text-sm text-text-primary"
+                />
+              </div>
+              <div class="min-w-0 flex-1">
+                <label for="file" class="mb-1 block text-xs font-medium text-text-secondary">{{ 'marketplacePublish.zipFile' | translate }}</label>
+                <input
+                  id="file"
+                  name="file"
+                  type="file"
+                  accept=".zip"
+                  required
+                  (change)="onFileSelected($event)"
+                  class="w-full rounded-lg border border-border-default bg-primary px-3 py-2 text-sm text-text-primary file:mr-3 file:rounded-md file:border-0 file:bg-accent-subtle file:px-2 file:py-1 file:text-xs file:text-accent"
+                />
+              </div>
+              <button
+                type="submit"
+                [disabled]="uploading() || !selectedFile()"
+                class="inline-flex items-center gap-1.5 rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white shadow-depth-sm hover-lift press-feedback disabled:opacity-60"
+              >
+                <ng-icon name="heroArrowUpTray" class="h-4 w-4" />
+                {{ 'marketplacePublish.upload' | translate }}
+              </button>
+            </form>
+          } @else {
+            <form class="mt-2 flex flex-wrap items-end gap-3" (ngSubmit)="submitVersionFromGithub()">
+              <div class="w-32">
+                <label for="versionGh" class="mb-1 block text-xs font-medium text-text-secondary">{{ 'marketplacePublish.version' | translate }}</label>
+                <input
+                  id="versionGh"
+                  name="versionGh"
+                  type="text"
+                  required
+                  placeholder="1.0.0"
+                  [(ngModel)]="version"
+                  class="w-full rounded-lg border border-border-default bg-primary px-3 py-2 text-sm text-text-primary"
+                />
+              </div>
+              <div class="min-w-0 flex-1">
+                <label for="githubUrl" class="mb-1 block text-xs font-medium text-text-secondary">{{ 'marketplacePublish.githubUrl' | translate }}</label>
+                <input
+                  id="githubUrl"
+                  name="githubUrl"
+                  type="url"
+                  required
+                  [placeholder]="'marketplaceMyReleases.githubUrlPlaceholder' | translate"
+                  [(ngModel)]="githubUrl"
+                  class="w-full rounded-lg border border-border-default bg-primary px-3 py-2 text-sm text-text-primary"
+                />
+              </div>
+              <button
+                type="submit"
+                [disabled]="uploading() || !githubUrl"
+                class="inline-flex items-center gap-1.5 rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white shadow-depth-sm hover-lift press-feedback disabled:opacity-60"
+              >
+                <ng-icon name="heroCodeBracket" class="h-4 w-4" />
+                {{ (uploading() ? 'marketplaceMyReleases.importing' : 'marketplacePublish.upload') | translate }}
+              </button>
+            </form>
+          }
 
           @if (versionUploaded()) {
             <p class="mt-3 text-xs text-success-text">{{ 'marketplacePublish.versionUploaded' | translate }}</p>
@@ -162,6 +222,7 @@ export class MarketplacePublish {
   protected description = '';
   protected visibility: 'private' | 'unlisted' | 'public' = 'private';
   protected version = '';
+  protected githubUrl = '';
 
   protected readonly creating = signal(false);
   protected readonly uploading = signal(false);
@@ -169,6 +230,7 @@ export class MarketplacePublish {
   protected readonly versionUploaded = signal(false);
   protected readonly createdItem = signal<MarketPlaceItemDto | null>(null);
   protected readonly selectedFile = signal<File | null>(null);
+  protected readonly versionMode = signal<'file' | 'github'>('file');
 
   protected onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -194,6 +256,19 @@ export class MarketplacePublish {
 
     this.uploading.set(true);
     const updated = await this.myReleasesStore.addVersion(item.id, this.version, file);
+    this.uploading.set(false);
+    if (updated) {
+      this.createdItem.set(updated);
+      this.versionUploaded.set(true);
+    }
+  }
+
+  protected async submitVersionFromGithub(): Promise<void> {
+    const item = this.createdItem();
+    if (!item || !this.githubUrl || !this.version) return;
+
+    this.uploading.set(true);
+    const updated = await this.myReleasesStore.addVersionFromGithub(item.id, this.version, this.githubUrl);
     this.uploading.set(false);
     if (updated) {
       this.createdItem.set(updated);

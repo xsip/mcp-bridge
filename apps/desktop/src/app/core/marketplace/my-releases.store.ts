@@ -125,6 +125,18 @@ export const MyReleasesStore = signalStore(
       }
     },
 
+    async addVersionFromGithub(id: string, version: string, githubUrl: string): Promise<MarketPlaceItemDto | null> {
+      try {
+        const updated = await firstValueFrom(marketplaceService.addMarketplaceItemVersionFromGithub(id, { version, githubUrl }));
+        patchState(store, { items: store.items().map((item) => (item.id === id ? updated : item)) });
+        toast.success(`Version "${version}" added from GitHub`);
+        return updated;
+      } catch (error) {
+        toast.error(extractErrorMessage(error));
+        return null;
+      }
+    },
+
     async removeVersion(id: string, version: string): Promise<void> {
       try {
         const updated = await firstValueFrom(marketplaceService.removeMarketplaceItemVersion(id, version));
