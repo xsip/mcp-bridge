@@ -106,6 +106,9 @@ const FAQ: FaqItem[] = [
           [src]="'preview/logs-light.png'"
           role="img"
           alt="logs  light"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
           (click)="openLightbox('preview/logs-light.png', 'logs light')"
         />
         <img
@@ -113,6 +116,9 @@ const FAQ: FaqItem[] = [
           [src]="'preview/logs-dark.png'"
           role="img"
           alt="logs dark"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
           (click)="openLightbox('preview/logs-dark.png', 'logs dark')"
         />
 
@@ -253,6 +259,8 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
             [src]="'preview/chrome-ext-light.png'"
             role="img"
             alt="MCP Loop Chrome extension popup, light"
+            loading="lazy"
+            decoding="async"
             (click)="openLightbox('preview/chrome-ext-light.png', 'MCP Loop Chrome extension popup, light')"
           />
           <img
@@ -260,6 +268,8 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
             [src]="'preview/chrome-ext-dark.png'"
             role="img"
             alt="MCP Loop Chrome extension popup, dark"
+            loading="lazy"
+            decoding="async"
             (click)="openLightbox('preview/chrome-ext-dark.png', 'MCP Loop Chrome extension popup, dark')"
           />
         </div>
@@ -275,6 +285,8 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
             [src]="'preview/marketplace-light.png'"
             role="img"
             alt="MCP Loop marketplace, light"
+            loading="lazy"
+            decoding="async"
             (click)="openLightbox('preview/marketplace-light.png', 'MCP Loop marketplace, light')"
           />
           <img
@@ -282,6 +294,8 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
             [src]="'preview/marketplace-dark.png'"
             role="img"
             alt="MCP Loop marketplace, dark"
+            loading="lazy"
+            decoding="async"
             (click)="openLightbox('preview/marketplace-dark.png', 'MCP Loop marketplace, dark')"
           />
         </div>
@@ -323,6 +337,8 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
               [src]="'preview/my-releases-light.png'"
               role="img"
               alt="My Releases, light"
+              loading="lazy"
+              decoding="async"
               (click)="openLightbox('preview/my-releases-light.png', 'My Releases, light')"
             />
             <img
@@ -330,6 +346,8 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
               [src]="'preview/my-releases-dark.png'"
               role="img"
               alt="My Releases, dark"
+              loading="lazy"
+              decoding="async"
               (click)="openLightbox('preview/my-releases-dark.png', 'My Releases, dark')"
             />
             <h3 class="mt-4 text-sm font-semibold text-text-primary">{{ 'landing.manage.myReleases.title' | translate }}</h3>
@@ -342,6 +360,8 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
               [src]="'preview/on-this-system-light.png'"
               role="img"
               alt="On this system, light"
+              loading="lazy"
+              decoding="async"
               (click)="openLightbox('preview/on-this-system-light.png', 'On this system, light')"
             />
             <img
@@ -349,6 +369,8 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
               [src]="'preview/on-this-system-dark.png'"
               role="img"
               alt="On this system, dark"
+              loading="lazy"
+              decoding="async"
               (click)="openLightbox('preview/on-this-system-dark.png', 'On this system, dark')"
             />
             <h3 class="mt-4 text-sm font-semibold text-text-primary">{{ 'landing.manage.onThisSystem.title' | translate }}</h3>
@@ -361,6 +383,8 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
               [src]="'preview/settings-light.png'"
               role="img"
               alt="Settings, light"
+              loading="lazy"
+              decoding="async"
               (click)="openLightbox('preview/settings-light.png', 'Settings, light')"
             />
             <img
@@ -368,6 +392,8 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
               [src]="'preview/settings-dark.png'"
               role="img"
               alt="Settings, dark"
+              loading="lazy"
+              decoding="async"
               (click)="openLightbox('preview/settings-dark.png', 'Settings, dark')"
             />
             <h3 class="mt-4 text-sm font-semibold text-text-primary">{{ 'landing.manage.settings.title' | translate }}</h3>
@@ -387,6 +413,8 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
             [src]="'preview/mcp-list-light.png'"
             role="img"
             alt="mcp list light"
+            loading="lazy"
+            decoding="async"
             (click)="openLightbox('preview/mcp-list-light.png', 'mcp list light')"
           />
           <img
@@ -394,6 +422,8 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
             [src]="'preview/mcp-list-dark.png'"
             role="img"
             alt="mcp list dark"
+            loading="lazy"
+            decoding="async"
             (click)="openLightbox('preview/mcp-list-dark.png', 'mcp list dark')"
           />
           <p class="mt-3 text-text-secondary">{{ 'landing.features.subtitle' | translate }}</p>
@@ -461,7 +491,7 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
     <footer class="border-t border-border-subtle bg-primary px-6 py-10">
       <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-text-muted md:flex-row">
         <div class="flex items-center gap-2">
-          <img src="logo-no-text.png" alt="MCP Loop" class="h-8" />
+          <img src="logo-no-text.png" alt="MCP Loop" class="h-8" loading="lazy" decoding="async" />
           <span>{{ 'landing.footer.copyright' | translate }}</span>
         </div>
         <p>{{ 'landing.footer.tagline' | translate }}</p>
