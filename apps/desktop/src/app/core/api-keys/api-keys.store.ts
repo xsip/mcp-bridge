@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, of, pipe, switchMap, tap } from 'rxjs';
-import { ApiKeyDto, ApiKeysService, CreatedApiKeyDto } from '@mcp-bridge/ui-client';
+import { ApiKeyDto, ApiKeysService, CreatedApiKeyDto } from '@mcp-loop/ui-client';
 import { extractErrorMessage } from '../http-error.util';
 import { ToastService } from '../toast/toast.service';
 

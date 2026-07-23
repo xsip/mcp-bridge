@@ -8,7 +8,7 @@ import { heroCheckCircle, heroChevronDown, heroChevronRight, heroTrash, heroXCir
 import {distinctUntilChanged, map} from 'rxjs';
 import { LogsStore } from '../../core/logs/logs.store';
 import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service';
-import { CheckboxComponent } from '@mcp-bridge/ui-components';
+import { CheckboxComponent } from '@mcp-loop/ui-components';
 
 /**
  * "Logs" route — every proxied request/response for the current user's

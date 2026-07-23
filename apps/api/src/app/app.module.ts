@@ -12,10 +12,10 @@ import { McpModule } from './modules/mcp/mcp.module';
 import { MarketplaceModule } from './modules/marketplace/marketplace.module';
 import { HealthModule } from './modules/health/health.module';
 import { ProxyModule } from './modules/proxy/proxy.module';
-import { AppConfigModule } from '@mcp-bridge/config';
-import { LoggingModule } from '@mcp-bridge/logging';
-import { GlobalExceptionFilter } from '@mcp-bridge/common';
-import { BridgeWebsocketModule } from '@mcp-bridge/websocket';
+import { AppConfigModule } from '@mcp-loop/config';
+import { LoggingModule } from '@mcp-loop/logging';
+import { GlobalExceptionFilter } from '@mcp-loop/common';
+import { BridgeWebsocketModule } from '@mcp-loop/websocket';
 
 @Module({
   imports: [
@@ -24,7 +24,7 @@ import { BridgeWebsocketModule } from '@mcp-bridge/websocket';
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        uri: config.get<string>('MONGODB_URI', 'mongodb://localhost:27017/mcpBridge'),
+        uri: config.get<string>('MONGODB_URI', 'mongodb://localhost:27017/mcpLoop'),
       }),
     }),
     AuthModule,

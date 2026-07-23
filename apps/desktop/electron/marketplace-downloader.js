@@ -5,8 +5,8 @@ const { Readable } = require('stream');
 const { pipeline } = require('stream/promises');
 const unzipper = require('unzipper');
 
-const SETTINGS_FILE = 'mcp-bridge-marketplace-settings.json';
-const MANIFEST_FILE = 'mcp-bridge-downloaded-mcps.json';
+const SETTINGS_FILE = 'mcp-loop-marketplace-settings.json';
+const MANIFEST_FILE = 'mcp-loop-downloaded-mcps.json';
 
 function noop() {
   /* no progress callback provided */

@@ -19,7 +19,7 @@ import { BackgroundBridgeService } from './core/background-bridge.service';
     <div class="w-80 bg-primary p-4 text-text-primary">
       <div class="flex items-center gap-2">
         <img src="logo-no-text.png" alt="" class="h-6 w-6" />
-        <h1 class="text-sm font-semibold">MCP Bridge Agent</h1>
+        <h1 class="text-sm font-semibold">MCP Loop Agent</h1>
       </div>
 
       <div class="mt-4">
@@ -52,7 +52,7 @@ import { BackgroundBridgeService } from './core/background-bridge.service';
         } @else {
           <span class="inline-flex items-center gap-1.5 text-text-muted">
             <span class="h-1.5 w-1.5 rounded-full bg-text-disabled"></span>
-            Not linked — open the MCP Bridge dashboard and log in
+            Not linked — open the MCP Loop dashboard and log in
           </span>
         }
       </div>
@@ -80,7 +80,7 @@ import { BackgroundBridgeService } from './core/background-bridge.service';
       </div>
 
       <p class="mt-3 text-[11px] text-text-muted">
-        Normally managed automatically while a MCP Bridge dashboard tab is open — this toggle is a manual override.
+        Normally managed automatically while a MCP Loop dashboard tab is open — this toggle is a manual override.
       </p>
 
       <div class="mt-4">

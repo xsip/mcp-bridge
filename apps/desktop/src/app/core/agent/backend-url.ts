@@ -11,7 +11,7 @@
 export function resolveBackendUrl(): string {
   // Dev: the desktop SPA is served on :4300, proxied to the real API on
   // :3000 (see libs/ui/proxy.conf.json) — the same default the Electron
-  // agent itself assumes (MCP_BRIDGE_WS_URL in electron/agent.js).
+  // agent itself assumes (MCP_LOOP_WS_URL in electron/agent.js).
   if (location.port === '4300') {
     return 'http://localhost:3000';
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import type { AgentConnection, AgentSocket, ConnectionRegistry, ConnectionSummary } from '@mcp-bridge/contracts';
-import { AppLogger } from '@mcp-bridge/logging';
+import type { AgentConnection, AgentSocket, ConnectionRegistry, ConnectionSummary } from '@mcp-loop/contracts';
+import { AppLogger } from '@mcp-loop/logging';
 
 /**
  * In-memory implementation of {@link ConnectionRegistry}.

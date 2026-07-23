@@ -5,13 +5,13 @@ import { patchState, signalStore, withComputed, withHooks, withMethods, withStat
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 import { catchError, map, Observable, of, shareReplay } from 'rxjs';
-import { AuthService, TokenPairDto } from '@mcp-bridge/ui-client';
+import { AuthService, TokenPairDto } from '@mcp-loop/ui-client';
 import { extractErrorMessage } from '../http-error.util';
 import { AgentBridgeService } from '../agent/agent-bridge.service';
 
-const TOKEN_STORAGE_KEY = 'mcp-bridge.desktop.token';
-const REFRESH_TOKEN_STORAGE_KEY = 'mcp-bridge.desktop.refreshToken';
-const USERNAME_STORAGE_KEY = 'mcp-bridge.desktop.username';
+const TOKEN_STORAGE_KEY = 'mcp-loop.desktop.token';
+const REFRESH_TOKEN_STORAGE_KEY = 'mcp-loop.desktop.refreshToken';
+const USERNAME_STORAGE_KEY = 'mcp-loop.desktop.username';
 
 export type AuthStatus = 'idle' | 'loading' | 'error';
 

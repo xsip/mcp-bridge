@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import type { PendingRequestStore, ProxyHttpResponse } from '@mcp-bridge/contracts';
-import { RequestTimeoutError, TooManyPendingRequestsError } from '@mcp-bridge/common';
-import { AppConfigService } from '@mcp-bridge/config';
-import { AppLogger } from '@mcp-bridge/logging';
+import type { PendingRequestStore, ProxyHttpResponse } from '@mcp-loop/contracts';
+import { RequestTimeoutError, TooManyPendingRequestsError } from '@mcp-loop/common';
+import { AppConfigService } from '@mcp-loop/config';
+import { AppLogger } from '@mcp-loop/logging';
 
 interface PendingEntry {
   resolve: (response: ProxyHttpResponse) => void;

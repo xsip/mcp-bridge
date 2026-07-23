@@ -20,7 +20,7 @@ export interface DownloadedMcp {
   downloadedAt: string;
 }
 
-interface McpBridgeFsApi {
+interface McpLoopFsApi {
   getSettings(): Promise<{ downloadDirectory: string | null }>;
   pickDownloadDirectory(): Promise<string | null>;
   listDownloadedMcps(): Promise<DownloadedMcp[]>;
@@ -38,7 +38,7 @@ interface McpBridgeFsApi {
 
 declare global {
   interface Window {
-    mcpBridgeFs?: McpBridgeFsApi;
+    mcpLoopFs?: McpLoopFsApi;
   }
 }
 
@@ -46,13 +46,13 @@ declare global {
  * Bridges to the Electron main process's filesystem work for the
  * marketplace feature (download directory setting, download+unzip+install)
  * — see `electron/marketplace-downloader.js` / `electron/preload.js`. Only
- * present in the real Electron app (`window.mcpBridgeFs`); a plain browser
+ * present in the real Electron app (`window.mcpLoopFs`); a plain browser
  * tab falls back to a normal browser download, driven entirely from
  * `MarketplaceStore` without this service.
  */
 @Injectable({ providedIn: 'root' })
 export class MarketplaceFsService implements OnDestroy {
-  readonly isElectron = !!window.mcpBridgeFs;
+  readonly isElectron = !!window.mcpLoopFs;
   readonly downloadDirectory = signal<string | null>(null);
   /** Latest progress per item id — cleared once a download finishes (kept briefly on error for display). */
   readonly progress = signal<Map<string, DownloadProgress>>(new Map());
@@ -64,9 +64,9 @@ export class MarketplaceFsService implements OnDestroy {
   constructor() {
     if (!this.isElectron) return;
 
-    void window.mcpBridgeFs?.getSettings().then((settings) => this.downloadDirectory.set(settings.downloadDirectory));
+    void window.mcpLoopFs?.getSettings().then((settings) => this.downloadDirectory.set(settings.downloadDirectory));
     void this.refreshInstalled();
-    this.unsubscribeProgress = window.mcpBridgeFs?.onDownloadProgress((progress) => {
+    this.unsubscribeProgress = window.mcpLoopFs?.onDownloadProgress((progress) => {
       const next = new Map(this.progress());
       next.set(progress.itemId, progress);
       this.progress.set(next);
@@ -79,13 +79,13 @@ export class MarketplaceFsService implements OnDestroy {
   }
 
   async pickDownloadDirectory(): Promise<string | null> {
-    const dir = (await window.mcpBridgeFs?.pickDownloadDirectory()) ?? null;
+    const dir = (await window.mcpLoopFs?.pickDownloadDirectory()) ?? null;
     if (dir) this.downloadDirectory.set(dir);
     return dir;
   }
 
   listDownloadedMcps(): Promise<DownloadedMcp[]> {
-    return window.mcpBridgeFs?.listDownloadedMcps() ?? Promise.resolve([]);
+    return window.mcpLoopFs?.listDownloadedMcps() ?? Promise.resolve([]);
   }
 
   async downloadAndInstall(args: {
@@ -96,9 +96,9 @@ export class MarketplaceFsService implements OnDestroy {
     publisher: string;
     version: string;
   }): Promise<{ installPath: string }> {
-    if (!window.mcpBridgeFs) throw new Error('Not running in the desktop app');
+    if (!window.mcpLoopFs) throw new Error('Not running in the desktop app');
     try {
-      const result = await window.mcpBridgeFs.downloadAndInstall(args);
+      const result = await window.mcpLoopFs.downloadAndInstall(args);
       await this.refreshInstalled();
       return result;
     } finally {
@@ -113,8 +113,8 @@ export class MarketplaceFsService implements OnDestroy {
 
   /** Deletes an installed item's folder and drops it from the manifest — no-op if it isn't installed. */
   async uninstall(itemId: string): Promise<void> {
-    if (!window.mcpBridgeFs) return;
-    await window.mcpBridgeFs.uninstall(itemId);
+    if (!window.mcpLoopFs) return;
+    await window.mcpLoopFs.uninstall(itemId);
     await this.refreshInstalled();
   }
 

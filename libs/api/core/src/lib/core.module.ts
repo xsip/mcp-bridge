@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CONNECTION_REGISTRY, PENDING_REQUEST_STORE } from '@mcp-bridge/contracts';
+import { CONNECTION_REGISTRY, PENDING_REQUEST_STORE } from '@mcp-loop/contracts';
 import { InMemoryConnectionRegistry } from './connection-registry/in-memory-connection-registry.service';
 import { InMemoryPendingRequestStore } from './pending-request-store/in-memory-pending-request-store.service';
 

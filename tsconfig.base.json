@@ -22,15 +22,15 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
     "paths": {
-      "@mcp-bridge/contracts": ["./libs/api/contracts/src/index.ts"],
-      "@mcp-bridge/core": ["./libs/api/core/src/index.ts"],
-      "@mcp-bridge/websocket": ["./libs/api/websocket/src/index.ts"],
-      "@mcp-bridge/common": ["./libs/api/common/src/index.ts"],
-      "@mcp-bridge/config": ["./libs/api/config/src/index.ts"],
-      "@mcp-bridge/logging": ["./libs/api/logging/src/index.ts"],
-      "@mcp-bridge/utils": ["./libs/api/utils/src/index.ts"],
-      "@mcp-bridge/ui-client": ["./libs/ui/client/src/index.ts"],
-      "@mcp-bridge/ui-components": ["./libs/ui/components/src/index.ts"]
+      "@mcp-loop/contracts": ["./libs/api/contracts/src/index.ts"],
+      "@mcp-loop/core": ["./libs/api/core/src/index.ts"],
+      "@mcp-loop/websocket": ["./libs/api/websocket/src/index.ts"],
+      "@mcp-loop/common": ["./libs/api/common/src/index.ts"],
+      "@mcp-loop/config": ["./libs/api/config/src/index.ts"],
+      "@mcp-loop/logging": ["./libs/api/logging/src/index.ts"],
+      "@mcp-loop/utils": ["./libs/api/utils/src/index.ts"],
+      "@mcp-loop/ui-client": ["./libs/ui/client/src/index.ts"],
+      "@mcp-loop/ui-components": ["./libs/ui/components/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

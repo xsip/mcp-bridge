@@ -11,7 +11,7 @@ export interface BridgeMcp {
   subPath?: string;
 }
 
-interface McpBridgeApi {
+interface McpLoopApi {
   startAgent(token: string): void;
   stopAgent(): void;
   setMcps(mcps: BridgeMcp[]): void;
@@ -20,12 +20,12 @@ interface McpBridgeApi {
 
 declare global {
   interface Window {
-    mcpBridge?: McpBridgeApi;
+    mcpLoop?: McpLoopApi;
   }
 }
 
-const APP_MESSAGE_SOURCE = 'mcp-bridge-app';
-const EXTENSION_MESSAGE_SOURCE = 'mcp-bridge-extension';
+const APP_MESSAGE_SOURCE = 'mcp-loop-app';
+const EXTENSION_MESSAGE_SOURCE = 'mcp-loop-extension';
 const PING_RETRY_MS = 250;
 const PING_MAX_ATTEMPTS = 8; // ~2s — covers the content script's injection lag
 
@@ -49,11 +49,11 @@ interface ExtensionMessage {
  * `withHooks` — without knowing or caring which transport ends up carrying
  * it):
  *
- * 1. **Electron** (`window.mcpBridge`, from `electron/preload.js`) — the
+ * 1. **Electron** (`window.mcpLoop`, from `electron/preload.js`) — the
  *    Electron main process holds the WebSocket tunnel directly. Preferred
  *    whenever running inside the desktop app.
  * 2. **Browser extension** — when running as a plain web page (`nx serve
- *    desktop` or a hosted deployment) with the "MCP Bridge Agent" Chrome
+ *    desktop` or a hosted deployment) with the "MCP Loop Agent" Chrome
  *    extension (`apps/chrome-extension`) installed, its content script
  *    bridges `window.postMessage` to the extension's background service
  *    worker, which holds the tunnel instead. Detected by pinging the
@@ -78,7 +78,7 @@ interface ExtensionMessage {
 @Injectable({ providedIn: 'root' })
 export class AgentBridgeService implements OnDestroy {
   readonly status = signal<AgentStatus>('disconnected');
-  readonly isElectron = !!window.mcpBridge;
+  readonly isElectron = !!window.mcpLoop;
   /** True once a tunnel transport (Electron or the extension) is actually available to drive. */
   readonly bridgeAvailable = signal(this.isElectron);
   readonly source = signal<BridgeSource>(this.isElectron ? 'electron' : null);
@@ -97,7 +97,7 @@ export class AgentBridgeService implements OnDestroy {
 
   constructor() {
     if (this.isElectron) {
-      this.unsubscribeStatus = window.mcpBridge?.onStatus((status) => this.status.set(status));
+      this.unsubscribeStatus = window.mcpLoop?.onStatus((status) => this.status.set(status));
       return;
     }
 
@@ -108,7 +108,7 @@ export class AgentBridgeService implements OnDestroy {
   start(token: string): void {
     this.pendingToken = token;
     if (this.isElectron) {
-      window.mcpBridge?.startAgent(token);
+      window.mcpLoop?.startAgent(token);
     } else if (this.extensionDetected) {
       this.postToExtension({
         source: APP_MESSAGE_SOURCE,
@@ -123,7 +123,7 @@ export class AgentBridgeService implements OnDestroy {
   stop(): void {
     this.pendingToken = null;
     if (this.isElectron) {
-      window.mcpBridge?.stopAgent();
+      window.mcpLoop?.stopAgent();
       this.status.set('disconnected');
     } else if (this.extensionDetected) {
       this.postToExtension({ source: APP_MESSAGE_SOURCE, type: 'disconnect' });
@@ -136,7 +136,7 @@ export class AgentBridgeService implements OnDestroy {
   setMcps(mcps: BridgeMcp[]): void {
     this.pendingMcps = mcps;
     if (this.isElectron) {
-      window.mcpBridge?.setMcps(mcps);
+      window.mcpLoop?.setMcps(mcps);
     } else if (this.extensionDetected && this.pendingToken) {
       this.postToExtension({ source: APP_MESSAGE_SOURCE, type: 'set-mcps', mcps });
     }

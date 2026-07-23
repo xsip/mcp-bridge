@@ -1396,7 +1396,7 @@
     }
   },
   "info": {
-    "title": "MCP Bridge API",
+    "title": "MCP Loop API",
     "description": "Relay backend exposing desktop-agent MCP servers over HTTP",
     "version": "1.0",
     "contact": {}

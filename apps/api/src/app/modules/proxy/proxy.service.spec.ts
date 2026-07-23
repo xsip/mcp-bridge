@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
-import type { RequestRouter } from '@mcp-bridge/contracts';
-import { McpNotFoundError } from '@mcp-bridge/common';
-import { AppLogger } from '@mcp-bridge/logging';
+import type { RequestRouter } from '@mcp-loop/contracts';
+import { McpNotFoundError } from '@mcp-loop/common';
+import { AppLogger } from '@mcp-loop/logging';
 import type { McpLookupService } from '../mcp/mcp-lookup.service';
 import type { McpLogService } from '../mcp/mcp-log.service';
 import { ProxyService } from './proxy.service';

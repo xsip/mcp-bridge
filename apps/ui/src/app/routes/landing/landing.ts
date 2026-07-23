@@ -13,7 +13,7 @@ import {
   heroShieldCheck,
   heroSignal,
 } from '@ng-icons/heroicons/outline';
-import { ImageLightboxService } from '@mcp-bridge/ui-components';
+import { ImageLightboxService } from '@mcp-loop/ui-components';
 import {ActiveSectionService} from '../../services/active-section.service';
 import {AnimateOnScrollDirective} from '../../directives/animate-on-scroll.directive';
 
@@ -63,7 +63,7 @@ const FAQ: FaqItem[] = [
 
 /**
  * Public marketing landing page — the app's main route (`''`). Explains
- * the MCP Bridge use case (expose a localhost MCP server publicly without
+ * the MCP Loop use case (expose a localhost MCP server publicly without
  * port forwarding) and funnels visitors toward the dashboard/login CTA,
  * which is intentionally out of scope for this component.
  */
@@ -122,7 +122,7 @@ const FAQ: FaqItem[] = [
 
         <div class="mt-10 flex flex-col items-center gap-3 sm:flex-row animate-slide-up">
           <a
-            href="https://github.com/xsip/mcp-bridge"
+            href="https://github.com/xsip/mcp-loop"
             target="_blank"
             class="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-white shadow-glow-accent hover-lift"
           >
@@ -252,15 +252,15 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
             class="dark:hidden block cursor-pointer rounded-xl shadow-depth-lg hover-lift"
             [src]="'preview/chrome-ext-light.png'"
             role="img"
-            alt="MCP Bridge Chrome extension popup, light"
-            (click)="openLightbox('preview/chrome-ext-light.png', 'MCP Bridge Chrome extension popup, light')"
+            alt="MCP Loop Chrome extension popup, light"
+            (click)="openLightbox('preview/chrome-ext-light.png', 'MCP Loop Chrome extension popup, light')"
           />
           <img
             class="hidden dark:block cursor-pointer rounded-xl shadow-depth-lg hover-lift"
             [src]="'preview/chrome-ext-dark.png'"
             role="img"
-            alt="MCP Bridge Chrome extension popup, dark"
-            (click)="openLightbox('preview/chrome-ext-dark.png', 'MCP Bridge Chrome extension popup, dark')"
+            alt="MCP Loop Chrome extension popup, dark"
+            (click)="openLightbox('preview/chrome-ext-dark.png', 'MCP Loop Chrome extension popup, dark')"
           />
         </div>
       </div>
@@ -274,15 +274,15 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
             class="dark:hidden block cursor-pointer rounded-xl shadow-depth-lg hover-lift"
             [src]="'preview/marketplace-light.png'"
             role="img"
-            alt="MCP Bridge marketplace, light"
-            (click)="openLightbox('preview/marketplace-light.png', 'MCP Bridge marketplace, light')"
+            alt="MCP Loop marketplace, light"
+            (click)="openLightbox('preview/marketplace-light.png', 'MCP Loop marketplace, light')"
           />
           <img
             class="hidden dark:block cursor-pointer rounded-xl shadow-depth-lg hover-lift"
             [src]="'preview/marketplace-dark.png'"
             role="img"
-            alt="MCP Bridge marketplace, dark"
-            (click)="openLightbox('preview/marketplace-dark.png', 'MCP Bridge marketplace, dark')"
+            alt="MCP Loop marketplace, dark"
+            (click)="openLightbox('preview/marketplace-dark.png', 'MCP Loop marketplace, dark')"
           />
         </div>
 
@@ -448,7 +448,7 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
         <p class="max-w-xl text-text-secondary">{{ 'landing.finalCta.subtitle' | translate }}</p>
         <a
           target="_blank"
-          href="https://github.com/xsip/mcp-bridge"
+          href="https://github.com/xsip/mcp-loop"
           class="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-white shadow-glow-accent hover-lift"
         >
           {{ 'landing.finalCta.button' | translate }}
@@ -461,7 +461,7 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
     <footer class="border-t border-border-subtle bg-primary px-6 py-10">
       <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-text-muted md:flex-row">
         <div class="flex items-center gap-2">
-          <img src="logo-no-text.png" alt="MCP Bridge" class="h-8" />
+          <img src="logo-no-text.png" alt="MCP Loop" class="h-8" />
           <span>{{ 'landing.footer.copyright' | translate }}</span>
         </div>
         <p>{{ 'landing.footer.tagline' | translate }}</p>

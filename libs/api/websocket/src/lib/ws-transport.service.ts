@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CONNECTION_REGISTRY, ConnectionRegistry, ProxyHttpRequest, Transport, WsMessageType, WsRequestMessage, WS_PROTOCOL_VERSION } from '@mcp-bridge/contracts';
-import { ClientNotFoundError } from '@mcp-bridge/common';
+import { CONNECTION_REGISTRY, ConnectionRegistry, ProxyHttpRequest, Transport, WsMessageType, WsRequestMessage, WS_PROTOCOL_VERSION } from '@mcp-loop/contracts';
+import { ClientNotFoundError } from '@mcp-loop/common';
 
 /**
  * Sends a proxy request to a specific account's agent over its WebSocket

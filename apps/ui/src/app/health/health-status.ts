@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { HealthService } from '@mcp-bridge/ui-client';
+import { HealthService } from '@mcp-loop/ui-client';
 
 @Component({
   selector: 'app-health-status',

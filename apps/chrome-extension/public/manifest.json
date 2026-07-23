@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "MCP Bridge Agent",
+  "name": "MCP Loop Agent",
   "version": "1.0.0",
-  "description": "Tunnels your local MCP servers to your MCP Bridge account, right from the browser — no desktop app required.",
+  "description": "Tunnels your local MCP servers to your MCP Loop account, right from the browser — no desktop app required.",
   "action": {
     "default_popup": "index.html",
     "default_icon": {

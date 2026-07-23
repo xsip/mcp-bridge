@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
  * pattern in `../dark-mode-toggle/theme.utils.ts`.
  */
 
-const LANG_STORAGE_KEY = 'mcp-bridge.lang';
+const LANG_STORAGE_KEY = 'mcp-loop.lang';
 
 export type SupportedLang = 'en' | 'de';
 

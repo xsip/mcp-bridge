@@ -8,7 +8,7 @@ import {
   MarketPlaceItemDto,
   MarketplaceService,
   UpdateMarketPlaceItemDto,
-} from '@mcp-bridge/ui-client';
+} from '@mcp-loop/ui-client';
 import { extractErrorMessage } from '../http-error.util';
 import { AuthStore } from '../auth/auth.store';
 import { ToastService } from '../toast/toast.service';

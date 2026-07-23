@@ -2,7 +2,7 @@ import { computed, inject } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, firstValueFrom, of, pipe, switchMap, tap } from 'rxjs';
-import { MarketPlaceItemDto, MarketplaceService } from '@mcp-bridge/ui-client';
+import { MarketPlaceItemDto, MarketplaceService } from '@mcp-loop/ui-client';
 import { extractErrorMessage } from '../http-error.util';
 import { AuthStore } from '../auth/auth.store';
 import { ToastService } from '../toast/toast.service';

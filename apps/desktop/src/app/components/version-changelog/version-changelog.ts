@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroMinusCircle, heroPencilSquare, heroPlusCircle } from '@ng-icons/heroicons/outline';
-import { MarketPlaceItemAssetChangelogDto } from '@mcp-bridge/ui-client';
+import { MarketPlaceItemAssetChangelogDto } from '@mcp-loop/ui-client';
 
 /**
  * Renders the file-level diff computed once at upload time (see

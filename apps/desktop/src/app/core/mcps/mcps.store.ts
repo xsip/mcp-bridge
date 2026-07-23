@@ -2,7 +2,7 @@ import { effect, inject } from '@angular/core';
 import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, of, pipe, switchMap, tap } from 'rxjs';
-import { AddCustomMcpDto, CustomMcpDto, McpsService, UpdateCustomMcpDto } from '@mcp-bridge/ui-client';
+import { AddCustomMcpDto, CustomMcpDto, McpsService, UpdateCustomMcpDto } from '@mcp-loop/ui-client';
 import { extractErrorMessage } from '../http-error.util';
 import { AgentBridgeService } from '../agent/agent-bridge.service';
 import { ToastService } from '../toast/toast.service';

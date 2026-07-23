@@ -5,7 +5,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroArrowPath, heroCheckCircle, heroFolder, heroPhoto, heroTrash } from '@ng-icons/heroicons/outline';
 import { firstValueFrom } from 'rxjs';
-import { MarketPlaceItemDto, MarketplaceService } from '@mcp-bridge/ui-client';
+import { MarketPlaceItemDto, MarketplaceService } from '@mcp-loop/ui-client';
 import { DownloadedMcp, MarketplaceFsService } from '../../core/marketplace/marketplace-fs.service';
 import { MarketplaceStore } from '../../core/marketplace/marketplace.store';
 import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service';

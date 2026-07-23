@@ -1,5 +1,5 @@
-import type { AgentSocket } from '@mcp-bridge/contracts';
-import { AppLogger } from '@mcp-bridge/logging';
+import type { AgentSocket } from '@mcp-loop/contracts';
+import { AppLogger } from '@mcp-loop/logging';
 import { InMemoryConnectionRegistry } from './in-memory-connection-registry.service';
 
 function createSocket(id: string): AgentSocket {

@@ -16,8 +16,8 @@
  * status to get stuck on "connecting".
  */
 
-const APP_MESSAGE_SOURCE = 'mcp-bridge-app';
-const EXTENSION_MESSAGE_SOURCE = 'mcp-bridge-extension';
+const APP_MESSAGE_SOURCE = 'mcp-loop-app';
+const EXTENSION_MESSAGE_SOURCE = 'mcp-loop-extension';
 
 interface AgentMcp {
   name: string;
@@ -93,7 +93,7 @@ window.addEventListener('message', (event) => {
 // listener, so status changes need this instead. Reconnects if the service
 // worker restarts (which drops the port) and disconnects/reconnects it.
 function connectStatusPort(): void {
-  const port = chrome.runtime.connect({ name: 'mcp-bridge-content' });
+  const port = chrome.runtime.connect({ name: 'mcp-loop-content' });
   port.onMessage.addListener((message: { type?: string; status?: string }) => {
     if (message?.type === 'agent:status' && message.status) {
       postToPage({ type: 'status', status: message.status });

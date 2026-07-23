@@ -64,7 +64,7 @@ export interface MobileNavLink {
           }
 
           <a
-            href="https://github.com/xsip/mcp-bridge"
+            href="https://github.com/xsip/mcp-loop"
             target="_blank"
             (click)="closed.emit()"
             class="mt-4 rounded-lg bg-accent px-3 py-2.5 text-center text-sm font-semibold text-white hover-lift"

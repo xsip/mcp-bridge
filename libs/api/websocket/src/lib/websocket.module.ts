@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { REQUEST_ROUTER, TRANSPORT } from '@mcp-bridge/contracts';
-import { CoreModule } from '@mcp-bridge/core';
+import { REQUEST_ROUTER, TRANSPORT } from '@mcp-loop/contracts';
+import { CoreModule } from '@mcp-loop/core';
 import { AgentGateway } from './agent.gateway';
 import { WsTransportService } from './ws-transport.service';
 import { WsRequestRouter } from './ws-request-router.service';

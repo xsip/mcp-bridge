@@ -32,7 +32,7 @@ const DOWNLOAD_LINK_TTL_MS = 5 * 60 * 1000; // 5 minutes
 const MAX_PREVIEW_IMAGES = 10;
 
 /** GitHub's REST API rejects unauthenticated requests with no User-Agent. */
-const GITHUB_API_HEADERS = { 'User-Agent': 'mcp-bridge', Accept: 'application/vnd.github+json' };
+const GITHUB_API_HEADERS = { 'User-Agent': 'mcp-loop', Accept: 'application/vnd.github+json' };
 
 type MarketPlaceItemFilter = Record<string, unknown>;
 

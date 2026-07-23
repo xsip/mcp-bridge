@@ -1,5 +1,5 @@
 import type { WebSocket } from 'ws';
-import type { AgentSocket } from '@mcp-bridge/contracts';
+import type { AgentSocket } from '@mcp-loop/contracts';
 
 /** Wraps a raw `ws` WebSocket so the rest of the codebase depends only on {@link AgentSocket}. */
 export class WsAgentSocket implements AgentSocket {

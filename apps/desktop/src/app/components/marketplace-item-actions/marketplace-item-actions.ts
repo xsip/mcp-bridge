@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroArrowDownTray, heroArrowPath, heroTrash } from '@ng-icons/heroicons/outline';
-import { MarketPlaceItemDto } from '@mcp-bridge/ui-client';
+import { MarketPlaceItemDto } from '@mcp-loop/ui-client';
 import { MarketplaceStore } from '../../core/marketplace/marketplace.store';
 import { MarketplaceFsService } from '../../core/marketplace/marketplace-fs.service';
 import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service';

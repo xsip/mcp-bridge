@@ -10,10 +10,10 @@ import {
   RequestRouter,
   TRANSPORT,
   Transport,
-} from '@mcp-bridge/contracts';
-import { ClientNotFoundError } from '@mcp-bridge/common';
-import { AppConfigService } from '@mcp-bridge/config';
-import { AppLogger } from '@mcp-bridge/logging';
+} from '@mcp-loop/contracts';
+import { ClientNotFoundError } from '@mcp-loop/common';
+import { AppConfigService } from '@mcp-loop/config';
+import { AppLogger } from '@mcp-loop/logging';
 
 /**
  * Coordinates a single proxied HTTP request: validates the target account

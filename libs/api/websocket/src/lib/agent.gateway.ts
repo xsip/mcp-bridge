@@ -12,9 +12,9 @@ import {
   WsMessage,
   WsMessageType,
   WS_PROTOCOL_VERSION,
-} from '@mcp-bridge/contracts';
-import { AppConfigService } from '@mcp-bridge/config';
-import { AppLogger } from '@mcp-bridge/logging';
+} from '@mcp-loop/contracts';
+import { AppConfigService } from '@mcp-loop/config';
+import { AppLogger } from '@mcp-loop/logging';
 import { WsAgentSocket } from './agent-socket.adapter';
 
 const HEARTBEAT_ALIVE = Symbol('heartbeatAlive');
@@ -27,7 +27,7 @@ type TrackedSocket = WebSocket & { [HEARTBEAT_ALIVE]?: boolean; ownerId?: string
  * belong to (the same token issued by `POST /auth/login`) — the connection
  * is registered under that account's username and can then serve every MCP
  * the user has configured, per the versioned protocol defined in
- * `@mcp-bridge/contracts`.
+ * `@mcp-loop/contracts`.
  */
 @WebSocketGateway({ path: '/agents' })
 export class AgentGateway implements OnGatewayConnection, OnGatewayDisconnect, OnModuleDestroy {

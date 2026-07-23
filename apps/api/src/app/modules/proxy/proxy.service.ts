@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import type { Request, Response } from 'express';
-import { REQUEST_ROUTER, RequestRouter } from '@mcp-bridge/contracts';
-import { AppLogger } from '@mcp-bridge/logging';
+import { REQUEST_ROUTER, RequestRouter } from '@mcp-loop/contracts';
+import { AppLogger } from '@mcp-loop/logging';
 import { McpLookupService } from '../mcp/mcp-lookup.service';
 import { McpLogService } from '../mcp/mcp-log.service';
 import { requestToProxyRequest } from './proxy-request.mapper';

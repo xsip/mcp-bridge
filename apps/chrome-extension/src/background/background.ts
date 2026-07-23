@@ -30,7 +30,7 @@ const tunnel = new AgentTunnel((status) => {
 });
 
 chrome.runtime.onConnect.addListener((port) => {
-  if (port.name !== 'mcp-bridge-content') return;
+  if (port.name !== 'mcp-loop-content') return;
   statusPorts.add(port);
   port.postMessage({ type: 'agent:status', status: currentStatus });
   port.onDisconnect.addListener(() => statusPorts.delete(port));
@@ -107,7 +107,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
 // alarm is the standard workaround: it wakes the worker back up, which both
 // resets the idle timer and lets us notice/repair a connection that should
 // be up but was dropped when the worker was killed mid-connection.
-const KEEPALIVE_ALARM = 'mcp-bridge-keepalive';
+const KEEPALIVE_ALARM = 'mcp-loop-keepalive';
 chrome.alarms.create(KEEPALIVE_ALARM, { periodInMinutes: 0.4 });
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name !== KEEPALIVE_ALARM) return;

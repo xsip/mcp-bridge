@@ -24,7 +24,7 @@ import { WindowControlsService } from '../../core/window/window-controls.service
       <header class="drag flex h-9 shrink-0 items-center justify-between bg-primary-2 pl-3 text-text-primary select-none">
         <div class="flex items-center gap-2">
           <img src="favicon.png" alt="" class="h-4 w-4" />
-          <span class="text-xs font-semibold tracking-tight">MCP Bridge</span>
+          <span class="text-xs font-semibold tracking-tight">MCP Loop</span>
         </div>
 
         <div class="no-drag flex h-full items-stretch">

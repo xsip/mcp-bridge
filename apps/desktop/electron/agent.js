@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 
-const DEFAULT_WS_URL = process.env.MCP_BRIDGE_WS_URL || 'ws://localhost:3000/agents';
+const DEFAULT_WS_URL = process.env.MCP_LOOP_WS_URL || 'ws://localhost:3000/agents';
 const RECONNECT_DELAY_MS = 3000;
 function noop() {
   /* no status callback provided */

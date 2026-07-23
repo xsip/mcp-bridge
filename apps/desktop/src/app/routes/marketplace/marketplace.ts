@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroBarsArrowDown, heroBarsArrowUp, heroMagnifyingGlass, heroMagnifyingGlassPlus, heroPhoto } from '@ng-icons/heroicons/outline';
-import { MarketPlaceItemDto } from '@mcp-bridge/ui-client';
+import { MarketPlaceItemDto } from '@mcp-loop/ui-client';
 import { MarketplaceStore } from '../../core/marketplace/marketplace.store';
 import { MarketplaceFsService } from '../../core/marketplace/marketplace-fs.service';
 import { PreviewImageService } from '../../core/marketplace/preview-image.service';
-import { ImageLightboxService } from '@mcp-bridge/ui-components';
+import { ImageLightboxService } from '@mcp-loop/ui-components';
 import { PreviewImageComponent } from '../../components/preview-image/preview-image';
 import { MarketplaceItemActionsComponent } from '../../components/marketplace-item-actions/marketplace-item-actions';
 

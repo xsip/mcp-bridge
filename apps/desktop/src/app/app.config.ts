@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter, withViewTransitions } from '@angular/router';
 import { skipInitialRouteTransition } from './core/route-transition.util';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { provideApi } from '@mcp-bridge/ui-client';
+import { provideApi } from '@mcp-loop/ui-client';
 import { appRoutes } from './app.routes';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';

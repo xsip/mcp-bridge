@@ -5,8 +5,8 @@ import * as bodyParser from 'body-parser';
 import * as fs from 'node:fs';
 import path from 'node:path';
 import { AppModule } from './app/app.module';
-import { AppConfigService } from '@mcp-bridge/config';
-import { AppLogger } from '@mcp-bridge/logging';
+import { AppConfigService } from '@mcp-loop/config';
+import { AppLogger } from '@mcp-loop/logging';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -27,7 +27,7 @@ async function bootstrap() {
 
   if (process.env.USE_SWAGGER) {
     const swaggerConfig = new DocumentBuilder()
-      .setTitle('MCP Bridge API')
+      .setTitle('MCP Loop API')
       .setDescription('Relay backend exposing desktop-agent MCP servers over HTTP')
       .setVersion('1.0')
       .addBearerAuth()
@@ -43,7 +43,7 @@ async function bootstrap() {
 
   const config = app.get(AppConfigService);
   await app.listen(config.port);
-  logger.log(`MCP Bridge listening on port ${config.port}`);
+  logger.log(`MCP Loop listening on port ${config.port}`);
 }
 
 bootstrap();

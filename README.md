@@ -1,8 +1,8 @@
-# MCP Bridge
+# MCP Loop
 
 A relay platform that exposes MCP servers running on users' desktops to the public internet over plain HTTP — without opening a single port or touching a router. A user registers an account, configures one or more local MCPs (a name + the port their MCP server listens on), and runs a desktop agent that dials out to the backend over a persistent WebSocket. `GET/POST/... /mcp/<username>-<mcpName>` then becomes a message on that socket, and the agent's response streams back to the HTTP caller — typically ChatGPT or another MCP-capable client. Conceptually it's the same shape as Cloudflare Tunnel or ngrok, purpose-built for MCP.
 
-![Logs](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/logs-dark.png)
+![Logs](https://raw.githubusercontent.com/xsip/mcp-loop/refs/heads/main/apps/ui/public/preview/logs-dark.png)
 
 
 This is an Nx monorepo containing the backend (`api`), the Electron desktop app (`desktop`), and a Chrome extension (`chrome-extension`) — the desktop app is **both** the dashboard users log into to configure their MCPs and watch traffic flow through them, **and** the desktop agent itself (its Electron main process is what actually dials out and tunnels requests to `localhost`); the extension is an alternative agent for people who'd rather not install Electron at all.
@@ -41,7 +41,7 @@ A NestJS backend that owns:
 - Edit an existing MCP's port/sub-path, or toggle it active/inactive without removing it.
 - Only active MCPs are handed to the agent's name → port map, so an inactive MCP stops receiving traffic without deleting its configuration.
 
-![MCPs](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/mcp-list-dark.png)
+![MCPs](https://raw.githubusercontent.com/xsip/mcp-loop/refs/heads/main/apps/ui/public/preview/mcp-list-dark.png)
 
 ### Logs
 
@@ -49,7 +49,7 @@ A NestJS backend that owns:
 - Can be viewed for all MCPs at once or filtered to a single one.
 - Individual entries, a selection, or everything in the current filter can be deleted.
 
-![Logs](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/logs-dark.png)
+![Logs](https://raw.githubusercontent.com/xsip/mcp-loop/refs/heads/main/apps/ui/public/preview/logs-dark.png)
 
 ### Marketplace
 
@@ -59,7 +59,7 @@ A NestJS backend that owns:
 - "On this system" lists everything installed locally, flags when a newer version is available with an Update button, and lets you uninstall.
 - The browse list itself marks items you already have installed with the installed version, offering Update/Downgrade instead of Download when appropriate.
 
-![Marketplace](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/marketplace-dark.png)
+![Marketplace](https://raw.githubusercontent.com/xsip/mcp-loop/refs/heads/main/apps/ui/public/preview/marketplace-dark.png)
 
 ### My Releases
 
@@ -67,7 +67,7 @@ A NestJS backend that owns:
 - Upload new versions or delete old ones per listing, without leaving the page.
 - Deleting a listing removes every version with it — there's no partial state to clean up afterward.
 
-![My Releases](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/my-releases-dark.png)
+![My Releases](https://raw.githubusercontent.com/xsip/mcp-loop/refs/heads/main/apps/ui/public/preview/my-releases-dark.png)
 
 ### On this system
 
@@ -75,7 +75,7 @@ A NestJS backend that owns:
 - Flags an Update button the moment the backend has a newer version than the one installed.
 - Uninstall removes the unpacked files and forgets the local install record.
 
-![On this system](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/on-this-system-dark.png)
+![On this system](https://raw.githubusercontent.com/xsip/mcp-loop/refs/heads/main/apps/ui/public/preview/on-this-system-dark.png)
 
 ### API Keys
 
@@ -83,14 +83,14 @@ A NestJS backend that owns:
 - The raw key is shown exactly once, at creation time, and never stored or retrievable again.
 - Keys can be individually revoked at any time, which immediately invalidates them.
 
-![API Keys](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/api-keys-dark.png)
+![API Keys](https://raw.githubusercontent.com/xsip/mcp-loop/refs/heads/main/apps/ui/public/preview/api-keys-dark.png)
 
 ### Settings
 
 - Electron-only — picks the directory the desktop agent unpacks downloaded marketplace items into.
 - The one setting that controls where everything installed via "On this system" actually lives on disk.
 
-![Settings](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/settings-dark.png)
+![Settings](https://raw.githubusercontent.com/xsip/mcp-loop/refs/heads/main/apps/ui/public/preview/settings-dark.png)
 
 ## `chrome-extension`
 
@@ -102,4 +102,4 @@ A Manifest V3 Chrome extension that lets the `desktop` dashboard run as a plain 
 - A `chrome.alarms` keepalive works around Manifest V3 terminating idle service workers, reconnecting automatically if the tunnel should be up but was dropped.
 - The popup shows connection status, the account's MCPs, and a manual connect/disconnect override; the backend URL it points at is configurable there too.
 
-![Chrome extension](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/chrome-ext-dark.png)
+![Chrome extension](https://raw.githubusercontent.com/xsip/mcp-loop/refs/heads/main/apps/ui/public/preview/chrome-ext-dark.png)

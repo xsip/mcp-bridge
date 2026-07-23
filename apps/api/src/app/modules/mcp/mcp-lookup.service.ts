@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { parseMcpId } from '@mcp-bridge/utils';
-import { McpNotFoundError } from '@mcp-bridge/common';
+import { parseMcpId } from '@mcp-loop/utils';
+import { McpNotFoundError } from '@mcp-loop/common';
 import { CustomMcpDto } from '../auth/dto/custom-mcp.dto';
 import { User, UserDocument } from '../auth/user.schema';
 import { Mcp, McpDocument } from './schemas/mcp.schema';

@@ -1,7 +1,7 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import {provideHttpClient, withFetch} from '@angular/common/http';
-import { provideApi } from '@mcp-bridge/ui-client';
+import { provideApi } from '@mcp-loop/ui-client';
 import { appRoutes } from './app.routes';
 import {provideTranslateService} from "@ngx-translate/core";
 import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";

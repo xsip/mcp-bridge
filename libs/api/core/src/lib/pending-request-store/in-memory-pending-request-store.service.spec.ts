@@ -1,6 +1,6 @@
-import { AppLogger } from '@mcp-bridge/logging';
-import type { AppConfigService } from '@mcp-bridge/config';
-import { RequestTimeoutError, TooManyPendingRequestsError } from '@mcp-bridge/common';
+import { AppLogger } from '@mcp-loop/logging';
+import type { AppConfigService } from '@mcp-loop/config';
+import { RequestTimeoutError, TooManyPendingRequestsError } from '@mcp-loop/common';
 import { InMemoryPendingRequestStore } from './in-memory-pending-request-store.service';
 
 function createConfig(maxPendingRequests: number): AppConfigService {

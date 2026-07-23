@@ -1,8 +1,8 @@
 import { EventEmitter } from 'events';
-import type { AgentAuthenticator, ConnectionRegistry, PendingRequestStore } from '@mcp-bridge/contracts';
-import { WS_PROTOCOL_VERSION, WsMessageType } from '@mcp-bridge/contracts';
-import type { AppConfigService } from '@mcp-bridge/config';
-import { AppLogger } from '@mcp-bridge/logging';
+import type { AgentAuthenticator, ConnectionRegistry, PendingRequestStore } from '@mcp-loop/contracts';
+import { WS_PROTOCOL_VERSION, WsMessageType } from '@mcp-loop/contracts';
+import type { AppConfigService } from '@mcp-loop/config';
+import { AppLogger } from '@mcp-loop/logging';
 import { AgentGateway } from './agent.gateway';
 
 class FakeSocket extends EventEmitter {

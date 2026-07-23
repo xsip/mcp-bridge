@@ -1,5 +1,5 @@
 import { Controller, Get, Inject } from '@nestjs/common';
-import { CONNECTION_REGISTRY, ConnectionRegistry } from '@mcp-bridge/contracts';
+import { CONNECTION_REGISTRY, ConnectionRegistry } from '@mcp-loop/contracts';
 import { Public } from '../auth/public.decorator';
 import { HealthResponseDto } from './dto/health-response.dto';
 

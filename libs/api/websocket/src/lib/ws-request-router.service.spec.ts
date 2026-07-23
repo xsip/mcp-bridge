@@ -1,7 +1,7 @@
-import type { ConnectionRegistry, PendingRequestStore, Transport } from '@mcp-bridge/contracts';
-import { ClientNotFoundError } from '@mcp-bridge/common';
-import type { AppConfigService } from '@mcp-bridge/config';
-import { AppLogger } from '@mcp-bridge/logging';
+import type { ConnectionRegistry, PendingRequestStore, Transport } from '@mcp-loop/contracts';
+import { ClientNotFoundError } from '@mcp-loop/common';
+import type { AppConfigService } from '@mcp-loop/config';
+import { AppLogger } from '@mcp-loop/logging';
 import { WsRequestRouter } from './ws-request-router.service';
 
 describe('WsRequestRouter', () => {

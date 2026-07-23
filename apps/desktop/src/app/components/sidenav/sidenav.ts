@@ -16,7 +16,7 @@ import {
   heroListBullet,
   heroServerStack
 } from '@ng-icons/heroicons/outline';
-import { DarkModeToggleComponent, LanguageSwitcherComponent } from '@mcp-bridge/ui-components';
+import { DarkModeToggleComponent, LanguageSwitcherComponent } from '@mcp-loop/ui-components';
 import { AuthStore } from '../../core/auth/auth.store';
 import { AgentBridgeService } from '../../core/agent/agent-bridge.service';
 import { MarketplaceFsService } from '../../core/marketplace/marketplace-fs.service';
@@ -39,9 +39,9 @@ const MARKETPLACE_SUB_ROUTES = ['/marketplace/publish', '/marketplace/my-release
     <aside
       class="flex h-full {{smallMode() ? 'w-16' : 'w-56'}} shrink-0 flex-col border-r border-border-default  bg-primary-2">
       <div class="flex items-center justify-center flex-col gap-2 py-5">
-        <img src="favicon.png" alt="MCP Bridge" class="w-24 animate-float"/>
+        <img src="favicon.png" alt="MCP Loop" class="w-24 animate-float"/>
         @if (!smallMode()) {
-          <span class="text-sm font-semibold tracking-tight text-text-primary">MCP Bridge</span>
+          <span class="text-sm font-semibold tracking-tight text-text-primary">MCP Loop</span>
         }
       </div>
 

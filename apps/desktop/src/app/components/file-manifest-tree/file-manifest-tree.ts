@@ -2,7 +2,7 @@ import { Component, computed, input, signal } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroChevronDown, heroChevronRight, heroDocument, heroFolder } from '@ng-icons/heroicons/outline';
-import { MarketPlaceItemAssetManifestEntryDto } from '@mcp-bridge/ui-client';
+import { MarketPlaceItemAssetManifestEntryDto } from '@mcp-loop/ui-client';
 
 interface TreeNode {
   name: string;

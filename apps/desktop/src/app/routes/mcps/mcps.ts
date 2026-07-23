@@ -3,10 +3,10 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { CustomMcpDto } from '@mcp-bridge/ui-client';
+import { CustomMcpDto } from '@mcp-loop/ui-client';
 import { heroCheck, heroPencilSquare, heroPlus, heroTrash, heroXMark } from '@ng-icons/heroicons/outline';
 import { McpsStore } from '../../core/mcps/mcps.store';
-import { CheckboxComponent } from '@mcp-bridge/ui-components';
+import { CheckboxComponent } from '@mcp-loop/ui-components';
 import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service';
 
 /**

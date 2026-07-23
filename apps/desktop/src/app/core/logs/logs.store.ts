@@ -2,14 +2,14 @@ import { computed, inject } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, of, pipe, switchMap, tap } from 'rxjs';
-import { McpLogsService, McpLogWithContextDto } from '@mcp-bridge/ui-client';
+import { McpLogsService, McpLogWithContextDto } from '@mcp-loop/ui-client';
 import { extractErrorMessage } from '../http-error.util';
 import { ToastService } from '../toast/toast.service';
 
 const DEFAULT_PAGE_SIZE = 25;
 const POLL_INTERVAL_MS = 3000;
-const TOOL_CALLS_ONLY_STORAGE_KEY = 'mcp-bridge.desktop.logs.toolCallsOnly';
-const TODAY_ONLY_STORAGE_KEY = 'mcp-bridge.desktop.logs.todayOnly';
+const TOOL_CALLS_ONLY_STORAGE_KEY = 'mcp-loop.desktop.logs.toolCallsOnly';
+const TODAY_ONLY_STORAGE_KEY = 'mcp-loop.desktop.logs.todayOnly';
 
 function readStoredBool(key: string): boolean {
   try {

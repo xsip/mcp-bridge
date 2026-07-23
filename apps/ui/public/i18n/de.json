@@ -25,7 +25,7 @@
       "eyebrow": "Selbst gehostetes MCP-Tunneling",
       "title": "Mach deine lokalen MCP-Server ",
       "titleHighlight": "öffentlich erreichbar — ganz ohne offenen Port",
-      "subtitle": "MCP Bridge leitet öffentliche HTTP-Anfragen über eine sichere ausgehende WebSocket-Verbindung an die Model-Context-Protocol-Server auf deinem Rechner weiter. Keine Router-Konfiguration, keine feste IP, keine eingehenden Firewall-Regeln.",
+      "subtitle": "MCP Loop leitet öffentliche HTTP-Anfragen über eine sichere ausgehende WebSocket-Verbindung an die Model-Context-Protocol-Server auf deinem Rechner weiter. Keine Router-Konfiguration, keine feste IP, keine eingehenden Firewall-Regeln.",
       "primaryCta": "Auf github ansehen",
       "secondaryCta": "So funktioniert's",
       "snippetLabel": "öffentliche Anfrage",
@@ -62,7 +62,7 @@
         "description": "ChatGPT oder jedes andere Tool, das MCP über HTTP spricht"
       },
       "backend": {
-        "title": "MCP Bridge",
+        "title": "MCP Loop",
         "description": "Leitet jede Anfrage an den verbundenen Agenten des richtigen Kontos weiter"
       },
       "agent": {
@@ -140,7 +140,7 @@
       "items": {
         "whatIsMcp": {
           "question": "Was ist ein MCP-Server?",
-          "answer": "Das Model Context Protocol ist ein Standard, mit dem KI-Tools externe Server für Kontext und Aktionen aufrufen. MCP Bridge betreibt keine MCP-Server für dich — es macht welche öffentlich erreichbar, die du bereits lokal betreibst."
+          "answer": "Das Model Context Protocol ist ein Standard, mit dem KI-Tools externe Server für Kontext und Aktionen aufrufen. MCP Loop betreibt keine MCP-Server für dich — es macht welche öffentlich erreichbar, die du bereits lokal betreibst."
         },
         "security": {
           "question": "Ist mein Rechner dem Internet ausgesetzt?",
@@ -148,7 +148,7 @@
         },
         "selfHost": {
           "question": "Kann ich das Backend selbst hosten?",
-          "answer": "Ja. MCP Bridge ist ein Standard-NestJS-Backend mit einem offenen, versionierten WebSocket-Protokoll, gebaut für den Betrieb auf deiner eigenen Infrastruktur."
+          "answer": "Ja. MCP Loop ist ein Standard-NestJS-Backend mit einem offenen, versionierten WebSocket-Protokoll, gebaut für den Betrieb auf deiner eigenen Infrastruktur."
         },
         "multipleAgents": {
           "question": "Kann ich mehrere MCPs gleichzeitig betreiben?",
@@ -166,7 +166,7 @@
       "button": "Auf github ansehen"
     },
     "footer": {
-      "copyright": "© 2026 MCP Bridge",
+      "copyright": "© 2026 MCP Loop",
       "tagline": "Ein Relay für lokale MCP-Server."
     }
   }

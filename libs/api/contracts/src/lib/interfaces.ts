@@ -4,7 +4,7 @@ import type { ProxyHttpRequest, ProxyHttpResponse } from './proxy.types';
 /**
  * Tracks which users currently have a desktop agent connected.
  *
- * In-memory implementation lives in `@mcp-bridge/core`. To scale horizontally
+ * In-memory implementation lives in `@mcp-loop/core`. To scale horizontally
  * across multiple backend instances, replace it with a Redis-backed
  * implementation (e.g. a Redis hash keyed by ownerId plus pub/sub for
  * cross-instance invalidation) that implements this same interface.
@@ -21,7 +21,7 @@ export interface ConnectionRegistry {
 /**
  * Correlates outgoing WebSocket requests with their eventual responses.
  *
- * In-memory implementation lives in `@mcp-bridge/core`. Because pending
+ * In-memory implementation lives in `@mcp-loop/core`. Because pending
  * requests are held as in-process Promises, this implementation only works
  * when the HTTP request and the owning WebSocket connection are handled by
  * the same backend instance. To scale horizontally, replace it with a

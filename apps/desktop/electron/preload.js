@@ -2,10 +2,10 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 /**
  * The only surface the renderer (Angular app, contextIsolation: true) has
- * into the main process. Exposed as `window.mcpBridge` — see
+ * into the main process. Exposed as `window.mcpLoop` — see
  * `apps/desktop/src/app/core/agent/agent-bridge.service.ts`.
  */
-contextBridge.exposeInMainWorld('mcpBridge', {
+contextBridge.exposeInMainWorld('mcpLoop', {
   startAgent: (token) => ipcRenderer.send('agent:start', token),
   stopAgent: () => ipcRenderer.send('agent:stop'),
   setMcps: (mcps) => ipcRenderer.send('agent:set-mcps', mcps),
@@ -19,9 +19,9 @@ contextBridge.exposeInMainWorld('mcpBridge', {
 /**
  * Custom-titlebar window controls — the window is created with `frame: false`
  * (see main.js), so minimize/maximize/close have to be driven from here.
- * Exposed as `window.mcpBridgeWindow` — see `window-controls.service.ts`.
+ * Exposed as `window.mcpLoopWindow` — see `window-controls.service.ts`.
  */
-contextBridge.exposeInMainWorld('mcpBridgeWindow', {
+contextBridge.exposeInMainWorld('mcpLoopWindow', {
   minimize: () => ipcRenderer.send('window:minimize'),
   maximizeToggle: () => ipcRenderer.send('window:maximize-toggle'),
   close: () => ipcRenderer.send('window:close'),
@@ -36,11 +36,11 @@ contextBridge.exposeInMainWorld('mcpBridgeWindow', {
 /**
  * Marketplace download directory setting + download-and-install (fetch the
  * zip, unzip, delete the zip, record it) — all real filesystem work, so it
- * has to happen in the main process. Exposed as `window.mcpBridgeFs` — see
+ * has to happen in the main process. Exposed as `window.mcpLoopFs` — see
  * `apps/desktop/src/app/core/marketplace/marketplace-fs.service.ts`. Only
  * present in the real Electron app, never in a plain browser tab.
  */
-contextBridge.exposeInMainWorld('mcpBridgeFs', {
+contextBridge.exposeInMainWorld('mcpLoopFs', {
   getSettings: () => ipcRenderer.invoke('marketplace:get-settings'),
   pickDownloadDirectory: () => ipcRenderer.invoke('marketplace:pick-download-directory'),
   listDownloadedMcps: () => ipcRenderer.invoke('marketplace:list-downloaded'),

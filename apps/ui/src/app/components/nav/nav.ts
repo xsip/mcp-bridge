@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroBars3, heroGlobeAlt } from '@ng-icons/heroicons/outline';
-import { DarkModeToggleComponent, LanguageSwitcherComponent } from '@mcp-bridge/ui-components';
+import { DarkModeToggleComponent, LanguageSwitcherComponent } from '@mcp-loop/ui-components';
 import { MobileSidenavComponent, MobileNavLink } from '../mobile-sidenav/mobile-sidenav';
 import { ActiveSectionService } from '../../services/active-section.service';
 
@@ -34,8 +34,8 @@ const NAV_LINKS: MobileNavLink[] = [
     <header class="sticky top-0 z-30 border-b border-border-default bg-primary/85 backdrop-blur">
       <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
         <a (click)="scrollToTop($event)" class="flex items-center gap-2">
-          <img src="logo-no-text.png" alt="MCP Bridge" class="h-12" />
-          <span class="text-sm font-semibold tracking-tight text-text-primary">MCP Bridge</span>
+          <img src="logo-no-text.png" alt="MCP Loop" class="h-12" />
+          <span class="text-sm font-semibold tracking-tight text-text-primary">MCP Loop</span>
         </a>
 
         <nav class="hidden items-center gap-1 md:flex" [attr.aria-label]="'nav.primaryMenu' | translate">
@@ -61,7 +61,7 @@ const NAV_LINKS: MobileNavLink[] = [
           <ui-dark-mode-toggle />
 
           <a
-            href="https://github.com/xsip/mcp-bridge"
+            href="https://github.com/xsip/mcp-loop"
             target="_blank"
             class="hidden rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white shadow-depth-sm hover-lift md:inline-flex"
           >

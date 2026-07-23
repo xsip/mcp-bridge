@@ -25,7 +25,7 @@
       "eyebrow": "Self-hosted MCP tunneling",
       "title": "Expose your local MCP servers to the ",
       "titleHighlight": "world — without opening a port",
-      "subtitle": "MCP Bridge relays public HTTP requests to the Model Context Protocol servers running on your machine, over a secure outbound WebSocket. No router configuration, no static IP, no inbound firewall rules.",
+      "subtitle": "MCP Loop relays public HTTP requests to the Model Context Protocol servers running on your machine, over a secure outbound WebSocket. No router configuration, no static IP, no inbound firewall rules.",
       "primaryCta": "Checkout on github",
       "secondaryCta": "See how it works",
       "snippetLabel": "public request",
@@ -62,7 +62,7 @@
         "description": "ChatGPT or any other tool that speaks MCP over HTTP"
       },
       "backend": {
-        "title": "MCP Bridge",
+        "title": "MCP Loop",
         "description": "Routes each request to the right account's connected agent"
       },
       "agent": {
@@ -73,7 +73,7 @@
     },
     "extension": {
       "title": "No desktop app? Use the browser extension",
-      "subtitle": "Install the MCP Bridge Chrome extension and the dashboard tunnels your MCPs straight from the browser — no Electron install required.",
+      "subtitle": "Install the MCP Loop Chrome extension and the dashboard tunnels your MCPs straight from the browser — no Electron install required.",
       "point1Title": "Automatic handoff",
       "point1Description": "Log into the dashboard as a normal website and the extension picks up your session automatically — no separate login in the extension itself.",
       "point2Title": "Same protocol",
@@ -140,7 +140,7 @@
       "items": {
         "whatIsMcp": {
           "question": "What is an MCP server?",
-          "answer": "The Model Context Protocol is a standard way for AI tools to call out to external servers for context and actions. MCP Bridge doesn't run MCP servers for you — it exposes ones you already run locally."
+          "answer": "The Model Context Protocol is a standard way for AI tools to call out to external servers for context and actions. MCP Loop doesn't run MCP servers for you — it exposes ones you already run locally."
         },
         "security": {
           "question": "Is my machine exposed to the internet?",
@@ -148,7 +148,7 @@
         },
         "selfHost": {
           "question": "Can I self-host the backend?",
-          "answer": "Yes. MCP Bridge is a standard NestJS backend with an open, versioned WebSocket protocol, designed to be run on your own infrastructure."
+          "answer": "Yes. MCP Loop is a standard NestJS backend with an open, versioned WebSocket protocol, designed to be run on your own infrastructure."
         },
         "multipleAgents": {
           "question": "Can I run more than one MCP at a time?",
@@ -156,7 +156,7 @@
         },
         "browserExtension": {
           "question": "Do I need to install the desktop app?",
-          "answer": "No — install the MCP Bridge Chrome extension instead and open the dashboard as a normal website. It tunnels the same way, without Electron."
+          "answer": "No — install the MCP Loop Chrome extension instead and open the dashboard as a normal website. It tunnels the same way, without Electron."
         }
       }
     },
@@ -166,7 +166,7 @@
       "button": "Checkout on github"
     },
     "footer": {
-      "copyright": "© 2026 MCP Bridge",
+      "copyright": "© 2026 MCP Loop",
       "tagline": "A relay for local MCP servers."
     }
   }

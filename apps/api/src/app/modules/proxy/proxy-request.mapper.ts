@@ -1,5 +1,5 @@
 import type { Request } from 'express';
-import type { ProxyHttpRequest } from '@mcp-bridge/contracts';
+import type { ProxyHttpRequest } from '@mcp-loop/contracts';
 
 /** A small set of hop-by-hop / connection-specific headers that must not be forwarded to the agent. */
 const EXCLUDED_HEADERS = new Set(['host', 'connection', 'content-length', 'authorization']);

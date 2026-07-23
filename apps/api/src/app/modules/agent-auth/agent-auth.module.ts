@@ -1,5 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-import { AGENT_AUTHENTICATOR } from '@mcp-bridge/contracts';
+import { AGENT_AUTHENTICATOR } from '@mcp-loop/contracts';
 import { AuthModule } from '../auth/auth.module';
 import { JwtAgentAuthenticatorService } from './jwt-agent-authenticator.service';
 

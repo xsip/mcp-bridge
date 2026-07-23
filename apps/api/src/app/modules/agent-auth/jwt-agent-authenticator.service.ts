@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Model } from 'mongoose';
-import type { AgentAuthenticator, AuthenticatedAgent } from '@mcp-bridge/contracts';
-import { AppLogger } from '@mcp-bridge/logging';
+import type { AgentAuthenticator, AuthenticatedAgent } from '@mcp-loop/contracts';
+import { AppLogger } from '@mcp-loop/logging';
 import { User, UserDocument } from '../auth/user.schema';
 
 /**

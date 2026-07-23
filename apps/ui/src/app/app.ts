@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ImageLightboxComponent } from '@mcp-bridge/ui-components';
+import { ImageLightboxComponent } from '@mcp-loop/ui-components';
 import { NavComponent } from './components/nav/nav';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { BridgeWebsocketModule } from '@mcp-bridge/websocket';
+import { BridgeWebsocketModule } from '@mcp-loop/websocket';
 import { HealthController } from './health.controller';
 
 @Module({

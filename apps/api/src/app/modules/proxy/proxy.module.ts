@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { BridgeWebsocketModule } from '@mcp-bridge/websocket';
+import { BridgeWebsocketModule } from '@mcp-loop/websocket';
 import { McpModule } from '../mcp/mcp.module';
 import { AuthModule } from '../auth/auth.module';
 import { ProxyController } from './proxy.controller';

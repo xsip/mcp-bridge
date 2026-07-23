@@ -1,7 +1,7 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 import type { Response } from 'express';
 import { ClientNotFoundError, McpNotFoundError, RequestTimeoutError, TooManyPendingRequestsError } from '../errors/domain-errors';
-import { AppLogger } from '@mcp-bridge/logging';
+import { AppLogger } from '@mcp-loop/logging';
 
 interface ErrorBody {
   statusCode: number;

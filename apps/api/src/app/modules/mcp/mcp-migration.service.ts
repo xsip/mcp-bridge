@@ -1,7 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { AppLogger } from '@mcp-bridge/logging';
+import { AppLogger } from '@mcp-loop/logging';
 import { User, UserDocument } from '../auth/user.schema';
 import { Mcp, McpDocument } from './schemas/mcp.schema';
 import { McpLogRecord, McpLogDocument } from './schemas/mcp-log.schema';

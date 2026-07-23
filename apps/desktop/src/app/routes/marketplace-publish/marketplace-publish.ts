@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroArrowUpTray, heroCheckCircle, heroCodeBracket, heroPhoto, heroTrash } from '@ng-icons/heroicons/outline';
-import { MarketPlaceItemDto } from '@mcp-bridge/ui-client';
+import { MarketPlaceItemDto } from '@mcp-loop/ui-client';
 import { MyReleasesStore } from '../../core/marketplace/my-releases.store';
 import { RichTextEditorComponent } from '../../components/rich-text-editor/rich-text-editor';
 import { PreviewImageComponent } from '../../components/preview-image/preview-image';

@@ -1,5 +1,5 @@
 /**
- * MCP Bridge API
+ * MCP Loop API
  *
  * 
  *
