@@ -3,9 +3,10 @@ import { RouterOutlet } from '@angular/router';
 import { TitlebarComponent } from './components/titlebar/titlebar';
 import { ToastContainerComponent } from './components/toast/toast-container';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog';
+import { ImageLightboxComponent } from './components/image-lightbox/image-lightbox';
 
 @Component({
-  imports: [RouterOutlet, TitlebarComponent, ToastContainerComponent, ConfirmDialogComponent],
+  imports: [RouterOutlet, TitlebarComponent, ToastContainerComponent, ConfirmDialogComponent, ImageLightboxComponent],
   selector: 'app-root',
   template: `
     <div class="flex h-screen flex-col overflow-hidden">
@@ -16,6 +17,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     </div>
     <app-toast-container />
     <app-confirm-dialog />
+    <app-image-lightbox />
   `,
   styles: ``,
 })

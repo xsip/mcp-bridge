@@ -36,6 +36,12 @@ export const appRoutes: Route[] = [
         loadComponent: () =>
           import('./routes/marketplace-installed/marketplace-installed').then((m) => m.MarketplaceInstalled),
       },
+      {
+        // Must stay after the literal marketplace/* routes above — Angular matches in array order, and
+        // ':id' would otherwise shadow 'publish'/'my-releases'/'installed'.
+        path: 'marketplace/:id',
+        loadComponent: () => import('./routes/marketplace-detail/marketplace-detail').then((m) => m.MarketplaceDetail),
+      },
       { path: 'settings', loadComponent: () => import('./routes/settings/settings').then((m) => m.Settings) },
     ],
   },

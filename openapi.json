@@ -1934,7 +1934,8 @@
           },
           "description": {
             "type": "string",
-            "example": "Does cool things."
+            "example": "Does cool things.",
+            "description": "Rich text (HTML) — rendered sanitized by the client"
           },
           "visibility": {
             "type": "string",
@@ -1959,7 +1960,8 @@
           },
           "description": {
             "type": "string",
-            "example": "Does cool things."
+            "example": "Does cool things.",
+            "description": "Rich text (HTML) — rendered sanitized by the client"
           }
         }
       },

@@ -172,7 +172,10 @@
     "zipFile": "Zip file",
     "upload": "Upload",
     "versionUploaded": "Version uploaded successfully.",
-    "viewInMyReleases": "View in My Releases"
+    "viewInMyReleases": "View in My Releases",
+    "previewImages": "Preview images",
+    "addImage": "Add",
+    "removeImage": "Remove image"
   },
   "marketplaceMyReleases": {
     "title": "My Releases",
@@ -193,7 +196,16 @@
     "confirmRemove": "Remove \"{{name}}\"? This deletes every version and cannot be undone.",
     "confirmRemoveVersionTitle": "Remove version?",
     "confirmRemoveVersion": "Remove version \"{{version}}\"? This cannot be undone.",
-    "empty": "You haven't published anything yet."
+    "empty": "You haven't published anything yet.",
+    "previewImages": "Preview images",
+    "addImage": "Add",
+    "removeImage": "Remove image"
+  },
+  "marketplaceDetail": {
+    "back": "Back to Marketplace",
+    "loading": "Loading…",
+    "notFound": "This marketplace item couldn't be found — it may be private or have been removed.",
+    "versions": "Versions"
   },
   "marketplaceInstalled": {
     "title": "On this system",

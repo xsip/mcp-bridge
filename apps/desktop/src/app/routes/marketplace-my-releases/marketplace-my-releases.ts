@@ -2,21 +2,24 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { heroArrowUpTray, heroPencilSquare, heroTrash, heroXMark } from '@ng-icons/heroicons/outline';
+import { heroArrowUpTray, heroPencilSquare, heroPhoto, heroTrash, heroXMark } from '@ng-icons/heroicons/outline';
 import { MarketPlaceItemDto } from '@mcp-bridge/ui-client';
 import { MyReleasesStore } from '../../core/marketplace/my-releases.store';
 import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service';
+import { RichTextEditorComponent } from '../../components/rich-text-editor/rich-text-editor';
+import { PreviewImageComponent } from '../../components/preview-image/preview-image';
 
 /**
  * "My Releases" route — manage the current user's own marketplace listings:
- * edit name/description, change visibility, upload new versions, remove a
- * version, or delete the whole listing.
+ * edit name/description (rich text), change visibility, add/remove preview
+ * images, upload new versions, remove a version, or delete the whole
+ * listing.
  */
 @Component({
   selector: 'app-marketplace-my-releases',
   standalone: true,
-  imports: [FormsModule, TranslatePipe, NgIconComponent],
-  viewProviders: [provideIcons({ heroPencilSquare, heroTrash, heroXMark, heroArrowUpTray })],
+  imports: [FormsModule, TranslatePipe, NgIconComponent, RichTextEditorComponent, PreviewImageComponent],
+  viewProviders: [provideIcons({ heroPencilSquare, heroTrash, heroXMark, heroArrowUpTray, heroPhoto })],
   template: `
     <div class="mx-auto max-w-4xl animate-slide-up">
       <h1 class="text-xl font-semibold text-text-primary">{{ 'marketplaceMyReleases.title' | translate }}</h1>
@@ -30,8 +33,8 @@ import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service'
         @for (item of store.items(); track item.id) {
           <li class="msg-enter rounded-2xl border border-border-default bg-primary-2 p-4">
             @if (editingId() === item.id) {
-              <form class="flex flex-wrap items-end gap-3" (ngSubmit)="submitEdit(item.id)">
-                <div class="min-w-0 flex-1">
+              <form class="space-y-3" (ngSubmit)="submitEdit(item.id)">
+                <div>
                   <label for="editName-{{ item.id }}" class="mb-1 block text-xs font-medium text-text-secondary">{{ 'marketplaceMyReleases.name' | translate }}</label>
                   <input
                     id="editName-{{ item.id }}"
@@ -41,36 +44,32 @@ import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service'
                     class="w-full rounded-lg border border-border-default bg-primary px-3 py-2 text-sm text-text-primary"
                   />
                 </div>
-                <div class="min-w-0 flex-1">
+                <div>
                   <label for="editDescription-{{ item.id }}" class="mb-1 block text-xs font-medium text-text-secondary">{{ 'marketplaceMyReleases.description' | translate }}</label>
-                  <input
-                    id="editDescription-{{ item.id }}"
-                    type="text"
-                    [(ngModel)]="editDescription"
-                    name="editDescription"
-                    class="w-full rounded-lg border border-border-default bg-primary px-3 py-2 text-sm text-text-primary"
-                  />
+                  <app-rich-text-editor [(ngModel)]="editDescription" name="editDescription" editorId="editDescription-{{ item.id }}" />
                 </div>
-                <button
-                  type="submit"
-                  class="press-feedback inline-flex h-9 items-center justify-center rounded-lg bg-accent px-3 text-xs font-semibold text-white shadow-depth-sm hover-lift"
-                >
-                  {{ 'marketplaceMyReleases.save' | translate }}
-                </button>
-                <button
-                  type="button"
-                  (click)="cancelEdit()"
-                  class="press-feedback inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border-default text-text-secondary hover:bg-primary"
-                >
-                  <ng-icon name="heroXMark" class="h-4 w-4" />
-                </button>
+                <div class="flex items-center gap-2">
+                  <button
+                    type="submit"
+                    class="press-feedback inline-flex h-9 items-center justify-center rounded-lg bg-accent px-3 text-xs font-semibold text-white shadow-depth-sm hover-lift"
+                  >
+                    {{ 'marketplaceMyReleases.save' | translate }}
+                  </button>
+                  <button
+                    type="button"
+                    (click)="cancelEdit()"
+                    class="press-feedback inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border-default text-text-secondary hover:bg-primary"
+                  >
+                    <ng-icon name="heroXMark" class="h-4 w-4" />
+                  </button>
+                </div>
               </form>
             } @else {
               <div class="flex flex-wrap items-start justify-between gap-3">
                 <div class="min-w-0">
                   <p class="truncate text-sm font-semibold text-text-primary">{{ item.name }}</p>
                   @if (item.description) {
-                    <p class="mt-1 text-xs text-text-secondary">{{ item.description }}</p>
+                    <div class="mt-1 line-clamp-3 text-xs text-text-secondary [&_a]:text-accent [&_a]:underline" [innerHTML]="item.description"></div>
                   }
                   <p class="mt-1.5 text-xs text-text-muted">
                     {{ 'marketplaceMyReleases.downloadCount' | translate: { count: item.totalDownloadCount } }}
@@ -108,6 +107,33 @@ import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service'
                 </div>
               </div>
             }
+
+            <!-- Preview images -->
+            <div class="mt-3 border-t border-border-subtle pt-3">
+              <p class="text-xs font-medium text-text-secondary">{{ 'marketplaceMyReleases.previewImages' | translate }}</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                @for (image of item.previewImages; track image.fileId) {
+                  <div class="group relative h-16 w-16 overflow-hidden rounded-lg border border-border-default bg-primary">
+                    <app-preview-image [itemId]="item.id" [fileId]="image.fileId" [alt]="image.filename" />
+                    <button
+                      type="button"
+                      (click)="removePreviewImage(item.id, image.fileId)"
+                      class="absolute inset-0 flex items-center justify-center bg-black/0 text-white opacity-0 transition-opacity group-hover:bg-black/50 group-hover:opacity-100"
+                      [attr.aria-label]="'marketplaceMyReleases.removeImage' | translate"
+                    >
+                      <ng-icon name="heroTrash" class="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                }
+                <label
+                  class="flex h-16 w-16 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-border-default text-text-muted hover:border-accent hover:text-accent"
+                >
+                  <ng-icon name="heroPhoto" class="h-4 w-4" />
+                  <span class="text-[9px]">{{ 'marketplaceMyReleases.addImage' | translate }}</span>
+                  <input type="file" accept="image/*" class="hidden" (change)="onImageSelected(item.id, $event)" />
+                </label>
+              </div>
+            </div>
 
             <!-- Versions -->
             <div class="mt-3 border-t border-border-subtle pt-3">
@@ -247,5 +273,17 @@ export class MarketplaceMyReleases implements OnInit {
       delete this.newVersion[itemId];
       delete this.newVersionFiles[itemId];
     }
+  }
+
+  protected async onImageSelected(itemId: string, event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) return;
+    await this.store.addPreviewImage(itemId, file);
+  }
+
+  protected async removePreviewImage(itemId: string, fileId: string): Promise<void> {
+    await this.store.removePreviewImage(itemId, fileId);
   }
 }

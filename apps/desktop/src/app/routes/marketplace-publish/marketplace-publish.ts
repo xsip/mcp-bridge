@@ -3,20 +3,23 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { heroArrowUpTray, heroCheckCircle } from '@ng-icons/heroicons/outline';
+import { heroArrowUpTray, heroCheckCircle, heroPhoto, heroTrash } from '@ng-icons/heroicons/outline';
 import { MarketPlaceItemDto } from '@mcp-bridge/ui-client';
 import { MyReleasesStore } from '../../core/marketplace/my-releases.store';
+import { RichTextEditorComponent } from '../../components/rich-text-editor/rich-text-editor';
+import { PreviewImageComponent } from '../../components/preview-image/preview-image';
 
 /**
  * "Publish" route — create a new marketplace listing, then immediately
- * upload its first version (zip) before it's really "published" in any
- * useful sense. Further versions/edits happen from "My Releases".
+ * upload its first version (zip) and any preview images before it's really
+ * "published" in any useful sense. Further versions/edits happen from "My
+ * Releases".
  */
 @Component({
   selector: 'app-marketplace-publish',
   standalone: true,
-  imports: [FormsModule, TranslatePipe, NgIconComponent],
-  viewProviders: [provideIcons({ heroArrowUpTray, heroCheckCircle })],
+  imports: [FormsModule, TranslatePipe, NgIconComponent, RichTextEditorComponent, PreviewImageComponent],
+  viewProviders: [provideIcons({ heroArrowUpTray, heroCheckCircle, heroPhoto, heroTrash })],
   template: `
     <div class="mx-auto max-w-2xl animate-slide-up">
       <h1 class="text-xl font-semibold text-text-primary">{{ 'marketplacePublish.title' | translate }}</h1>
@@ -37,13 +40,7 @@ import { MyReleasesStore } from '../../core/marketplace/my-releases.store';
           </div>
           <div>
             <label for="description" class="mb-1 block text-xs font-medium text-text-secondary">{{ 'marketplacePublish.description' | translate }}</label>
-            <textarea
-              id="description"
-              name="description"
-              rows="3"
-              [(ngModel)]="description"
-              class="w-full rounded-lg border border-border-default bg-primary px-3 py-2 text-sm text-text-primary"
-            ></textarea>
+            <app-rich-text-editor [(ngModel)]="description" name="description" editorId="description" />
           </div>
           <div>
             <label for="visibility" class="mb-1 block text-xs font-medium text-text-secondary">{{ 'marketplacePublish.visibility' | translate }}</label>
@@ -73,7 +70,32 @@ import { MyReleasesStore } from '../../core/marketplace/my-releases.store';
             {{ 'marketplacePublish.itemCreated' | translate: { name: createdItem()!.name } }}
           </div>
 
-          <p class="mt-3 text-xs text-text-secondary">{{ 'marketplacePublish.uploadFirstVersion' | translate }}</p>
+          <!-- Preview images -->
+          <p class="mt-4 text-xs font-medium text-text-secondary">{{ 'marketplacePublish.previewImages' | translate }}</p>
+          <div class="mt-2 flex flex-wrap gap-2">
+            @for (image of createdItem()!.previewImages; track image.fileId) {
+              <div class="group relative h-20 w-20 overflow-hidden rounded-lg border border-border-default bg-primary">
+                <app-preview-image [itemId]="createdItem()!.id" [fileId]="image.fileId" [alt]="image.filename" />
+                <button
+                  type="button"
+                  (click)="removePreviewImage(image.fileId)"
+                  class="absolute inset-0 flex items-center justify-center bg-black/0 text-white opacity-0 transition-opacity group-hover:bg-black/50 group-hover:opacity-100"
+                  [attr.aria-label]="'marketplacePublish.removeImage' | translate"
+                >
+                  <ng-icon name="heroTrash" class="h-4 w-4" />
+                </button>
+              </div>
+            }
+            <label
+              class="flex h-20 w-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-border-default text-text-muted hover:border-accent hover:text-accent"
+            >
+              <ng-icon name="heroPhoto" class="h-5 w-5" />
+              <span class="text-[10px]">{{ 'marketplacePublish.addImage' | translate }}</span>
+              <input type="file" accept="image/*" class="hidden" (change)="onImageSelected($event)" [disabled]="uploadingImage()" />
+            </label>
+          </div>
+
+          <p class="mt-5 text-xs text-text-secondary">{{ 'marketplacePublish.uploadFirstVersion' | translate }}</p>
 
           <form class="mt-3 flex flex-wrap items-end gap-3" (ngSubmit)="submitVersion()">
             <div class="w-32">
@@ -137,6 +159,7 @@ export class MarketplacePublish {
 
   protected readonly creating = signal(false);
   protected readonly uploading = signal(false);
+  protected readonly uploadingImage = signal(false);
   protected readonly versionUploaded = signal(false);
   protected readonly createdItem = signal<MarketPlaceItemDto | null>(null);
   protected readonly selectedFile = signal<File | null>(null);
@@ -170,6 +193,26 @@ export class MarketplacePublish {
       this.createdItem.set(updated);
       this.versionUploaded.set(true);
     }
+  }
+
+  protected async onImageSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    const item = this.createdItem();
+    input.value = '';
+    if (!file || !item) return;
+
+    this.uploadingImage.set(true);
+    const updated = await this.myReleasesStore.addPreviewImage(item.id, file);
+    this.uploadingImage.set(false);
+    if (updated) this.createdItem.set(updated);
+  }
+
+  protected async removePreviewImage(fileId: string): Promise<void> {
+    const item = this.createdItem();
+    if (!item) return;
+    await this.myReleasesStore.removePreviewImage(item.id, fileId);
+    this.createdItem.set({ ...item, previewImages: item.previewImages.filter((image) => image.fileId !== fileId) });
   }
 
   protected goToMyReleases(): void {

@@ -12,6 +12,7 @@ import {
 import { extractErrorMessage } from '../http-error.util';
 import { AuthStore } from '../auth/auth.store';
 import { ToastService } from '../toast/toast.service';
+import { PreviewImageService } from './preview-image.service';
 
 interface MyReleasesState {
   items: MarketPlaceItemDto[];
@@ -40,7 +41,13 @@ const initialState: MyReleasesState = {
 export const MyReleasesStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-  withMethods((store, marketplaceService = inject(MarketplaceService), authStore = inject(AuthStore), toast = inject(ToastService)) => ({
+  withMethods((
+    store,
+    marketplaceService = inject(MarketplaceService),
+    authStore = inject(AuthStore),
+    toast = inject(ToastService),
+    previewImages = inject(PreviewImageService),
+  ) => ({
     load: rxMethod<void>(
       pipe(
         tap(() => patchState(store, { status: 'loading', error: null })),
@@ -123,6 +130,27 @@ export const MyReleasesStore = signalStore(
         const updated = await firstValueFrom(marketplaceService.removeMarketplaceItemVersion(id, version));
         patchState(store, { items: store.items().map((item) => (item.id === id ? updated : item)) });
         toast.success(`Version "${version}" removed`);
+      } catch (error) {
+        toast.error(extractErrorMessage(error));
+      }
+    },
+
+    async addPreviewImage(id: string, file: Blob): Promise<MarketPlaceItemDto | null> {
+      try {
+        const updated = await firstValueFrom(marketplaceService.addMarketplaceItemPreviewImage(id, file));
+        patchState(store, { items: store.items().map((item) => (item.id === id ? updated : item)) });
+        return updated;
+      } catch (error) {
+        toast.error(extractErrorMessage(error));
+        return null;
+      }
+    },
+
+    async removePreviewImage(id: string, fileId: string): Promise<void> {
+      try {
+        const updated = await firstValueFrom(marketplaceService.removeMarketplaceItemPreviewImage(id, fileId));
+        patchState(store, { items: store.items().map((item) => (item.id === id ? updated : item)) });
+        previewImages.invalidate(id, fileId);
       } catch (error) {
         toast.error(extractErrorMessage(error));
       }

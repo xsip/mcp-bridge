@@ -11,6 +11,9 @@
 
 export interface UpdateMarketPlaceItemDto { 
     name?: string;
+    /**
+     * Rich text (HTML) — rendered sanitized by the client
+     */
     description?: string;
 }
 

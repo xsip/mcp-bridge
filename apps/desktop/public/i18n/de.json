@@ -172,7 +172,10 @@
     "zipFile": "ZIP-Datei",
     "upload": "Hochladen",
     "versionUploaded": "Version erfolgreich hochgeladen.",
-    "viewInMyReleases": "In Meine Releases ansehen"
+    "viewInMyReleases": "In Meine Releases ansehen",
+    "previewImages": "Vorschaubilder",
+    "addImage": "Hinzufügen",
+    "removeImage": "Bild entfernen"
   },
   "marketplaceMyReleases": {
     "title": "Meine Releases",
@@ -193,7 +196,16 @@
     "confirmRemove": "\"{{name}}\" entfernen? Dabei werden alle Versionen gelöscht — das kann nicht rückgängig gemacht werden.",
     "confirmRemoveVersionTitle": "Version entfernen?",
     "confirmRemoveVersion": "Version \"{{version}}\" entfernen? Das kann nicht rückgängig gemacht werden.",
-    "empty": "Du hast noch nichts veröffentlicht."
+    "empty": "Du hast noch nichts veröffentlicht.",
+    "previewImages": "Vorschaubilder",
+    "addImage": "Hinzufügen",
+    "removeImage": "Bild entfernen"
+  },
+  "marketplaceDetail": {
+    "back": "Zurück zum Marktplatz",
+    "loading": "Wird geladen…",
+    "notFound": "Dieser Marktplatz-Eintrag konnte nicht gefunden werden — er ist möglicherweise privat oder wurde entfernt.",
+    "versions": "Versionen"
   },
   "marketplaceInstalled": {
     "title": "Auf diesem System",

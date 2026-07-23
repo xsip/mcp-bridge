@@ -87,10 +87,10 @@ export class CreateMarketPlaceItemDto {
   @MaxLength(100)
   name: string;
 
-  @ApiPropertyOptional({ example: 'Does cool things.' })
+  @ApiPropertyOptional({ example: 'Does cool things.', description: 'Rich text (HTML) — rendered sanitized by the client' })
   @IsOptional()
   @IsString()
-  @MaxLength(5000)
+  @MaxLength(20000)
   description?: string;
 
   @ApiPropertyOptional({ enum: MarketPlaceVisibility, default: MarketPlaceVisibility.Private })
@@ -107,10 +107,10 @@ export class UpdateMarketPlaceItemDto {
   @MaxLength(100)
   name?: string;
 
-  @ApiPropertyOptional({ example: 'Does cool things.' })
+  @ApiPropertyOptional({ example: 'Does cool things.', description: 'Rich text (HTML) — rendered sanitized by the client' })
   @IsOptional()
   @IsString()
-  @MaxLength(5000)
+  @MaxLength(20000)
   description?: string;
 }
 

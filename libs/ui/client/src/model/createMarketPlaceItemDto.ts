@@ -11,6 +11,9 @@
 
 export interface CreateMarketPlaceItemDto { 
     name: string;
+    /**
+     * Rich text (HTML) — rendered sanitized by the client
+     */
     description?: string;
     visibility?: CreateMarketPlaceItemDto.VisibilityEnum;
 }

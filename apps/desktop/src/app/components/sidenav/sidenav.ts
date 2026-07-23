@@ -1,5 +1,7 @@
-import {Component, inject, input} from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import {Component, computed, inject, input} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter, map, startWith } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
@@ -19,6 +21,9 @@ import { AuthStore } from '../../core/auth/auth.store';
 import { AgentBridgeService } from '../../core/agent/agent-bridge.service';
 import { MarketplaceFsService } from '../../core/marketplace/marketplace-fs.service';
 import {TooltipDirective} from "../../directives/tooltip.directive";
+
+/** Sub-routes that get their own sidenav entry — the top-level "Marketplace" link should NOT light up for these, only for the browse list and item detail pages. */
+const MARKETPLACE_SUB_ROUTES = ['/marketplace/publish', '/marketplace/my-releases', '/marketplace/installed'];
 
 /**
  * Left-hand navigation for the authenticated shell — "MCPS" (configure
@@ -80,10 +85,11 @@ import {TooltipDirective} from "../../directives/tooltip.directive";
         </a>
         <a
           routerLink="/marketplace"
-          [routerLinkActiveOptions]="{ exact: true }"
           uiTooltipPosition="right"
           [uiTooltip]="smallMode() ? ('sidenav.marketplace' | translate): ''"
-          routerLinkActive="bg-accent-subtle text-accent shadow-depth-sm"
+          [class.bg-accent-subtle]="isMarketplaceHomeActive()"
+          [class.text-accent]="isMarketplaceHomeActive()"
+          [class.shadow-depth-sm]="isMarketplaceHomeActive()"
           class="msg-enter flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-text-secondary hover:bg-accent-subtle hover:text-accent hover:translate-x-0.5"
         >
           <ng-icon name="heroBuildingStorefront" class="h-4 w-4"/>
@@ -208,4 +214,20 @@ export class SidenavComponent {
   protected readonly authStore = inject(AuthStore);
   protected readonly agentBridge = inject(AgentBridgeService);
   protected readonly marketplaceFs = inject(MarketplaceFsService);
+
+  private readonly router = inject(Router);
+  private readonly currentUrl = toSignal(
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      map((event) => event.urlAfterRedirects),
+      startWith(this.router.url),
+    ),
+    { initialValue: this.router.url },
+  );
+
+  /** True for `/marketplace` itself and `/marketplace/:id` (the detail page), false for the sub-routes that have their own nav entry. */
+  protected readonly isMarketplaceHomeActive = computed(() => {
+    const url = this.currentUrl();
+    return url.startsWith('/marketplace') && !MARKETPLACE_SUB_ROUTES.some((path) => url.startsWith(path));
+  });
 }

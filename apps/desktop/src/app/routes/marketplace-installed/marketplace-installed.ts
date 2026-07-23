@@ -1,14 +1,15 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { heroArrowPath, heroCheckCircle, heroFolder, heroTrash } from '@ng-icons/heroicons/outline';
+import { heroArrowPath, heroCheckCircle, heroFolder, heroPhoto, heroTrash } from '@ng-icons/heroicons/outline';
 import { firstValueFrom } from 'rxjs';
 import { MarketPlaceItemDto, MarketplaceService } from '@mcp-bridge/ui-client';
 import { DownloadedMcp, MarketplaceFsService } from '../../core/marketplace/marketplace-fs.service';
 import { MarketplaceStore } from '../../core/marketplace/marketplace.store';
 import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service';
+import { PreviewImageComponent } from '../../components/preview-image/preview-image';
 
 /**
  * "On this system" route — Electron-only, lists the marketplace items
@@ -20,8 +21,8 @@ import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service'
 @Component({
   selector: 'app-marketplace-installed',
   standalone: true,
-  imports: [TranslatePipe, NgIconComponent, DatePipe],
-  viewProviders: [provideIcons({ heroCheckCircle, heroFolder, heroTrash, heroArrowPath })],
+  imports: [TranslatePipe, NgIconComponent, DatePipe, RouterLink, PreviewImageComponent],
+  viewProviders: [provideIcons({ heroCheckCircle, heroFolder, heroTrash, heroArrowPath, heroPhoto })],
   template: `
     <div class="mx-auto max-w-3xl animate-slide-up">
       <h1 class="text-xl font-semibold text-text-primary">{{ 'marketplaceInstalled.title' | translate }}</h1>
@@ -29,54 +30,72 @@ import { ConfirmDialogService } from '../../core/confirm/confirm-dialog.service'
 
       <ul class="mt-6 space-y-3 stagger-children">
         @for (entry of installedList(); track entry.itemId) {
-          <li class="msg-enter rounded-2xl border border-border-default bg-primary-2 p-4">
-            <div class="flex items-start justify-between gap-3">
-              <div class="min-w-0">
-                <div class="flex items-center gap-2">
-                  <ng-icon name="heroCheckCircle" class="h-4 w-4 shrink-0 text-success-text" />
-                  <p class="truncate text-sm font-semibold text-text-primary">{{ entry.itemName }}</p>
-                  <span
-                    class="rounded-full bg-success-bg px-2 py-0.5 text-[10px] font-medium text-success-text"
-                    [class.bg-warn-bg]="updateAvailable(entry)"
-                    [class.text-warn-text]="updateAvailable(entry)"
-                  >
-                    {{ 'marketplace.installedBadge' | translate: { version: entry.version } }}
-                    @if (updateAvailable(entry)) {
-                      · {{ 'marketplace.updateAvailableBadge' | translate }}
-                    }
-                  </span>
-                </div>
-                <p class="mt-1 text-xs text-text-secondary">
-                  {{ 'marketplaceInstalled.publisher' | translate: { publisher: entry.publisher } }}
-                </p>
-                <p class="mt-1.5 flex items-center gap-1 truncate text-xs text-text-muted">
-                  <ng-icon name="heroFolder" class="h-3.5 w-3.5 shrink-0" />
-                  {{ entry.installPath }}
-                </p>
-                <p class="mt-1 text-[11px] text-text-muted">
-                  {{ 'marketplaceInstalled.downloadedAt' | translate: { date: (entry.downloadedAt | date: 'medium') } }}
-                </p>
+          <li
+            class="msg-enter hover-lift cursor-pointer rounded-2xl border border-border-default bg-primary-2 p-4"
+            role="link"
+            tabindex="0"
+            [routerLink]="['/marketplace', entry.itemId]"
+            (keydown.enter)="navigateToDetail(entry.itemId)"
+          >
+            <div class="flex items-start gap-4">
+              <div class="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-primary">
+                @if (firstPreviewImageFileId(entry); as fileId) {
+                  <app-preview-image [itemId]="entry.itemId" [fileId]="fileId" [alt]="entry.itemName" />
+                } @else {
+                  <div class="flex h-full w-full items-center justify-center text-text-disabled">
+                    <ng-icon name="heroPhoto" class="h-6 w-6" />
+                  </div>
+                }
               </div>
 
-              <div class="flex shrink-0 items-center gap-2">
-                @if (updateAvailable(entry)) {
+              <div class="flex min-w-0 flex-1 items-start justify-between gap-3">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2">
+                    <ng-icon name="heroCheckCircle" class="h-4 w-4 shrink-0 text-success-text" />
+                    <p class="truncate text-sm font-semibold text-text-primary">{{ entry.itemName }}</p>
+                    <span
+                      class="rounded-full bg-success-bg px-2 py-0.5 text-[10px] font-medium text-success-text"
+                      [class.bg-warn-bg]="updateAvailable(entry)"
+                      [class.text-warn-text]="updateAvailable(entry)"
+                    >
+                      {{ 'marketplace.installedBadge' | translate: { version: entry.version } }}
+                      @if (updateAvailable(entry)) {
+                        · {{ 'marketplace.updateAvailableBadge' | translate }}
+                      }
+                    </span>
+                  </div>
+                  <p class="mt-1 text-xs text-text-secondary">
+                    {{ 'marketplaceInstalled.publisher' | translate: { publisher: entry.publisher } }}
+                  </p>
+                  <p class="mt-1.5 flex items-center gap-1 truncate text-xs text-text-muted">
+                    <ng-icon name="heroFolder" class="h-3.5 w-3.5 shrink-0" />
+                    {{ entry.installPath }}
+                  </p>
+                  <p class="mt-1 text-[11px] text-text-muted">
+                    {{ 'marketplaceInstalled.downloadedAt' | translate: { date: (entry.downloadedAt | date: 'medium') } }}
+                  </p>
+                </div>
+
+                <div class="flex shrink-0 items-center gap-2">
+                  @if (updateAvailable(entry)) {
+                    <button
+                      type="button"
+                      (click)="$event.stopPropagation(); update(entry)"
+                      class="press-feedback inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-white shadow-depth-sm hover-lift"
+                    >
+                      <ng-icon name="heroArrowPath" class="h-3.5 w-3.5" />
+                      {{ 'marketplace.update' | translate }}
+                    </button>
+                  }
                   <button
                     type="button"
-                    (click)="update(entry)"
-                    class="press-feedback inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-white shadow-depth-sm hover-lift"
+                    (click)="$event.stopPropagation(); remove(entry)"
+                    class="press-feedback inline-flex items-center gap-1.5 rounded-lg border border-border-default px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-error-bg hover:text-error-text"
                   >
-                    <ng-icon name="heroArrowPath" class="h-3.5 w-3.5" />
-                    {{ 'marketplace.update' | translate }}
+                    <ng-icon name="heroTrash" class="h-3.5 w-3.5" />
+                    {{ 'marketplace.uninstall' | translate }}
                   </button>
-                }
-                <button
-                  type="button"
-                  (click)="remove(entry)"
-                  class="press-feedback inline-flex items-center gap-1.5 rounded-lg border border-border-default px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-error-bg hover:text-error-text"
-                >
-                  <ng-icon name="heroTrash" class="h-3.5 w-3.5" />
-                  {{ 'marketplace.uninstall' | translate }}
-                </button>
+                </div>
               </div>
             </div>
 
@@ -159,6 +178,15 @@ export class MarketplaceInstalled implements OnInit {
   protected updateAvailable(entry: DownloadedMcp): boolean {
     const latest = this.latestInfo().get(entry.itemId)?.latestVersion;
     return !!latest && latest !== entry.version;
+  }
+
+  /** The item's first preview image, if the backend fetch for it succeeded and it has one — see `latestInfo`. */
+  protected firstPreviewImageFileId(entry: DownloadedMcp): string | undefined {
+    return this.latestInfo().get(entry.itemId)?.previewImages[0]?.fileId;
+  }
+
+  protected navigateToDetail(itemId: string): void {
+    void this.router.navigate(['/marketplace', itemId]);
   }
 
   protected update(entry: DownloadedMcp): void {
