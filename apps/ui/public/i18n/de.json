@@ -91,6 +91,22 @@
       "point3Title": "Immer aktuell bleiben",
       "point3Description": "Installierte Einträge werden markiert, sobald eine neuere Version veröffentlicht wird, mit einem Update-Button direkt im Marktplatz."
     },
+    "manage": {
+      "title": "Alles über drei Tabs verwalten",
+      "subtitle": "Für das Veröffentlichen und Betreiben von MCPs gibt es eigene Dashboard-Tabs, direkt neben denen, die den Tunnel selbst verwalten.",
+      "myReleases": {
+        "title": "Meine Releases",
+        "description": "Name, Beschreibung und Sichtbarkeit bearbeiten; Vorschaubilder hinzufügen oder entfernen; neue Versionen hochladen oder alte löschen — alles an einem Ort pro Eintrag."
+      },
+      "onThisSystem": {
+        "title": "Auf diesem System",
+        "description": "Sieh jeden lokal installierten MCP, welche Version und wo er auf der Festplatte liegt — mit einem Update-Button, sobald eine neuere Version erscheint."
+      },
+      "settings": {
+        "title": "Einstellungen",
+        "description": "Lege fest, wohin der Desktop-Agent heruntergeladene MCPs entpackt — die eine Einstellung, die bestimmt, wo installierte Einträge auf der Festplatte liegen."
+      }
+    },
     "features": {
       "title": "Gebaut, um MCPs von überall zu betreiben",
       "subtitle": "Ein kleiner, fokussierter Funktionsumfang statt eines Allzweck-Tunnels.",

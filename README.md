@@ -61,6 +61,22 @@ A NestJS backend that owns:
 
 ![Marketplace](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/marketplace-dark.png)
 
+### My Releases
+
+- Manage your own published listings: edit name/description (rich text), change visibility, and add or remove preview images.
+- Upload new versions or delete old ones per listing, without leaving the page.
+- Deleting a listing removes every version with it — there's no partial state to clean up afterward.
+
+![My Releases](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/my-releases-dark.png)
+
+### On this system
+
+- Lists every marketplace item installed locally, with the version currently installed and where it landed on disk.
+- Flags an Update button the moment the backend has a newer version than the one installed.
+- Uninstall removes the unpacked files and forgets the local install record.
+
+![On this system](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/on-this-system-dark.png)
+
 ### API Keys
 
 - API keys authenticate external callers (ChatGPT, curl, ...) against the `/mcp/:mcpId` proxy endpoint — separate from the dashboard's own JWT session.
@@ -68,6 +84,13 @@ A NestJS backend that owns:
 - Keys can be individually revoked at any time, which immediately invalidates them.
 
 ![API Keys](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/api-keys-dark.png)
+
+### Settings
+
+- Electron-only — picks the directory the desktop agent unpacks downloaded marketplace items into.
+- The one setting that controls where everything installed via "On this system" actually lives on disk.
+
+![Settings](https://raw.githubusercontent.com/xsip/mcp-bridge/refs/heads/main/apps/ui/public/preview/settings-dark.png)
 
 ## `chrome-extension`
 

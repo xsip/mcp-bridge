@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ImageLightboxComponent } from '@mcp-bridge/ui-components';
 import { NavComponent } from './components/nav/nav';
 
 @Component({
-  imports: [RouterModule, NavComponent],
+  imports: [RouterModule, NavComponent, ImageLightboxComponent],
   selector: 'app-root',
   template: `
     <div class="min-h-screen bg-primary text-secondary">
@@ -12,6 +13,7 @@ import { NavComponent } from './components/nav/nav';
         <router-outlet></router-outlet>
       </main>
     </div>
+    <ui-image-lightbox />
   `,
   styles: ``,
 })

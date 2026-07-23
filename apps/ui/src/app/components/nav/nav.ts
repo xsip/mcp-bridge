@@ -33,7 +33,7 @@ const NAV_LINKS: MobileNavLink[] = [
   template: `
     <header class="sticky top-0 z-30 border-b border-border-default bg-primary/85 backdrop-blur">
       <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
-        <a routerLink="/" class="flex items-center gap-2">
+        <a (click)="scrollToTop($event)" class="flex items-center gap-2">
           <img src="logo-no-text.png" alt="MCP Bridge" class="h-12" />
           <span class="text-sm font-semibold tracking-tight text-text-primary">MCP Bridge</span>
         </a>
@@ -91,6 +91,11 @@ export class NavComponent {
 
   protected isActive(fragment: string): boolean {
     return this.activeSection.activeHref() === '#' + fragment;
+  }
+
+  protected scrollToTop(event: Event) {
+    event.preventDefault();
+    this.activeSection.scrollToSection('#');
   }
 
   protected onLinkClick(event: Event, fragment: string): void {

@@ -4,12 +4,17 @@
 @import "tailwindcss";
 
 /*
- * This file is shared by every app (apps/ui, apps/desktop, ...), so it can't
- * declare an app-relative `@source` glob. Each consuming app's own
- * postcss.config.json sets `base` to its own `src` directory instead —
- * that's what makes Tailwind's class-candidate scanning find that app's
- * component files.
+ * This file is shared by every app (apps/ui, apps/desktop, ...). Each
+ * consuming app's own postcss.config.json sets `base` to its own `src`
+ * directory, so Tailwind's automatic class-candidate scanning finds that
+ * app's own component files — but never the shared `libs/ui/*` component
+ * libraries every app also renders. `@source` paths are resolved relative to
+ * *this* file rather than each app's `base`, so a single line here covers
+ * every consumer: without it, any Tailwind class used only inside a shared
+ * component (never duplicated in an app's own source) silently produces no
+ * CSS at all in that app's build.
  */
+@source "../components/src";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

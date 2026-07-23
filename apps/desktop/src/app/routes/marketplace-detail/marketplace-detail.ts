@@ -6,7 +6,7 @@ import { heroArrowLeft, heroChevronDown, heroChevronRight, heroPhoto } from '@ng
 import { firstValueFrom } from 'rxjs';
 import { MarketPlaceItemDto, MarketplaceService } from '@mcp-bridge/ui-client';
 import { PreviewImageService } from '../../core/marketplace/preview-image.service';
-import { ImageLightboxService } from '../../core/image-lightbox/image-lightbox.service';
+import { ImageLightboxService } from '@mcp-bridge/ui-components';
 import { PreviewImageComponent } from '../../components/preview-image/preview-image';
 import { MarketplaceItemActionsComponent } from '../../components/marketplace-item-actions/marketplace-item-actions';
 import { FileManifestTreeComponent } from '../../components/file-manifest-tree/file-manifest-tree';

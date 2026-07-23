@@ -91,6 +91,22 @@
       "point3Title": "Stay up to date",
       "point3Description": "Installed items are flagged the moment a newer version is published, with an Update button right there in the marketplace."
     },
+    "manage": {
+      "title": "Manage everything from three tabs",
+      "subtitle": "Publishing and running MCPs comes with its own dashboard tabs, right next to the ones that manage the tunnel itself.",
+      "myReleases": {
+        "title": "My Releases",
+        "description": "Edit name, description, and visibility; add or remove preview images; upload new versions or delete old ones — all from one place per listing."
+      },
+      "onThisSystem": {
+        "title": "On this system",
+        "description": "See every MCP you've installed locally, which version, and where it landed on disk — with an Update button the moment a newer version ships."
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Pick where the desktop agent unpacks downloaded MCPs — the one setting that controls where installed listings live on disk."
+      }
+    },
     "features": {
       "title": "Built for running MCPs from anywhere",
       "subtitle": "A small, focused feature set instead of a general-purpose tunnel.",

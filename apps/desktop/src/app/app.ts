@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ImageLightboxComponent } from '@mcp-bridge/ui-components';
 import { TitlebarComponent } from './components/titlebar/titlebar';
 import { ToastContainerComponent } from './components/toast/toast-container';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog';
-import { ImageLightboxComponent } from './components/image-lightbox/image-lightbox';
 
 @Component({
   imports: [RouterOutlet, TitlebarComponent, ToastContainerComponent, ConfirmDialogComponent, ImageLightboxComponent],
@@ -17,7 +17,7 @@ import { ImageLightboxComponent } from './components/image-lightbox/image-lightb
     </div>
     <app-toast-container />
     <app-confirm-dialog />
-    <app-image-lightbox />
+    <ui-image-lightbox [topOffsetPx]="36" />
   `,
   styles: ``,
 })

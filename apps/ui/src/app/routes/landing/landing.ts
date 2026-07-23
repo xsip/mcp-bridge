@@ -13,6 +13,7 @@ import {
   heroShieldCheck,
   heroSignal,
 } from '@ng-icons/heroicons/outline';
+import { ImageLightboxService } from '@mcp-bridge/ui-components';
 import {ActiveSectionService} from '../../services/active-section.service';
 import {AnimateOnScrollDirective} from '../../directives/animate-on-scroll.directive';
 
@@ -101,16 +102,18 @@ const FAQ: FaqItem[] = [
         </h1>
 
         <img
-          class="dark:hidden mt-5 block mb-5 rounded-xl"
+          class="dark:hidden mt-5 block mb-5 cursor-pointer rounded-xl hover-lift"
           [src]="'preview/logs-light.png'"
           role="img"
           alt="logs  light"
+          (click)="openLightbox('preview/logs-light.png', 'logs light')"
         />
         <img
-          class="dark:block mt-5 hidden mb-5 rounded-xl"
+          class="dark:block mt-5 hidden mb-5 cursor-pointer rounded-xl hover-lift"
           [src]="'preview/logs-dark.png'"
           role="img"
           alt="logs dark"
+          (click)="openLightbox('preview/logs-dark.png', 'logs dark')"
         />
 
         <p class="mt-6 max-w-2xl text-lg text-text-secondary animate-slide-up">
@@ -245,8 +248,20 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
         </div>
 
         <div uiAnimateOnScroll="left" [aosDelay]="80">
-          <img class="dark:hidden block rounded-xl shadow-depth-lg" [src]="'preview/chrome-ext-light.png'" role="img" alt="MCP Bridge Chrome extension popup, light" />
-          <img class="hidden dark:block rounded-xl shadow-depth-lg" [src]="'preview/chrome-ext-dark.png'" role="img" alt="MCP Bridge Chrome extension popup, dark" />
+          <img
+            class="dark:hidden block cursor-pointer rounded-xl shadow-depth-lg hover-lift"
+            [src]="'preview/chrome-ext-light.png'"
+            role="img"
+            alt="MCP Bridge Chrome extension popup, light"
+            (click)="openLightbox('preview/chrome-ext-light.png', 'MCP Bridge Chrome extension popup, light')"
+          />
+          <img
+            class="hidden dark:block cursor-pointer rounded-xl shadow-depth-lg hover-lift"
+            [src]="'preview/chrome-ext-dark.png'"
+            role="img"
+            alt="MCP Bridge Chrome extension popup, dark"
+            (click)="openLightbox('preview/chrome-ext-dark.png', 'MCP Bridge Chrome extension popup, dark')"
+          />
         </div>
       </div>
     </section>
@@ -255,8 +270,20 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
     <section id="marketplace" class="border-t border-border-subtle bg-primary px-6 py-20">
       <div class="mx-auto grid max-w-6xl gap-12 md:grid-cols-2 md:items-center">
         <div uiAnimateOnScroll="right" class="order-2 md:order-1">
-          <img class="dark:hidden block rounded-xl shadow-depth-lg" [src]="'preview/marketplace-light.png'" role="img" alt="MCP Bridge marketplace, light" />
-          <img class="hidden dark:block rounded-xl shadow-depth-lg" [src]="'preview/marketplace-dark.png'" role="img" alt="MCP Bridge marketplace, dark" />
+          <img
+            class="dark:hidden block cursor-pointer rounded-xl shadow-depth-lg hover-lift"
+            [src]="'preview/marketplace-light.png'"
+            role="img"
+            alt="MCP Bridge marketplace, light"
+            (click)="openLightbox('preview/marketplace-light.png', 'MCP Bridge marketplace, light')"
+          />
+          <img
+            class="hidden dark:block cursor-pointer rounded-xl shadow-depth-lg hover-lift"
+            [src]="'preview/marketplace-dark.png'"
+            role="img"
+            alt="MCP Bridge marketplace, dark"
+            (click)="openLightbox('preview/marketplace-dark.png', 'MCP Bridge marketplace, dark')"
+          />
         </div>
 
         <div uiAnimateOnScroll="left" [aosDelay]="80" class="order-1 md:order-2">
@@ -281,22 +308,93 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
       </div>
     </section>
 
+    <!-- Manage (My Releases / On this system / Settings) -->
+    <section id="manage" class="border-t border-border-subtle bg-primary-2 px-6 py-20">
+      <div class="mx-auto max-w-6xl">
+        <div uiAnimateOnScroll="up" class="mx-auto max-w-2xl text-center">
+          <h2 class="text-3xl font-semibold tracking-tight text-text-primary">{{ 'landing.manage.title' | translate }}</h2>
+          <p class="mt-3 text-text-secondary">{{ 'landing.manage.subtitle' | translate }}</p>
+        </div>
+
+        <div class="mt-14 grid gap-8 md:grid-cols-3">
+          <div uiAnimateOnScroll="up" class="rounded-2xl border border-border-default bg-primary p-4 shadow-depth-sm hover-lift">
+            <img
+              class="dark:hidden block cursor-pointer rounded-xl"
+              [src]="'preview/my-releases-light.png'"
+              role="img"
+              alt="My Releases, light"
+              (click)="openLightbox('preview/my-releases-light.png', 'My Releases, light')"
+            />
+            <img
+              class="hidden dark:block cursor-pointer rounded-xl"
+              [src]="'preview/my-releases-dark.png'"
+              role="img"
+              alt="My Releases, dark"
+              (click)="openLightbox('preview/my-releases-dark.png', 'My Releases, dark')"
+            />
+            <h3 class="mt-4 text-sm font-semibold text-text-primary">{{ 'landing.manage.myReleases.title' | translate }}</h3>
+            <p class="mt-2 text-sm text-text-secondary">{{ 'landing.manage.myReleases.description' | translate }}</p>
+          </div>
+
+          <div uiAnimateOnScroll="up" [aosDelay]="80" class="rounded-2xl border border-border-default bg-primary p-4 shadow-depth-sm hover-lift">
+            <img
+              class="dark:hidden block cursor-pointer rounded-xl"
+              [src]="'preview/on-this-system-light.png'"
+              role="img"
+              alt="On this system, light"
+              (click)="openLightbox('preview/on-this-system-light.png', 'On this system, light')"
+            />
+            <img
+              class="hidden dark:block cursor-pointer rounded-xl"
+              [src]="'preview/on-this-system-dark.png'"
+              role="img"
+              alt="On this system, dark"
+              (click)="openLightbox('preview/on-this-system-dark.png', 'On this system, dark')"
+            />
+            <h3 class="mt-4 text-sm font-semibold text-text-primary">{{ 'landing.manage.onThisSystem.title' | translate }}</h3>
+            <p class="mt-2 text-sm text-text-secondary">{{ 'landing.manage.onThisSystem.description' | translate }}</p>
+          </div>
+
+          <div uiAnimateOnScroll="up" [aosDelay]="160" class="rounded-2xl border border-border-default bg-primary p-4 shadow-depth-sm hover-lift">
+            <img
+              class="dark:hidden block cursor-pointer rounded-xl"
+              [src]="'preview/settings-light.png'"
+              role="img"
+              alt="Settings, light"
+              (click)="openLightbox('preview/settings-light.png', 'Settings, light')"
+            />
+            <img
+              class="hidden dark:block cursor-pointer rounded-xl"
+              [src]="'preview/settings-dark.png'"
+              role="img"
+              alt="Settings, dark"
+              (click)="openLightbox('preview/settings-dark.png', 'Settings, dark')"
+            />
+            <h3 class="mt-4 text-sm font-semibold text-text-primary">{{ 'landing.manage.settings.title' | translate }}</h3>
+            <p class="mt-2 text-sm text-text-secondary">{{ 'landing.manage.settings.description' | translate }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Features -->
     <section id="features" class="border-t border-border-subtle bg-primary px-6 py-20">
       <div class="mx-auto max-w-6xl">
         <div uiAnimateOnScroll="up" class="mx-auto max-w-2xl text-center">
           <h2 class="text-3xl font-semibold tracking-tight text-text-primary">{{ 'landing.features.title' | translate }}</h2>
           <img
-            class="dark:hidden mt-5 block mb-5 rounded-xl"
+            class="dark:hidden mt-5 block mb-5 cursor-pointer rounded-xl hover-lift"
             [src]="'preview/mcp-list-light.png'"
             role="img"
             alt="mcp list light"
+            (click)="openLightbox('preview/mcp-list-light.png', 'mcp list light')"
           />
           <img
-            class="dark:block mt-5 hidden mb-5 rounded-xl"
+            class="dark:block mt-5 hidden mb-5 cursor-pointer rounded-xl hover-lift"
             [src]="'preview/mcp-list-dark.png'"
             role="img"
             alt="mcp list dark"
+            (click)="openLightbox('preview/mcp-list-dark.png', 'mcp list dark')"
           />
           <p class="mt-3 text-text-secondary">{{ 'landing.features.subtitle' | translate }}</p>
         </div>
@@ -373,6 +471,7 @@ GET https:&#47;&#47;bridge.example.com&#47;mcp&#47;alice-notes&#47;tools&#47;lis
 })
 export class Landing implements AfterViewInit {
   private readonly activeSection = inject(ActiveSectionService);
+  private readonly lightbox = inject(ImageLightboxService);
 
   protected readonly steps = STEPS;
   protected readonly features = FEATURES;
@@ -390,5 +489,10 @@ export class Landing implements AfterViewInit {
   protected onSectionLinkClick(event: Event, fragment: string): void {
     event.preventDefault();
     this.activeSection.scrollToSection('#' + fragment);
+  }
+
+  /** Opens a screenshot big — every preview image on this page is clickable. */
+  protected openLightbox(url: string, alt: string): void {
+    this.lightbox.open({ url, alt });
   }
 }

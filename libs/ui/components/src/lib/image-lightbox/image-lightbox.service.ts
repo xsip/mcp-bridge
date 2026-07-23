@@ -7,7 +7,7 @@ export interface LightboxImage {
 
 /**
  * Global "open this image big" overlay state, rendered by
- * `ImageLightboxComponent` (mounted once in `app.ts`) — same
+ * `ImageLightboxComponent` (mounted once per app's root component) — same
  * signal-holds-the-request shape as `ConfirmDialogService`.
  */
 @Injectable({ providedIn: 'root' })

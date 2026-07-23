@@ -8,7 +8,7 @@ import { MarketPlaceItemDto } from '@mcp-bridge/ui-client';
 import { MarketplaceStore } from '../../core/marketplace/marketplace.store';
 import { MarketplaceFsService } from '../../core/marketplace/marketplace-fs.service';
 import { PreviewImageService } from '../../core/marketplace/preview-image.service';
-import { ImageLightboxService } from '../../core/image-lightbox/image-lightbox.service';
+import { ImageLightboxService } from '@mcp-bridge/ui-components';
 import { PreviewImageComponent } from '../../components/preview-image/preview-image';
 import { MarketplaceItemActionsComponent } from '../../components/marketplace-item-actions/marketplace-item-actions';
 

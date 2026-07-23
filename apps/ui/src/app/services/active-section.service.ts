@@ -36,7 +36,7 @@ export class ActiveSectionService implements OnDestroy {
       window.addEventListener('scroll', this.onScroll, { passive: true });
       window.addEventListener('resize', this.onScroll, { passive: true });
     }
-    this.update();
+    this.update(true);
   }
 
   /** Smoothly scrolls to `href` (e.g. `"#features"`), offsetting for the sticky nav. */
@@ -59,14 +59,17 @@ export class ActiveSectionService implements OnDestroy {
     });
   }
 
-  private update(): void {
+  private update(initialNavigation = false): void {
     const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    const atTop = window.innerHeight + window.scrollY < this.sections[0].el.offsetTop;
 
     let current: string | null = null;
     if (atBottom) {
       // The last section may be shorter than the activation band and never cross it
       // (e.g. a short footer) — landing at the bottom of the page always counts as "there".
       current = this.sections[this.sections.length - 1].href;
+    } else if(atTop && !initialNavigation) {
+      current = '#';
     } else {
       for (const { href, el } of this.sections) {
         if (el.getBoundingClientRect().top <= ACTIVATION_LINE_PX) {
@@ -77,7 +80,7 @@ export class ActiveSectionService implements OnDestroy {
 
     if (current !== this.activeHref()) {
       this.activeHref.set(current);
-      if (current) history.replaceState(null, '', current);
+      history.replaceState(null, '', current);
     }
   }
 
