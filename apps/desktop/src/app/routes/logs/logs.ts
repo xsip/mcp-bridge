@@ -68,7 +68,7 @@ import { CheckboxComponent } from '@mcp-bridge/ui-components';
         </div>
       </div>
 
-      <div class="min-h-0 flex-1 overflow-y-auto">
+      <div class="min-h-0 flex-1 overflow-y-auto pb-3">
       <div class="mx-auto max-w-5xl">
 
       @if (logsStore.error(); as error) {
