@@ -9,13 +9,34 @@
  */
 
 
-export interface AddCustomMcpDto { 
+export type AddCustomMcpDtoTransportEnum = 'http' | 'stdio';
+
+export interface AddCustomMcpDto {
     name: string;
-    port: number;
     /**
-     * Optional sub-path on the local server
+     * How the agent reaches this MCP — defaults to \"http\"
+     */
+    transport?: AddCustomMcpDtoTransportEnum;
+    /**
+     * Required when transport is \"http\"
+     */
+    port?: number;
+    /**
+     * Optional sub-path on the local server (transport: http)
      */
     subPath?: string;
+    /**
+     * Required when transport is \"stdio\" — executable to spawn
+     */
+    command?: string;
+    /**
+     * Arguments passed to the spawned process (transport: stdio)
+     */
+    args?: Array<string>;
+    /**
+     * Extra environment variables for the spawned process (transport: stdio)
+     */
+    env?: object;
     headers?: object;
 }
 

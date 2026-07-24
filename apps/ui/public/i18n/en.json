@@ -133,6 +133,10 @@
       "openArchitecture": {
         "title": "Open, self-hostable architecture",
         "description": "A documented WebSocket protocol and a clean backend you can run and extend yourself."
+      },
+      "stdioSupport": {
+        "title": "stdio MCPs, not just HTTP",
+        "description": "Tunnel local command-line MCP servers too — the desktop agent spawns and manages the process for you, no local port needed."
       }
     },
     "faq": {

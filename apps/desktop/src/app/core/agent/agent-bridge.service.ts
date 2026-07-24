@@ -3,12 +3,21 @@ import { resolveBackendUrl } from './backend-url';
 
 export type AgentStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
 export type BridgeSource = 'electron' | 'extension' | null;
+export type StdioMcpStatus = 'stopped' | 'starting' | 'running' | 'error';
 
 export interface BridgeMcp {
   name: string;
-  port: number;
-  /** Optional local sub-path, e.g. "/api/mcp" reaches http://localhost:<port>/api/mcp */
+  transport: 'http' | 'stdio';
+  /** transport: "http" */
+  port?: number;
+  /** Optional local sub-path, e.g. "/api/mcp" reaches http://localhost:<port>/api/mcp (transport: "http") */
   subPath?: string;
+  /** transport: "stdio" — executable to spawn */
+  command?: string;
+  /** transport: "stdio" */
+  args?: string[];
+  /** transport: "stdio" */
+  env?: Record<string, string>;
 }
 
 interface McpLoopApi {
@@ -16,6 +25,11 @@ interface McpLoopApi {
   stopAgent(): void;
   setMcps(mcps: BridgeMcp[]): void;
   onStatus(callback: (status: AgentStatus) => void): () => void;
+  getStdioStatuses(): Promise<Record<string, StdioMcpStatus>>;
+  startStdioMcp(name: string): void;
+  stopStdioMcp(name: string): void;
+  restartStdioMcp(name: string): void;
+  onStdioStatusChange(callback: (payload: { name: string; status: StdioMcpStatus }) => void): () => void;
 }
 
 declare global {
@@ -82,8 +96,11 @@ export class AgentBridgeService implements OnDestroy {
   /** True once a tunnel transport (Electron or the extension) is actually available to drive. */
   readonly bridgeAvailable = signal(this.isElectron);
   readonly source = signal<BridgeSource>(this.isElectron ? 'electron' : null);
+  /** name -> status, for every configured stdio MCP. Electron-only — stays empty under the extension bridge. */
+  readonly stdioStatuses = signal<Record<string, StdioMcpStatus>>({});
 
   private readonly unsubscribeStatus?: () => void;
+  private readonly unsubscribeStdioStatus?: () => void;
   private readonly backendUrl = resolveBackendUrl();
   private extensionDetected = false;
   private pingAttempts = 0;
@@ -98,11 +115,36 @@ export class AgentBridgeService implements OnDestroy {
   constructor() {
     if (this.isElectron) {
       this.unsubscribeStatus = window.mcpLoop?.onStatus((status) => this.status.set(status));
+      this.unsubscribeStdioStatus = window.mcpLoop?.onStdioStatusChange(({ name, status }) => {
+        this.stdioStatuses.update((statuses) => ({ ...statuses, [name]: status }));
+      });
+      this.refreshStdioStatuses();
       return;
     }
 
     window.addEventListener('message', this.onWindowMessage);
     this.pingExtension();
+  }
+
+  /** Re-fetches the full name -> status map — call after `setMcps` adds/removes a stdio MCP. */
+  refreshStdioStatuses(): void {
+    if (!this.isElectron) return;
+    window.mcpLoop
+      ?.getStdioStatuses()
+      .then((statuses) => this.stdioStatuses.set(statuses))
+      .catch(() => undefined);
+  }
+
+  startStdioMcp(name: string): void {
+    if (this.isElectron) window.mcpLoop?.startStdioMcp(name);
+  }
+
+  stopStdioMcp(name: string): void {
+    if (this.isElectron) window.mcpLoop?.stopStdioMcp(name);
+  }
+
+  restartStdioMcp(name: string): void {
+    if (this.isElectron) window.mcpLoop?.restartStdioMcp(name);
   }
 
   start(token: string): void {
@@ -137,6 +179,7 @@ export class AgentBridgeService implements OnDestroy {
     this.pendingMcps = mcps;
     if (this.isElectron) {
       window.mcpLoop?.setMcps(mcps);
+      this.refreshStdioStatuses();
     } else if (this.extensionDetected && this.pendingToken) {
       this.postToExtension({ source: APP_MESSAGE_SOURCE, type: 'set-mcps', mcps });
     }
@@ -188,6 +231,7 @@ export class AgentBridgeService implements OnDestroy {
 
   ngOnDestroy(): void {
     this.unsubscribeStatus?.();
+    this.unsubscribeStdioStatus?.();
     window.removeEventListener('message', this.onWindowMessage);
     if (this.pingTimer) clearTimeout(this.pingTimer);
   }

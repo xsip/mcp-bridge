@@ -1608,28 +1608,57 @@
             "example": "notes",
             "description": "Unique (per user) name — the public id becomes \"<username>-<name>\""
           },
+          "transport": {
+            "type": "string",
+            "enum": [
+              "http",
+              "stdio"
+            ],
+            "example": "http",
+            "description": "How the agent reaches this MCP"
+          },
           "port": {
             "type": "number",
             "example": 3333,
-            "description": "Port the local MCP server listens on (on the user's machine)"
+            "description": "Port the local MCP server listens on (transport: http)"
           },
           "subPath": {
             "type": "string",
             "example": "/api/mcp",
-            "description": "Optional sub-path on the local server, e.g. \"/api/mcp\" reaches http://localhost:<port>/api/mcp"
+            "description": "Optional sub-path on the local server, e.g. \"/api/mcp\" reaches http://localhost:<port>/api/mcp (transport: http)"
+          },
+          "command": {
+            "type": "string",
+            "example": "npx",
+            "description": "Executable to spawn (transport: stdio)"
+          },
+          "args": {
+            "example": [
+              "-y",
+              "@some/mcp-server"
+            ],
+            "description": "Arguments passed to the spawned process (transport: stdio)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "env": {
+            "type": "object",
+            "description": "Extra environment variables for the spawned process (transport: stdio)"
           },
           "active": {
             "type": "boolean"
           },
           "headers": {
             "type": "object",
-            "description": "Custom HTTP headers the agent should attach when calling the local MCP server"
+            "description": "Custom HTTP headers the agent should attach when calling the local MCP server (transport: http)"
           }
         },
         "required": [
           "id",
           "name",
-          "port",
+          "transport",
           "active"
         ]
       },
@@ -1640,22 +1669,51 @@
             "type": "string",
             "example": "notes"
           },
+          "transport": {
+            "type": "string",
+            "enum": [
+              "http",
+              "stdio"
+            ],
+            "example": "http",
+            "description": "How the agent reaches this MCP — defaults to \"http\""
+          },
           "port": {
             "type": "number",
-            "example": 3333
+            "example": 3333,
+            "description": "Required when transport is \"http\""
           },
           "subPath": {
             "type": "string",
             "example": "/api/mcp",
-            "description": "Optional sub-path on the local server"
+            "description": "Optional sub-path on the local server (transport: http)"
+          },
+          "command": {
+            "type": "string",
+            "example": "npx",
+            "description": "Required when transport is \"stdio\" — executable to spawn"
+          },
+          "args": {
+            "example": [
+              "-y",
+              "@some/mcp-server"
+            ],
+            "description": "Arguments passed to the spawned process (transport: stdio)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "env": {
+            "type": "object",
+            "description": "Extra environment variables for the spawned process (transport: stdio)"
           },
           "headers": {
             "type": "object"
           }
         },
         "required": [
-          "name",
-          "port"
+          "name"
         ]
       },
       "UpdateCustomMcpDto": {
@@ -1669,6 +1727,23 @@
             "type": "string",
             "example": "/api/mcp",
             "description": "Optional sub-path on the local server — send \"\" to clear it"
+          },
+          "command": {
+            "type": "string",
+            "example": "npx"
+          },
+          "args": {
+            "example": [
+              "-y",
+              "@some/mcp-server"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "env": {
+            "type": "object"
           },
           "active": {
             "type": "boolean"

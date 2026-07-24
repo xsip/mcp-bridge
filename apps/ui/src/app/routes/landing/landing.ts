@@ -6,6 +6,7 @@ import {
   heroBolt,
   heroChatBubbleLeftRight,
   heroCommandLine,
+  heroCpuChip,
   heroLockClosed,
   heroPuzzlePiece,
   heroRocketLaunch,
@@ -51,6 +52,7 @@ const FEATURES: Feature[] = [
   { icon: 'heroBolt', titleKey: 'landing.features.realtime.title', descriptionKey: 'landing.features.realtime.description' },
   { icon: 'heroPuzzlePiece', titleKey: 'landing.features.anyClient.title', descriptionKey: 'landing.features.anyClient.description' },
   { icon: 'heroCommandLine', titleKey: 'landing.features.openArchitecture.title', descriptionKey: 'landing.features.openArchitecture.description' },
+  { icon: 'heroCpuChip', titleKey: 'landing.features.stdioSupport.title', descriptionKey: 'landing.features.stdioSupport.description' },
 ];
 
 const FAQ: FaqItem[] = [
@@ -77,6 +79,7 @@ const FAQ: FaqItem[] = [
       heroBolt,
       heroChatBubbleLeftRight,
       heroCommandLine,
+      heroCpuChip,
       heroLockClosed,
       heroPuzzlePiece,
       heroRocketLaunch,

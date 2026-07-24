@@ -107,7 +107,17 @@ export const McpsStore = signalStore(
       const agentBridge = inject(AgentBridgeService);
       effect(() => {
         const activeMcps = store.items().filter((mcp) => mcp.active);
-        agentBridge.setMcps(activeMcps.map((mcp) => ({ name: mcp.name, port: mcp.port, subPath: mcp.subPath })));
+        agentBridge.setMcps(
+          activeMcps.map((mcp) => ({
+            name: mcp.name,
+            transport: mcp.transport,
+            port: mcp.port,
+            subPath: mcp.subPath,
+            command: mcp.command,
+            args: mcp.args,
+            env: mcp.env as Record<string, string> | undefined,
+          })),
+        );
       });
     },
   }),

@@ -42,7 +42,18 @@ export class McpLookupService {
 
     return {
       ownerId: user.username,
-      mcp: { id: mcp.id, name: mcp.name, port: mcp.port, subPath: mcp.subPath, active: mcp.active, headers: mcp.headers },
+      mcp: {
+        id: mcp.id,
+        name: mcp.name,
+        transport: mcp.transport ?? 'http',
+        port: mcp.port,
+        subPath: mcp.subPath,
+        command: mcp.command,
+        args: mcp.args,
+        env: mcp.env,
+        active: mcp.active,
+        headers: mcp.headers,
+      },
     };
   }
 }

@@ -9,23 +9,41 @@
  */
 
 
-export interface CustomMcpDto { 
+export type CustomMcpDtoTransportEnum = 'http' | 'stdio';
+
+export interface CustomMcpDto {
     id: string;
     /**
      * Unique (per user) name — the public id becomes \"<username>-<name>\"
      */
     name: string;
     /**
-     * Port the local MCP server listens on (on the user\'s machine)
+     * How the agent reaches this MCP
      */
-    port: number;
+    transport: CustomMcpDtoTransportEnum;
     /**
-     * Optional sub-path on the local server, e.g. \"/api/mcp\" reaches http://localhost:<port>/api/mcp
+     * Port the local MCP server listens on (transport: http)
+     */
+    port?: number;
+    /**
+     * Optional sub-path on the local server, e.g. \"/api/mcp\" reaches http://localhost:<port>/api/mcp (transport: http)
      */
     subPath?: string;
+    /**
+     * Executable to spawn (transport: stdio)
+     */
+    command?: string;
+    /**
+     * Arguments passed to the spawned process (transport: stdio)
+     */
+    args?: Array<string>;
+    /**
+     * Extra environment variables for the spawned process (transport: stdio)
+     */
+    env?: object;
     active: boolean;
     /**
-     * Custom HTTP headers the agent should attach when calling the local MCP server
+     * Custom HTTP headers the agent should attach when calling the local MCP server (transport: http)
      */
     headers?: object;
 }

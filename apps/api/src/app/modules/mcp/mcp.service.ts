@@ -30,8 +30,12 @@ export class McpService {
       id: randomUUID(),
       ownerId: username,
       name: dto.name,
+      transport: dto.transport ?? 'http',
       port: dto.port,
       subPath: dto.subPath,
+      command: dto.command,
+      args: dto.args,
+      env: dto.env,
       active: true,
       headers: dto.headers,
     });
@@ -50,6 +54,15 @@ export class McpService {
     }
     if (dto.subPath !== undefined) {
       mcp.subPath = normalizeSubPath(dto.subPath);
+    }
+    if (dto.command !== undefined) {
+      mcp.command = dto.command;
+    }
+    if (dto.args !== undefined) {
+      mcp.args = dto.args;
+    }
+    if (dto.env !== undefined) {
+      mcp.env = dto.env;
     }
     if (dto.active !== undefined) {
       mcp.active = dto.active;
@@ -74,8 +87,12 @@ function toDto(mcp: Mcp): CustomMcpDto {
   return {
     id: mcp.id,
     name: mcp.name,
+    transport: mcp.transport ?? 'http',
     port: mcp.port,
     subPath: mcp.subPath,
+    command: mcp.command,
+    args: mcp.args,
+    env: mcp.env,
     active: mcp.active,
     headers: mcp.headers,
   };

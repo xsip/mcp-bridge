@@ -11,9 +11,14 @@ const serve = args.some((val) => val === '--serve');
 // The actual WS tunnel to the backend — see agent.js. Started/stopped and
 // kept in sync with the user's configured MCPs entirely via IPC from the
 // Angular renderer (AgentBridgeService), never driven from here directly.
-const agent = new AgentTunnel((status) => {
-  mainWindow?.webContents.send('agent:status', status);
-});
+const agent = new AgentTunnel(
+  (status) => {
+    mainWindow?.webContents.send('agent:status', status);
+  },
+  (name, status) => {
+    mainWindow?.webContents.send('agent:stdio-status-change', { name, status });
+  },
+);
 
 // Handles the marketplace download directory setting, and downloading +
 // unzipping a version's zip — see marketplace-downloader.js.
@@ -66,6 +71,11 @@ async function createWindow() {
 ipcMain.on('agent:start', (_event, token) => agent.start(token));
 ipcMain.on('agent:stop', () => agent.stop());
 ipcMain.on('agent:set-mcps', (_event, mcps) => agent.setMcps(mcps));
+
+ipcMain.handle('agent:stdio-statuses', () => agent.getStdioStatuses());
+ipcMain.on('agent:stdio-start', (_event, name) => agent.startStdio(name));
+ipcMain.on('agent:stdio-stop', (_event, name) => agent.stopStdio(name));
+ipcMain.on('agent:stdio-restart', (_event, name) => agent.restartStdio(name));
 
 ipcMain.on('window:minimize', () => mainWindow?.minimize());
 ipcMain.on('window:maximize-toggle', () => {

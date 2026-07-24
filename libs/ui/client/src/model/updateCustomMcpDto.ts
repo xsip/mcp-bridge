@@ -9,12 +9,15 @@
  */
 
 
-export interface UpdateCustomMcpDto { 
+export interface UpdateCustomMcpDto {
     port?: number;
     /**
      * Optional sub-path on the local server — send \"\" to clear it
      */
     subPath?: string;
+    command?: string;
+    args?: Array<string>;
+    env?: object;
     active?: boolean;
     headers?: object;
 }

@@ -14,6 +14,15 @@ contextBridge.exposeInMainWorld('mcpLoop', {
     ipcRenderer.on('agent:status', listener);
     return () => ipcRenderer.removeListener('agent:status', listener);
   },
+  getStdioStatuses: () => ipcRenderer.invoke('agent:stdio-statuses'),
+  startStdioMcp: (name) => ipcRenderer.send('agent:stdio-start', name),
+  stopStdioMcp: (name) => ipcRenderer.send('agent:stdio-stop', name),
+  restartStdioMcp: (name) => ipcRenderer.send('agent:stdio-restart', name),
+  onStdioStatusChange: (callback) => {
+    const listener = (_event, payload) => callback(payload);
+    ipcRenderer.on('agent:stdio-status-change', listener);
+    return () => ipcRenderer.removeListener('agent:stdio-status-change', listener);
+  },
 });
 
 /**
